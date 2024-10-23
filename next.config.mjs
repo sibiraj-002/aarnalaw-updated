@@ -1,7 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: ["docs.aarnalaw.com", "aarnalaw.com", "www.aarnalaw.com"], // Add your domain here
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "docs.aarnalaw.com",
+      },
+      {
+        protocol: "https",
+        hostname: "aarnalaw.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.aarnalaw.com",
+      },
+    ],
   },
 };
 
