@@ -19,7 +19,7 @@ export default function Banner() {
         {homeBanner.map((banner, index) => (
           <div
             key={index}
-            class="relative hidden w-full  duration-700 ease-in-out"
+            className="relative hidden w-full  duration-700 ease-in-out"
             data-carousel-item
           >
             <Image
