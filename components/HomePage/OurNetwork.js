@@ -3,7 +3,7 @@ import React from "react";
 function OurNetwork() {
   return (
     <div className="mx-auto w-11/12">
-      <h1 class="text-custom-blue pb-8 pt-12 text-center text-xl font-semibold md:text-2xl">
+      <h1 className="pb-8 pt-12 text-center text-xl font-semibold text-custom-blue md:text-2xl">
         A Network of Lawyers Around The Worlds
       </h1>
       <div className="w-full bg-gray-800 py-1 text-white">

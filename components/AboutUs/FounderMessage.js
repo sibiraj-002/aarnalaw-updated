@@ -14,7 +14,7 @@ function FounderMessage() {
         />
       </div>
       <div className="flex flex-col items-start justify-center p-2 pl-12">
-        <h1 class="hidden pb-4 text-2xl font-bold text-custom-red md:block">
+        <h1 className="hidden pb-4 text-2xl font-bold text-custom-red md:block">
           MESSAGE FROM OUR FOUNDERS
         </h1>
 
