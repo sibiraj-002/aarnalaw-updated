@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-sans;
+}
+
+.inner-content h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+.inner-content h5 {
+  font-size: 19px;
+  font-weight: 700;
+  color: gray;
+  padding-bottom: 16px;
+}
+.inner-content p {
+  margin-bottom: 20px;
+}
+
+.inner-content ul li {
+  margin-bottom: 20px;
+  list-style: disc;
+}
+.inner-content ul li::marker {
+  color: red;
+}
+.careers h4 {
+  margin-top: 20px;
+  font-weight: 700;
+}
+.insight-blog p {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.insight-blog ul li {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
