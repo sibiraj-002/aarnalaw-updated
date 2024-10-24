@@ -13,11 +13,10 @@ jobs:
         uses: appleboy/ssh-action@master
 
         with:
-          host: ${{ secrets.HOST }} # Your server's IP addres
+          host: ${{ secrets.HOST }} # Your server's IP address
           username: ${{ secrets.USERNAME }} # Your server's username
           password: ${{ secrets.PASSWORD }} # Your server's password
 
           script: |
             cd /var/www/newwebsite
             echo ${{ secrets.PASSWORD }} | sudo -S pm2 status
-          #  echo ${{ secrets.PASSWORD }} | sudo -S git pull origin main
