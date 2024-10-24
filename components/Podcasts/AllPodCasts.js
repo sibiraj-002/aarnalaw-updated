@@ -270,12 +270,28 @@ function AllPodCasts({ searchTerm }) {
           </button>
         </div>
       )}
-      {currentPodcastIndex !== null && (
+
+      <FloatingAudioPlayer
+        currentPodcastIndex={currentPodcastIndex}
+        podcasts={data}
+        handlePlayPause={handlePlayPause}
+        handleVolumeToggle={handleVolumeToggle}
+        progress={progress}
+        currentTime={currentTime}
+        duration={duration}
+        mutedStatus={mutedStatus}
+        volume={volume}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+        formatTime={formatTime}
+      />
+
+      {/* {currentPodcastIndex !== null && (
         <FloatingAudioPlayer
           audioSrc={data[currentPodcastIndex]?.player_link}
           onClose={() => setCurrentPodcastIndex(null)}
         />
-      )}
+      )} */}
     </div>
   );
 }
