@@ -15,6 +15,9 @@ jobs:
         with:
           host: ${{ secrets.HOST }} # Your server's IP address
           username: ${{ secrets.USERNAME }} # Your server's username
+          password: ${{ secrets.PASSWORD }} # Your server's password
 
           script: |
             cd /var/www/newwebsite
+            sudo git config --global --add safe.directory /var/www/newwebsite
+            sudo git pull origin main
