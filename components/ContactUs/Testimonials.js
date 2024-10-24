@@ -13,7 +13,7 @@ function Testimonials() {
   return (
     <>
       <div className="mx-auto w-11/12 py-12">
-        <p className="font-montserrat mb-4 border-b-2 border-[#EE3C23] pb-[15px] text-left text-[26px] font-semibold leading-normal tracking-[1.6px] text-[#1C386A]">
+        <p className="mb-4 border-b-2 border-[#EE3C23] pb-[15px] text-left text-[26px] font-semibold leading-normal tracking-[1.6px] text-[#1C386A]">
           Testimonials
         </p>
         <div className="grid grid-cols-3 gap-10">

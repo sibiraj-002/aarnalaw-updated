@@ -2,7 +2,7 @@
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 
-function page({ btnName, textColor, modalTitle }) {
+function ModalContact({ btnName, textColor, modalTitle }) {
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -42,4 +42,4 @@ function page({ btnName, textColor, modalTitle }) {
   );
 }
 
-export default page;
+export default ModalContact;
