@@ -10,7 +10,7 @@ export default function page() {
           <div>
             <h1 className="text-7xl font-bold text-custom-red">404</h1>
             <p className="py-4 text-2xl text-white">
-              We couldn't find the page you are looking for.
+              We couldn&apos;t find the page you are looking for.
             </p>
             <Link
               href="/"
@@ -26,6 +26,7 @@ export default function page() {
             width={200}
             height={200}
             className="w-[500px]"
+            alt="404 Page"
           />
         </div>
       </div>
