@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { spotify, linkedIn } from "../../utils/icons";
 import { legalLinks } from "../../utils/data";
+import ContactModal from "@/components/ModalContact/page";
 
 export default function Footer() {
   return (
@@ -34,9 +35,11 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex items-center justify-end">
-            <button className="ml-4 mt-2 border border-custom-red p-2 text-xs text-white hover:border-white hover:bg-white hover:text-custom-red md:px-6 md:text-base">
-              Subscribe to newsletter
-            </button>
+            <ContactModal
+              btnName="Subscribe to newsletter"
+              textColor="text-white"
+              modalTitle="Subscribe to newsletter"
+            />
           </div>
         </div>
       </div>

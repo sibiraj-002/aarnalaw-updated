@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { initFlowbite } from "flowbite";
+import ContactModal from "@/components/ModalContact/page";
 
 function PracticeLists() {
   const [data, setData] = useState([]); // Initialize data state with an empty array
@@ -13,9 +14,7 @@ function PracticeLists() {
           `https://docs.aarnalaw.com/wp-json/wp/v2/jobs?_embed&per_page=100`,
         );
         const result = await response.json();
-
-        console.log("Practice area data", result);
-
+        // console.log("Practice area data", result);
         // Ensure the response is an array before setting the data
         if (Array.isArray(result)) {
           // Sort the data alphabetically by title
@@ -130,9 +129,11 @@ function PracticeLists() {
             ))}
 
             <div className="flex w-full justify-start">
-              <button className="mt-5 border-2 border-red-600 px-4 py-2 text-black hover:bg-red-600 hover:text-white">
-                Apply Now
-              </button>
+              <ContactModal
+                btnName="Apply Now"
+                textColor="text-custom-red"
+                modalTitle="Current Openings"
+              />
             </div>
           </div>
         </div>
@@ -163,9 +164,11 @@ function PracticeLists() {
           </p>
         </div>
         <div className="flex w-full justify-start">
-          <button className="mt-5 border-2 border-red-600 px-4 py-2 text-black hover:bg-red-600 hover:text-white">
-            Apply Now
-          </button>
+          <ContactModal
+            btnName="Apply Now"
+            textColor="text-custom-red"
+            modalTitle="Internships"
+          />
         </div>
       </div>
     </div>

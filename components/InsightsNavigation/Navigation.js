@@ -2,8 +2,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { HeaderMenu } from "../../utils/data";
+import { usePathname } from "next/navigation";
 
 export default function Navigation({ searchTerm, setSearchTerm }) {
+  const pathname = usePathname();
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -13,34 +16,35 @@ export default function Navigation({ searchTerm, setSearchTerm }) {
       <div className="flex">
         <div className="flex w-9/12">
           {HeaderMenu.map((item, index) => (
-            <>
-              {item.subMenu ? (
-                <>
-                  {item.subMenu.map((subItem, subIndex) => (
+            <React.Fragment key={index}>
+              {item.subMenu
+                ? item.subMenu.map((subItem, subIndex) => (
                     <Link
                       href={`/${subItem.name.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      key={subItem.name}
+                      className={`block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${
+                        `/${subItem.name.toLowerCase().replace(/\s+/g, "-")}` ===
+                        pathname
+                          ? "text-custom-red"
+                          : ""
+                      }`}
+                      key={subIndex} // added unique key for subItem
                     >
                       {subItem.name}
                     </Link>
-                  ))}
-                </>
-              ) : (
-                <></>
-              )}
-            </>
+                  ))
+                : null}
+            </React.Fragment>
           ))}
         </div>
         <div className="w-3/12">
-          <form class="mx-auto flex w-full  items-center">
-            <label for="simple-search" class="sr-only">
+          <form className="mx-auto flex w-full  items-center">
+            <label for="simple-search" className="sr-only">
               Search
             </label>
-            <div class="relative w-full">
-              <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
+            <div className="relative w-full">
+              <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
                 <svg
-                  class="h-4 w-4 text-gray-500 dark:text-gray-400"
+                  className="h-4 w-4 text-gray-500 dark:text-gray-400"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -58,7 +62,7 @@ export default function Navigation({ searchTerm, setSearchTerm }) {
               <input
                 type="text"
                 id="simple-search"
-                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={handleSearchChange}

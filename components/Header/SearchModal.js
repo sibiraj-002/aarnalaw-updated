@@ -27,7 +27,7 @@ function SearchModal() {
       );
       const data = await response.json();
       const endTime = performance.now(); // End timer
-      console.log("search result", data);
+      // console.log("search result", data);
       setResults(data); // Assuming the response data is an array of results
       setResultCount(data.length); // Set the count of results
       setFetchTime((endTime - startTime).toFixed(2)); // Calculate and set fetch time in milliseconds
@@ -114,8 +114,8 @@ function SearchModal() {
                     </p>
                   )}
                   {results.length > 0 ? (
-                    <ul>
-                      {results.slice(0, 6).map((result, index) => {
+                    <ul className="h-[200px] overflow-scroll">
+                      {results.map((result, index) => {
                         // Construct the dynamic URL
                         const basePath = result.post_type; // Use the post type
                         const dynamicUrl = `/${basePath}/${result.slug}`; // Build the URL dynamically

@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import ContactModal from "@/components/ModalContact/page";
 
-function PostDetails({ details, partnersData, slug }) {
+function PostDetails({ details, partnersData, slug, titleText }) {
   const [data, setData] = useState([]); // Initialize data state with an empty array
   const [loading, setLoading] = useState([]); // Initialize data state with an empty array
 
@@ -15,7 +16,7 @@ function PostDetails({ details, partnersData, slug }) {
         );
         const result = await response.json();
 
-        console.log("Practice area data", result);
+        // console.log("Practice area data", result);
 
         // Ensure the response is an array before setting the data
         if (Array.isArray(result)) {
@@ -48,7 +49,7 @@ function PostDetails({ details, partnersData, slug }) {
         {partnersData?.partnerNames?.map((name, index) => (
           <div
             key={index}
-            className="flex flex-col items-center justify-start  p-14 text-center"
+            className="flex flex-col items-center justify-start px-14 pt-14 text-center"
           >
             {partnersData.partnerImages?.[index] && (
               <Image
@@ -72,15 +73,17 @@ function PostDetails({ details, partnersData, slug }) {
           </div>
         ))}
         <div className="flex w-full justify-center">
-          <button class="mt-5 rounded-lg border-2 border-red-600 px-4 py-2 text-black hover:bg-red-600 hover:text-white">
-            CONTACT PARTNER
-          </button>
+          <ContactModal
+            btnName="CONTACT PARTNER"
+            textColor="text-black"
+            modalTitle={titleText}
+          />
         </div>
 
         <div className="w-full p-2 pt-10">
           <h2 className="font-bold">Quick Links</h2>
           <hr className="my-4 border-t-2 border-red-500" />
-          <ul class="space-y-4 text-left text-gray-500 dark:text-gray-400">
+          <ul className="space-y-4 text-left text-gray-500 dark:text-gray-400">
             {data.map((items, index) => (
               <Link
                 href={`/practice-area/${items.slug}`}

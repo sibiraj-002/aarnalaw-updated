@@ -32,9 +32,6 @@ const WhatWeDo = () => {
             navigating highly specialized areas of national and international
             law, we advise with uncompromising integrity.
           </p>
-          <button className="mx-auto mt-4 block border border-custom-red px-6 py-2 text-custom-red hover:bg-custom-red hover:text-white md:mx-0">
-            Our Services
-          </button>
         </div>
       </div>
     </>

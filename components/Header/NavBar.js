@@ -1,11 +1,17 @@
+"use client";
 import React from "react";
-// import { DarkThemeToggle } from "flowbite-react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { HeaderMenu } from "../../utils/data";
 import SearchModal from "@/components/Header/SearchModal";
 
 export default function NavBar() {
+  const router = usePathname();
+
+  // Define the URLs that should highlight the "News & Insights" menu
+  const newsPaths = ["/aarna-news", "/insight", "/publication", "/podcast"];
+
   return (
     <div className="relative z-50 mx-auto w-11/12">
       <nav className="absolute z-50 mx-auto mt-10 w-full border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
@@ -19,6 +25,7 @@ export default function NavBar() {
               height={300}
             />
           </Link>
+
           <button
             data-collapse-toggle="navbar-dropdown"
             type="button"
@@ -55,7 +62,12 @@ export default function NavBar() {
                       <button
                         id={`dropdownNavbarLink${index}`}
                         data-dropdown-toggle={`dropdownNavbar${index}`}
-                        className="flex w-full items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:text-white md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red"
+                        className={`flex w-full items-center justify-between rounded px-3 py-2  hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:text-white md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red ${
+                          item.menu === "News & Insights" &&
+                          newsPaths.includes(router)
+                            ? " text-custom-red dark:bg-gray-700"
+                            : "text-gray-900"
+                        }`}
                       >
                         {item.menu}{" "}
                         <svg
@@ -83,7 +95,12 @@ export default function NavBar() {
                             <li key={subIndex}>
                               <Link
                                 href={`/${subItem.name.toLowerCase().replace(/\s+/g, "-")}`}
-                                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                className={`block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${
+                                  router ===
+                                  `/${subItem.name.toLowerCase().replace(/\s+/g, "-")}`
+                                    ? "bg-gray-100 text-custom-red dark:bg-gray-700"
+                                    : ""
+                                }`}
                               >
                                 {subItem.name}
                               </Link>
@@ -96,7 +113,13 @@ export default function NavBar() {
                     <Link
                       href={`${item.slug}`}
                       key={item.slug}
-                      className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red"
+                      className={`block rounded px-3 py-2  hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red ${
+                        router === item.slug ||
+                        (item.menu === "News & Insights" &&
+                          newsPaths.includes(router))
+                          ? " text-custom-red dark:bg-gray-700"
+                          : "text-gray-900"
+                      }`}
                     >
                       {item.menu}
                     </Link>
@@ -112,7 +135,6 @@ export default function NavBar() {
           >
             CONTACT US
           </Link>
-          {/* // <DarkThemeToggle /> */}
         </div>
       </nav>
     </div>

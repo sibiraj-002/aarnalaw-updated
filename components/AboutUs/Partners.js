@@ -1,3 +1,4 @@
+// Import statements remain unchanged
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import { partnersMembers } from "@/utils/data";
@@ -8,6 +9,41 @@ import Image from "next/image";
 
 export default function Partners() {
   const sliderRef = useRef(null);
+  const [data, setData] = useState([]); // Initialize data state with an empty array
+  const [loading, setLoading] = useState(true); // Loading state for skeleton
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://docs.aarnalaw.com/wp-json/wp/v2/team?_embed&per_page=100`,
+        );
+        const result = await response.json();
+
+        console.log("Practice area data", result);
+
+        // Ensure the response is an array before setting the data
+        if (Array.isArray(result)) {
+          // Sort the data alphabetically by title
+          const sortedData = result.sort((a, b) => {
+            const titleA = a.title.rendered.toLowerCase(); // Convert to lowercase for case-insensitive comparison
+            const titleB = b.title.rendered.toLowerCase();
+            return titleA.localeCompare(titleB); // Compare titles
+          });
+          setData(sortedData);
+        } else {
+          console.error("Expected an array but got:", result);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -49,32 +85,42 @@ export default function Partners() {
             keyBoardControl={true}
             removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
           >
-            {partnersMembers.map((item, index) => (
-              <div className=" bg-white p-6" key={index}>
-                <Image
-                  src={item.imgUrl}
-                  className="mx-auto size-48 rounded-full bg-[#0e1333]"
-                  alt="team member"
-                  width={200}
-                  height={200}
-                />
-                <h2 className="mb-2 text-center text-lg font-semibold text-blue-900">
-                  {item.partnerName}
-                </h2>
-                <p className="mb-4 min-h-[40px] text-center text-sm text-black">
-                  {item.partnerDesignation}
-                </p>
-                <p className="line-clamp-2 min-h-[50px] text-center text-base text-gray-700">
-                  {item.partnerDesc}
-                </p>
-                <Link
-                  href="/"
-                  className="mt-2 inline-block rounded bg-custom-red px-4 py-2 text-white hover:bg-red-800"
-                >
-                  Read More
-                </Link>
-              </div>
-            ))}
+            {data.map((item, index) => {
+              // Get the featured media URL from the embedded media if available
+              const imageUrl =
+                item._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
+                "/default-image.jpg"; // Fallback image URL
+
+              return (
+                <div className=" bg-white p-6" key={index}>
+                  <Image
+                    src={imageUrl}
+                    className="mx-auto size-48 rounded-full bg-[#0e1333]"
+                    alt="team member"
+                    width={200}
+                    height={200}
+                  />
+                  <h2 className="mb-2 text-center text-lg font-semibold text-blue-900">
+                    {item.title.rendered}
+                  </h2>
+                  <p className="mb-4 min-h-[40px] text-center text-sm text-black">
+                    {item.acf?.designation || "Designation not available"}
+                  </p>
+                  <p
+                    className="line-clamp-2 min-h-[50px] text-center text-base text-gray-700"
+                    dangerouslySetInnerHTML={{
+                      __html: item.acf?.description || "",
+                    }}
+                  ></p>
+                  <Link
+                    href={`/team/${item.slug}`}
+                    className="mt-2 inline-block rounded bg-custom-red px-4 py-2 text-white hover:bg-red-800"
+                  >
+                    Read More
+                  </Link>
+                </div>
+              );
+            })}
           </Credentials>
         </div>
       </div>

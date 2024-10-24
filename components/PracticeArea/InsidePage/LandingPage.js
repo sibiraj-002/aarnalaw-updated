@@ -69,6 +69,7 @@ const LandingPage = ({ slug }) => {
         details={description}
         partnersData={partnersData}
         slug={slug}
+        titleText={title}
       />
     </div>
   );

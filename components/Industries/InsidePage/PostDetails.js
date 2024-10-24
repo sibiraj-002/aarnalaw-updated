@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import ContactModal from "@/components/ModalContact/page";
 
 function PostDetails({ details, partnersData, slug, title }) {
   const [data, setData] = useState([]); // Initialize data state with an empty array
@@ -55,9 +56,11 @@ function PostDetails({ details, partnersData, slug, title }) {
         <p dangerouslySetInnerHTML={{ __html: details }} />
 
         <div className="flex w-full justify-start">
-          <button className="mt-5 border-2 border-red-600 px-4 py-2 text-black hover:bg-red-600 hover:text-white">
-            CONTACT OUR EXPERTS
-          </button>
+          <ContactModal
+            btnName="CONTACT OUR EXPERTS"
+            textColor="text-black"
+            modalTitle={title}
+          />
         </div>
       </div>
       <div className="w-3/12 bg-gray-50">
@@ -91,9 +94,11 @@ function PostDetails({ details, partnersData, slug, title }) {
         {/* Only show 'CONTACT PARTNER' if there is valid partner data */}
         {hasValidPartnerData && (
           <div className="flex w-full justify-center">
-            <button className="mt-5 rounded-lg border-2 border-red-600 px-4 py-2 text-black hover:bg-red-600 hover:text-white">
-              CONTACT PARTNER
-            </button>
+            <ContactModal
+              btnName="CONTACT PARTNER"
+              textColor="text-black"
+              modalTitle={title}
+            />
           </div>
         )}
 
