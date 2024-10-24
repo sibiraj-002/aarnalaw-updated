@@ -15,10 +15,6 @@ jobs:
         with:
           host: ${{ secrets.HOST }} # Your server's IP address
           username: ${{ secrets.USERNAME }} # Your server's username
-          # key: ${{ secrets.SSH_PRIVATE_KEY }} # Your server's SSH private key
-          # passphrase: ${{ secrets.SSH_PASSPHRASE }} # Your server's SSH password
 
           script: |
             cd /var/www/newwebsite
-            echo ${{ secrets.PASSWORD }} | sudo -S git config --global --add safe.directory /var/www/newwebsite
-            echo ${{ secrets.PASSWORD }} | sudo -S git pull origin main
