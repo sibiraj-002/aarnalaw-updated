@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Banner from "@/components/Publication/InsidePage/Banner";
 import Link from "next/link";
+import ErrorPage from "@/components/404/page";
 
 export default function Page({ params }) {
   const paramUrl = params.slug;
@@ -9,6 +10,7 @@ export default function Page({ params }) {
   const [date, setDate] = useState(null);
   const [featureImage, setFeatureImage] = useState(null);
   const [content, setContent] = useState(null);
+  const [error, setError] = useState(false); // Error state to handle error page
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +44,7 @@ export default function Page({ params }) {
           }
         } else {
           console.error("No post data found.");
+          setError(true); // Set error state if no post found
         }
         console.log("insights Page", data);
       } catch (error) {
@@ -73,6 +76,10 @@ export default function Page({ params }) {
     const year = date.getFullYear();
     return `${day}\n${month}\n${year}`;
   };
+
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <>
