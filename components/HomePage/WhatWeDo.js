@@ -4,7 +4,7 @@ import Image from "next/image";
 const WhatWeDo = () => {
   return (
     <>
-      <div className="mx-auto grid w-11/12 grid-cols-2">
+      <div className="mx-auto grid w-11/12 lg:grid-cols-2">
         <div className="">
           <Image
             src="/whatWeDo/What_we_do.jpg"
@@ -38,8 +38,8 @@ const WhatWeDo = () => {
         </div>
       </div>
 
-      <div className="mx-auto  grid w-11/12 grid-cols-2">
-        <div className="flex flex-col items-start justify-center p-12">
+      <div className="mx-auto  grid w-11/12 lg:grid-cols-2">
+        <div className="order-2 flex flex-col items-start justify-center p-12 lg:order-1">
           <h1 className="hidden text-2xl font-bold text-custom-blue md:block">
             Our Legacy
           </h1>
@@ -62,7 +62,7 @@ const WhatWeDo = () => {
             Our Firm
           </button>
         </div>
-        <div className="">
+        <div className="order-1">
           <Image
             src="/whatWeDo/What_we_do.jpg"
             width={500}
