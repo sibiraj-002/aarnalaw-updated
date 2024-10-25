@@ -20,15 +20,17 @@ export default function Footer() {
             />
             <div className="flex gap-8 py-4">
               <Link
-                href="/"
+                href="https://www.linkedin.com/company/aarna-law1/"
                 className="flex items-center justify-center gap-2 text-xl text-white"
+                target="_blank"
               >
                 {linkedIn} LinkedIn
               </Link>
 
               <Link
-                href="/"
+                href="https://open.spotify.com/show/2FYjq2t4nrx3bT9UMwN55h"
                 className="flex items-center justify-center gap-2 text-xl text-white"
+                target="_blank"
               >
                 {spotify} Spotify
               </Link>
