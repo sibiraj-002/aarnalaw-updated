@@ -49,7 +49,7 @@ export default function PracticeArea() {
           {data.map((item, index) => (
             <div
               key={index}
-              className=" bg-white p-1 p-2 text-black hover:text-custom-red"
+              className=" bg-white p-1 text-black hover:text-custom-red"
             >
               <Link href={`/practice-area/${item.slug}`}>
                 <p
