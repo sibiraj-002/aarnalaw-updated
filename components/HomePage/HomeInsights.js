@@ -16,7 +16,7 @@ export default function HomeInsights() {
     const fetchInsights = async () => {
       try {
         const response = await fetch(
-          "https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed",
+          "https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&categories=13",
         );
         const posts = await response.json();
 

@@ -9,12 +9,12 @@ body {
 }
 
 .inner-content h2 {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 25px;
+  font-weight: 500;
 }
 .inner-content h5 {
-  font-size: 19px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 400;
   color: gray;
   padding-bottom: 16px;
 }
