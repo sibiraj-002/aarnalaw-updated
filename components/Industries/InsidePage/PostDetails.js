@@ -60,6 +60,7 @@ function PostDetails({ details, partnersData, slug, title }) {
             btnName="CONTACT OUR EXPERTS"
             textColor="text-black"
             modalTitle={title}
+            btnType="contactPartner"
           />
         </div>
       </div>
@@ -98,6 +99,7 @@ function PostDetails({ details, partnersData, slug, title }) {
               btnName="CONTACT PARTNER"
               textColor="text-black"
               modalTitle={title}
+              btnType="contactPartner"
             />
           </div>
         )}

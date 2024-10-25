@@ -4,7 +4,7 @@ import Image from "next/image";
 const WhatWeDo = () => {
   return (
     <>
-      <div className="mx-auto grid w-11/12 grid-cols-2 py-12">
+      <div className="mx-auto grid w-11/12 py-12 lg:grid-cols-2">
         <div className="">
           <Image
             src="/whatWeDo/What_we_do.jpg"
@@ -14,7 +14,7 @@ const WhatWeDo = () => {
             alt="What We Do"
           />
         </div>
-        <div className="flex flex-col items-start justify-center p-2 pl-12">
+        <div className="flex flex-col items-start justify-center p-2 lg:pl-12">
           <h1 className="hidden pb-4 text-2xl font-bold text-custom-red md:block">
             What We Do
           </h1>

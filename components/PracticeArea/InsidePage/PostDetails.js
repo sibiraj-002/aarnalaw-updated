@@ -77,6 +77,7 @@ function PostDetails({ details, partnersData, slug, titleText }) {
             btnName="CONTACT PARTNER"
             textColor="text-black"
             modalTitle={titleText}
+            btnType="contactPartner"
           />
         </div>
 

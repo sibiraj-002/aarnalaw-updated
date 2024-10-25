@@ -9,7 +9,7 @@ export default function Trackrecords() {
         <h1 className="text-center text-2xl font-semibold text-custom-red">
           Our Track Record by Numbers
         </h1>
-        <div className="grid py-12 lg:grid-cols-3">
+        <div className="grid gap-12 py-12 lg:grid-cols-3 lg:gap-0">
           <div className="text-center text-5xl text-custom-blue">
             <CountUp start={1} end={100} duration={2.75} suffix=" +"></CountUp>
             <p className="text-center text-xl text-custom-gray">

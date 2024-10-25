@@ -3,7 +3,7 @@ import Image from "next/image";
 
 function FounderMessage() {
   return (
-    <div className="mx-auto grid w-11/12 grid-cols-2 py-12">
+    <div className="mx-auto grid w-11/12 py-12 lg:grid-cols-2">
       <div className="">
         <Image
           src="/aboutUs/founders.png"
@@ -13,7 +13,7 @@ function FounderMessage() {
           alt="MESSAGE FROM OUR FOUNDERS"
         />
       </div>
-      <div className="flex flex-col items-start justify-center p-2 pl-12">
+      <div className="flex flex-col items-start justify-center p-2 lg:pl-12">
         <h1 className="hidden pb-4 text-2xl font-bold text-custom-red md:block">
           MESSAGE FROM OUR FOUNDERS
         </h1>

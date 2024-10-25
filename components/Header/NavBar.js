@@ -25,7 +25,9 @@ export default function NavBar() {
               height={300}
             />
           </Link>
-
+          <div className="flex w-3/12 justify-end lg:hidden">
+            <SearchModal />
+          </div>
           <button
             data-collapse-toggle="navbar-dropdown"
             type="button"
@@ -50,6 +52,7 @@ export default function NavBar() {
               />
             </svg>
           </button>
+
           <div
             className="hidden w-full md:block md:w-auto"
             id="navbar-dropdown"
@@ -127,14 +130,24 @@ export default function NavBar() {
                 </li>
               ))}
             </ul>
+            <div className="flex w-full items-center justify-between pt-4 lg:hidden">
+              <Link
+                href="/contact-us"
+                className="mb-2 me-2 border border-custom-red bg-white px-5 py-2.5 text-sm font-medium text-custom-red hover:bg-custom-red hover:text-white focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
+              >
+                CONTACT US
+              </Link>
+            </div>
           </div>
-          <SearchModal />
-          <Link
-            href="/contact-us"
-            className="mb-2 me-2 border border-custom-red bg-white px-5 py-2.5 text-sm font-medium text-custom-red hover:bg-custom-red hover:text-white focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-          >
-            CONTACT US
-          </Link>
+          <div className="hidden w-3/12 items-center justify-evenly lg:flex">
+            <SearchModal />
+            <Link
+              href="/contact-us"
+              className="mb-2 me-2 mt-2 border border-custom-red bg-white px-5 py-2.5 text-sm font-medium text-custom-red hover:bg-custom-red hover:text-white focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
+            >
+              CONTACT US
+            </Link>
+          </div>
         </div>
       </nav>
     </div>

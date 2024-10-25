@@ -1,14 +1,34 @@
 "use client";
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
+import HubSpotCareer from "@/utils/HubSpotForm/CareerForm";
+import InternShip from "@/utils/HubSpotForm/Internships";
+import Subscribe from "@/utils/HubSpotForm/Subscribe";
+import ContactPartner from "@/utils/HubSpotForm/ContactPartner";
 
-function ModalContact({ btnName, textColor, modalTitle }) {
+function ModalContact({ btnName, textColor, modalTitle, btnType }) {
   const [openModal, setOpenModal] = useState(false);
+
+  // Mapping btnType to the respective component
+  const componentMap = {
+    career: HubSpotCareer,
+    internships: InternShip,
+    subscribe: Subscribe,
+    contactPartner: ContactPartner,
+    // Add more mappings here as you add new components
+  };
+
+  // Determine the component to render based on btnType
+  const SelectedComponent = componentMap[btnType] || null;
 
   return (
     <>
       <button
-        className={` ${textColor} mt-8 border border-custom-red p-2 text-xs ${textColor === "text-custom-red" ? "hover:bg-custom-red hover:text-white" : "hover:border-white hover:bg-white hover:text-custom-red"}  md:px-6 md:text-base`}
+        className={` ${textColor} mt-8 border border-custom-red p-2 text-lg ${
+          textColor === "text-custom-red"
+            ? "hover:bg-custom-red hover:text-white"
+            : "hover:border-white hover:bg-white hover:text-custom-red"
+        }  md:px-6 md:text-base`}
         onClick={() => setOpenModal(true)}
       >
         {btnName}
@@ -16,27 +36,13 @@ function ModalContact({ btnName, textColor, modalTitle }) {
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>{modalTitle}</Modal.Header>
         <Modal.Body>
-          <div className="space-y-6">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
-          </div>
+          {/* <InternShip /> */}
+          {SelectedComponent ? (
+            <SelectedComponent />
+          ) : (
+            <p>Component not found</p>
+          )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => setOpenModal(false)}>I accept</Button>
-          <Button color="gray" onClick={() => setOpenModal(false)}>
-            {btnName}
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );

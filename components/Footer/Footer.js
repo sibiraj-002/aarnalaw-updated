@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <div className="pt-12">
       <div className="bg-custom-blue">
-        <div className="mx-auto grid w-11/12 grid-cols-2">
+        <div className="mx-auto grid w-11/12 lg:grid-cols-2">
           <div className="pt-4">
             <Image
               src="/logo/logo-white.svg"
@@ -34,11 +34,12 @@ export default function Footer() {
               </Link>
             </div>
           </div>
-          <div className="flex items-center justify-end">
+          <div className="flex items-center pb-10 lg:justify-end lg:pb-0">
             <ContactModal
               btnName="Subscribe to newsletter"
               textColor="text-white"
               modalTitle="Subscribe to newsletter"
+              btnType="subscribe"
             />
           </div>
         </div>

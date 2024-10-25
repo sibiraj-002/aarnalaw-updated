@@ -104,9 +104,9 @@ const Podcasts = () => {
   };
 
   return (
-    <div className="mx-auto w-11/12 p-10">
+    <div className="mx-auto w-11/12 py-12 lg:p-10 lg:py-10">
       <h1 className="mb-8 text-center text-2xl font-semibold text-custom-blue">
-        Podcast
+        Podcasts
       </h1>
 
       <div>
@@ -165,7 +165,7 @@ const Podcasts = () => {
       </div>
       <div className="mt-10 flex justify-center">
         <Link
-          href="/podcast"
+          href="/podcasts"
           className="border border-custom-blue px-6 py-2 text-custom-blue md:hover:bg-custom-blue md:hover:text-white"
         >
           View all

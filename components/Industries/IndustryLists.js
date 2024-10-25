@@ -45,11 +45,11 @@ function PracticeLists() {
         <p className="py-4 text-center font-bold text-gray-500">
           INDUSTRIES WE SERVE
         </p>
-        <p className="mx-auto w-8/12 text-center text-3xl">
+        <p className="mx-auto text-center text-3xl lg:w-8/12">
           Our progressive practice provides expert assistance to clients across
           industry.
         </p>
-        <div className="grid grid-cols-4 gap-4 pt-12">
+        <div className="grid gap-4 pt-12 lg:grid-cols-4">
           {loading
             ? // Render skeletons while loading
               [...Array(12)].map((_, index) => (

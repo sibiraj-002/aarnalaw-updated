@@ -4,8 +4,8 @@ import Image from "next/image";
 export default function JayasimhaFoundation() {
   return (
     <div className="bg-[#151c4a]">
-      <div className="mx-auto  grid w-11/12 grid-cols-2  py-12">
-        <div className="flex flex-col items-start justify-center p-12">
+      <div className="mx-auto  grid w-11/12 py-12 lg:grid-cols-2">
+        <div className="order-2 flex flex-col items-start justify-center lg:order-1 lg:p-12">
           <h1 className="hidden text-2xl font-bold text-gray-200 md:block">
             JAYASIMHA FOUNDATION
           </h1>
@@ -33,7 +33,7 @@ export default function JayasimhaFoundation() {
             the law.
           </p>
         </div>
-        <div className="">
+        <div className="order-1 lg:order-2">
           <Image
             src="/aboutUs/Jayasimha-Foundation.png"
             width={500}

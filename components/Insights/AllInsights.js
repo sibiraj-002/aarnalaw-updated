@@ -16,7 +16,7 @@ function AllInsights({ searchTerm }) {
     const fetchData = async () => {
       setLoading(true); // Start loading
       try {
-        let url = `https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${page}`;
+        let url = `https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${page}&categories=13`;
 
         // If an archive is selected, include it in the request
         if (selectedArchive) {

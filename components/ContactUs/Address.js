@@ -10,7 +10,7 @@ function Address() {
         <p className="mb-4 border-b-2 border-[#EE3C23] pb-[15px] text-left text-[26px] font-semibold leading-normal tracking-[1.6px] text-[#1C386A]">
           Aarna Law
         </p>
-        <div className="grid grid-cols-3 gap-10">
+        <div className="grid gap-10 lg:grid-cols-3">
           {contactAddress.map((items, index) => (
             <div className="rounded-lg bg-white p-8 shadow-lg" key={index}>
               <h2 className="text-xl font-bold">{items.location}</h2>

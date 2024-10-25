@@ -111,10 +111,10 @@ export default function HomeInsights() {
 
   return (
     <div className="h-[80vh]">
-      <div className="absolute right-0 z-40 -mt-20 flex h-[650px] w-11/12 bg-white">
-        <div className="flex w-2/12 justify-between ">
-          <div className="flex w-full flex-col items-center justify-evenly gap-7">
-            <h2 className="m-0 -rotate-90 py-5 text-2xl font-bold text-custom-red md:p-0 md:text-[80px]">
+      <div className="absolute right-0 z-40 flex h-[650px] w-11/12 flex-col lg:-mt-20 lg:flex-row">
+        <div className="flex justify-between lg:w-2/12 ">
+          <div className="flex w-full items-center justify-evenly gap-7  lg:flex-col">
+            <h2 className="m-0 py-5 text-2xl font-bold text-custom-red md:p-0 md:text-[80px] lg:-rotate-90">
               Insights
             </h2>
             <div className="flex gap-4">
@@ -176,7 +176,7 @@ export default function HomeInsights() {
       </div>
       <div className="bottom-0 flex  h-[80vh] items-end justify-center">
         <Link
-          href="/insight"
+          href="/insights"
           className=" border border-custom-blue px-6 py-2 text-custom-blue md:hover:bg-custom-blue md:hover:text-white"
         >
           View all

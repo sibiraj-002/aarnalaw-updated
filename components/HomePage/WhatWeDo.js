@@ -1,10 +1,11 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const WhatWeDo = () => {
   return (
     <>
-      <div className="mx-auto grid w-11/12 lg:grid-cols-2">
+      <div className="mx-auto grid w-11/12 py-12 lg:grid-cols-2">
         <div className="">
           <Image
             src="/whatWeDo/What_we_do.jpg"
@@ -14,11 +15,11 @@ const WhatWeDo = () => {
             alt="Our Legacy"
           />
         </div>
-        <div className="flex flex-col items-start justify-center p-12">
-          <h1 className="hidden pb-12 text-2xl font-bold text-custom-red md:block">
+        <div className="flex flex-col items-start justify-center lg:px-8">
+          <h1 className="hidden pb-1 text-2xl font-bold text-custom-red md:block">
             What We Do
           </h1>
-          <h2 className="mt-4 py-12 text-4xl font-semibold text-custom-blue md:mt-0">
+          <h2 className="mt-4 py-8 text-2xl font-semibold text-custom-blue md:mt-0 lg:text-4xl">
             We are an award-winning advisory with an international perspective.
           </h2>
           <p className="mt-4 text-custom-gray md:mt-0 ">
@@ -32,18 +33,21 @@ const WhatWeDo = () => {
             navigating highly specialized areas of national and international
             law, we advise with uncompromising integrity.
           </p>
-          <button className="mx-auto mt-4 block border border-custom-red px-6 py-2 text-custom-red hover:bg-custom-red hover:text-white md:mx-0">
+          <Link
+            href="/practice-area"
+            className="mx-auto mt-4 block border border-custom-red px-6 py-2 text-custom-red hover:bg-custom-red hover:text-white md:mx-0"
+          >
             Our Services
-          </button>
+          </Link>
         </div>
       </div>
 
       <div className="mx-auto  grid w-11/12 lg:grid-cols-2">
-        <div className="order-2 flex flex-col items-start justify-center p-12 lg:order-1">
+        <div className="order-2 flex flex-col items-start justify-center lg:order-1 lg:p-12">
           <h1 className="hidden text-2xl font-bold text-custom-blue md:block">
             Our Legacy
           </h1>
-          <h2 className="mt-4 py-12 text-4xl font-semibold text-custom-blue md:mt-0">
+          <h2 className="mt-4 py-12 text-2xl font-semibold text-custom-blue md:mt-0 lg:text-4xl">
             Founded on over nine decades of commitment and service
           </h2>
           <p className="mt-4 text-custom-gray md:mt-0 ">
@@ -58,9 +62,12 @@ const WhatWeDo = () => {
             navigating highly specialized areas of national and international
             law, we advise with uncompromising integrity.
           </p>
-          <button className="mx-auto mt-4 border border-custom-blue px-4 py-2 text-custom-blue hover:bg-custom-blue hover:text-white md:mx-0 md:mt-0">
+          <Link
+            href="/about-us"
+            className="mx-auto mt-4 border border-custom-blue px-4 py-2 text-custom-blue hover:bg-custom-blue hover:text-white md:mx-0 md:mt-0"
+          >
             Our Firm
-          </button>
+          </Link>
         </div>
         <div className="order-1">
           <Image
