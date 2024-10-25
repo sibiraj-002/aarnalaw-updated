@@ -48,7 +48,21 @@ function PracticeLists() {
 
         <p className="pt-12">
           Aarna Law is an India-based international legal advisory rooted in
-          dharmic principles of natural law, justice, and compassion...
+          dharmic principles of natural law, justice, and compassion. Through
+          our wide range of practice areas, we provide progressive legal counsel
+          to a clientele that spans Nation States, International Organisations,
+          Multinational Companies, Niche Start-ups, and Individual Interests.
+        </p>
+        <p className="py-8">
+          RECRUITMENT FOR LEGAL AND ADMINISTRATIVE PROFESSIONALS
+        </p>
+        <p>
+          We are always interested to hear from professionals with international
+          experience, significant academic achievements, publications in
+          peer-reviewed journals, or other demonstrations of astute legal
+          skills. We are also interested in innovative and competent admin and
+          support team members. If you are a team player with a spirit of
+          service and a passion for excellence in the law, please get in touch.
         </p>
 
         <div className="py-12">
@@ -130,7 +144,23 @@ function PracticeLists() {
           </h2>
           <p className="pt-8">
             At Aarna, we offer an internship experience that is enriching and
-            challenging...
+            challenging. We look for more than a strong academic record; we seek
+            individuals who are motivated, eager to learn, and share the same
+            values as the firm. We pride ourselves in the diversity of interns
+            and the opportunities we’ve offered to students from all over the
+            country. The internship period is 4-8 weeks. Interns have the
+            opportunity to work with our disputes, insolvency law as well as our
+            corporate advisory teams. During the internship period, the intern
+            has a unique opportunity to get a practical insight into various
+            aspects of our practice areas. Each intern is assigned a supervisor;
+            however, they are expected to work with all teams in order to get a
+            holistic experience. Our interns are expected to be aware of recent
+            developments in the law in our practice areas. Each intern is
+            assigned a topic to research on and at the end of the term, the
+            intern is expected to make a presentation before the partners and
+            all associates. We do not accept internship applications from
+            students who are in the first and second year of the BA LLB (Hons.)
+            programme and the 3 year LLB programme.
           </p>
         </div>
         <div className="flex w-full justify-start">
