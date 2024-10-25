@@ -47,7 +47,10 @@ export default function PracticeArea() {
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {data.map((item, index) => (
-            <div key={index} className=" p-1 text-white">
+            <div
+              key={index}
+              className=" bg-white p-1 p-2 text-black hover:text-custom-red"
+            >
               <Link href={`/practice-area/${item.slug}`}>
                 <p
                   dangerouslySetInnerHTML={{ __html: item.title.rendered }}

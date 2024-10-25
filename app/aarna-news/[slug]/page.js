@@ -83,11 +83,18 @@ export default function Page({ params }) {
 
   return (
     <>
-      <Banner title={title} backgroundImage={featureImage} />
+      <div className="mx-auto w-11/12">
+        <div className="h-[20vh]"></div>
+        <h1
+          className=" py-4 text-4xl font-bold tracking-wide text-black"
+          dangerouslySetInnerHTML={{ __html: title }}
+        ></h1>
+        <p className="py-4">Published:- {formatDateString(date)}</p>
+        <Banner backgroundImage={featureImage} />
+      </div>
 
       <div className="py-12">
         <div className=" mx-auto w-11/12">
-          <p>Published:- {formatDateString(date)}</p>
           <p
             dangerouslySetInnerHTML={{ __html: content }}
             className="insight-blog py-12"

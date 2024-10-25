@@ -53,7 +53,7 @@ function PracticeLists() {
           to a clientele that spans Nation States, International Organisations,
           Multinational Companies, Niche Start-ups, and Individual Interests.
         </p>
-        <p className="py-8">
+        <p className="py-8 font-semibold text-custom-blue">
           RECRUITMENT FOR LEGAL AND ADMINISTRATIVE PROFESSIONALS
         </p>
         <p>
@@ -66,21 +66,21 @@ function PracticeLists() {
         </p>
 
         <div className="py-12">
-          <h2 className="border-b-2 border-custom-red pb-4 text-3xl">
+          <h2 className="border-b-2 border-custom-red pb-4 text-3xl font-semibold text-custom-blue">
             Current Openings
           </h2>
           <div
             id="accordion-flush"
             data-accordion="collapse"
             data-active-classes="bg-white text-gray-900"
-            data-inactive-classes="text-gray-500"
+            data-inactive-classes="text-custom-blue"
           >
             {data.map((item, index) => (
               <div key={index}>
                 <h2 id={`accordion-flush-heading-${index}`}>
                   <button
                     type="button"
-                    className="flex w-full items-center justify-between gap-3 border-b border-gray-200 py-5 font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400"
+                    className="flex w-full items-center justify-between gap-3 border-b border-gray-200 py-5 text-lg font-medium text-custom-blue dark:border-gray-700 dark:text-gray-400"
                     data-accordion-target={`#accordion-flush-body-${index}`}
                     aria-expanded="false"
                     aria-controls={`accordion-flush-body-${index}`}
@@ -139,7 +139,7 @@ function PracticeLists() {
         </div>
 
         <div>
-          <h2 className="border-b-2 border-custom-red pb-4 text-3xl">
+          <h2 className="border-b-2 border-custom-red pb-4 text-3xl font-semibold text-custom-blue">
             Internships
           </h2>
           <p className="pt-8">
@@ -148,19 +148,29 @@ function PracticeLists() {
             individuals who are motivated, eager to learn, and share the same
             values as the firm. We pride ourselves in the diversity of interns
             and the opportunities we’ve offered to students from all over the
-            country. The internship period is 4-8 weeks. Interns have the
-            opportunity to work with our disputes, insolvency law as well as our
-            corporate advisory teams. During the internship period, the intern
-            has a unique opportunity to get a practical insight into various
-            aspects of our practice areas. Each intern is assigned a supervisor;
+            country.
+          </p>{" "}
+          <p className="pt-4">
+            The internship period is 4-8 weeks. Interns have the opportunity to
+            work with our disputes, insolvency law as well as our corporate
+            advisory teams. During the internship period, the intern has a
+            unique opportunity to get a practical insight into various aspects
+            of our practice areas. Each intern is assigned a supervisor;
             however, they are expected to work with all teams in order to get a
-            holistic experience. Our interns are expected to be aware of recent
-            developments in the law in our practice areas. Each intern is
-            assigned a topic to research on and at the end of the term, the
-            intern is expected to make a presentation before the partners and
-            all associates. We do not accept internship applications from
-            students who are in the first and second year of the BA LLB (Hons.)
-            programme and the 3 year LLB programme.
+            holistic experience.
+          </p>
+          <p className="pt-4">
+            {" "}
+            Our interns are expected to be aware of recent developments in the
+            law in our practice areas. Each intern is assigned a topic to
+            research on and at the end of the term, the intern is expected to
+            make a presentation before the partners and all associates.
+          </p>
+          <p className="pt-4">
+            {" "}
+            We do not accept internship applications from students who are in
+            the first and second year of the BA LLB (Hons.) programme and the 3
+            year LLB programme.
           </p>
         </div>
         <div className="flex w-full justify-start">

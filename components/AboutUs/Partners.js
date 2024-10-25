@@ -1,7 +1,6 @@
 // Import statements remain unchanged
 "use client";
 import React, { useRef, useState, useEffect } from "react";
-import { partnersMembers } from "@/utils/data";
 import Credentials from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Link from "next/link";
@@ -19,21 +18,8 @@ export default function Partners() {
           `https://docs.aarnalaw.com/wp-json/wp/v2/team?_embed&per_page=100`,
         );
         const result = await response.json();
-
+        setData(result);
         console.log("Practice area data", result);
-
-        // Ensure the response is an array before setting the data
-        if (Array.isArray(result)) {
-          // Sort the data alphabetically by title
-          const sortedData = result.sort((a, b) => {
-            const titleA = a.title.rendered.toLowerCase(); // Convert to lowercase for case-insensitive comparison
-            const titleB = b.title.rendered.toLowerCase();
-            return titleA.localeCompare(titleB); // Compare titles
-          });
-          setData(sortedData);
-        } else {
-          console.error("Expected an array but got:", result);
-        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -48,10 +34,12 @@ export default function Partners() {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
       items: 4,
+      slidesToSlide: 4,
     },
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 4,
+      slidesToSlide: 4,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -61,6 +49,15 @@ export default function Partners() {
       breakpoint: { max: 464, min: 0 },
       items: 1,
     },
+  };
+
+  const CustomRightArrow = ({ onClick, ...rest }) => {
+    const {
+      onMove,
+      carouselState: { currentSlide, deviceType },
+    } = rest;
+    // onMove means if dragging or swiping in progress.
+    return <button onClick={() => onClick()} />;
   };
 
   return (
@@ -83,7 +80,9 @@ export default function Partners() {
             autoPlay={true} // Control autoplay with state
             itemClass="p-1"
             keyBoardControl={true}
-            removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
+            removeArrowOnDeviceType={["tablet", "mobile"]}
+            arrows={false}
+            customRightArrow={<CustomRightArrow />}
           >
             {data.map((item, index) => {
               // Get the featured media URL from the embedded media if available

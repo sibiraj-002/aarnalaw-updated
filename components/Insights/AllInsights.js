@@ -184,7 +184,7 @@ function AllInsights({ searchTerm }) {
                     {formatDateString(items.date)}
                   </p>
                   <Link
-                    href={`/insight/${items.slug}`}
+                    href={`/insights/${items.slug}`}
                     className="font-semibold text-custom-red"
                   >
                     Read more

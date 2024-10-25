@@ -71,7 +71,7 @@ const WhatWeDo = () => {
         </div>
         <div className="order-1">
           <Image
-            src="/whatWeDo/What_we_do.jpg"
+            src="/whatWeDo/Our_legacy.jpg"
             width={500}
             height={500}
             className="w-full"

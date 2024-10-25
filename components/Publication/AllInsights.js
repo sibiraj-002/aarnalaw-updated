@@ -108,7 +108,7 @@ function AllInsights({ searchTerm }) {
                 />
               </div>
               <div className="p-5">
-                <Link href={`/publication/${items.slug}`}>
+                <Link href={`/publications/${items.slug}`}>
                   <h5
                     className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
                     dangerouslySetInnerHTML={{ __html: items.title.rendered }}

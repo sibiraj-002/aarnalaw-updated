@@ -8,16 +8,16 @@ export default function Banner({ title }) {
       case "aarna-news":
         return "Aarna News";
       case "publication":
-        return "Publication";
+        return "Publications";
       case "podcast":
-        return "Podcast";
+        return "Podcasts";
       default:
         return "Aarna Law"; // Fallback title if input is not recognized
     }
   };
 
   return (
-    <div className="relative h-[50vh] bg-[url('/PracticeArea/PracticeAreas.png')] bg-cover bg-center">
+    <div className="relative h-[60vh] bg-[url('/PracticeArea/PracticeAreas.png')] bg-cover bg-center">
       <div className="absolute bottom-0 flex h-[50vh] w-full items-center justify-center bg-black/50">
         <h1 className="text-5xl font-bold tracking-wide text-white">
           {getTitle()}

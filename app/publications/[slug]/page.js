@@ -97,7 +97,7 @@ export default function Page({ params }) {
       <div className="mx-auto w-11/12">
         <Link
           className="mt-6  bg-custom-red px-4 py-2 text-white"
-          href="/publication/"
+          href="/publications/"
         >
           Back to Publications
         </Link>

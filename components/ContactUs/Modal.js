@@ -15,7 +15,11 @@ function ModalTestimonial({ btnName, textColor, data, onClose }) {
       </button>
 
       <Modal show={openModal} onClose={onClose}>
-        <Modal.Header>{data.name}</Modal.Header>{" "}
+        <Modal.Header>
+          {data.name}
+          <p className="text-lg text-gray-400">{data.post}</p>
+          <p className="text-lg text-gray-400">{data.desingnation}</p>
+        </Modal.Header>{" "}
         {/* Displaying the testimonial name */}
         <Modal.Body>
           <div className="space-y-6">

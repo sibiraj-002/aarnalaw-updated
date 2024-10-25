@@ -263,23 +263,24 @@ export const partnersMembers = [
 export const contactAddress = [
   {
     location: "BENGALURU",
-    address: "No. 5, 2nd Main Road,, Vyalikaval, Bengaluru 560003",
+    address: "No. 5, 2nd Main Road, Vyalikaval, Bengaluru 560003",
     phone: "+91 80 2356 6792",
     direction:
       "https://www.google.com/maps?q=No.%205%2C%202nd%20Main%20Road%2C%2C%20Vyalikaval%2C%20Bengaluru%20560003",
   },
   {
     location: "NEW DELHI",
-    address: "No. 53,2nd Floor,, Sundernagar,, New Delhi – 110003,",
+    address: "Ground Floor Taj Ambassador, Sujan Singh Marg New Delhi 110003",
     phone: "+91 11 4350 5878",
     direction:
-      "https://www.google.com/maps?q=No.%2053%2C2nd%20Floor%2C%2C%20Sundernagar%2C%2C%20New%20Delhi%20%E2%80%93%20110003%2C",
+      "https://www.google.com/maps/place/Ambassador,+New+Delhi+-+IHCL+SeleQtions/@28.6015375,77.2288562,15.05z/data=!4m9!3m8!1s0x390ce2c2a963c603:0x6401b43d4b6cb40!5m2!4m1!1i2!8m2!3d28.6015414!4d77.228979!16s%2Fg%2F1tgxgfw7?entry=ttu&g_ep=EgoyMDI0MTAxNi4wIKXMDSoASAFQAw%3D%3D",
   },
   {
     location: "MUMBAI",
-    address: "No. 109, DBS Heritage,, Prescott Road, Fort, Mumbai- 400001",
+    address:
+      "Unit 304, Awfis Space Solutions Limited, Adani Inspire, Bandra Kurla Complex Rd,G Block, BKC, Bharat Nagar, Bandra East,Mumbai, Maharashtra 400051",
     phone: "+022 4077 9109",
     direction:
-      "https://www.google.com/maps?q=No.%20109%2C%20DBS%20Heritage%2C%2C%20Prescott%20Road%2C%20Fort%2C%2C%20Mumbai-%20400001",
+      "https://www.google.com/maps/place/18%C2%B056'09.2%22N+72%C2%B049'54.3%22E/@18.9358889,72.83175,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x650123a4e0b7f8c1!8m2!3d18.9358771!4d72.8317381?hl=en",
   },
 ];

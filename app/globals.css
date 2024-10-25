@@ -11,6 +11,7 @@ body {
 .inner-content h2 {
   font-size: 25px;
   font-weight: 500;
+  padding-bottom: 12px;
 }
 .inner-content h5 {
   font-size: 18px;
@@ -21,7 +22,9 @@ body {
 .inner-content p {
   margin-bottom: 20px;
 }
-
+.inner-content ol {
+  list-style: revert-layer;
+}
 .inner-content ul li {
   margin-bottom: 20px;
   list-style: disc;
@@ -44,4 +47,25 @@ body {
 }
 .team-content p {
   padding-bottom: 12px;
+}
+.team-content ol {
+  list-style: revert-layer;
+  padding-top: 12px;
+}
+.team-content ul {
+  list-style: revert-layer;
+  padding-top: 12px;
+}
+.team-content p strong {
+  padding-top: 12px;
+}
+.careers p {
+  padding-top: 4px !important;
+}
+/* .careers strong {
+  padding-top: 12px !important;
+} */
+
+.careers ul {
+  list-style: revert-layer !important;
 }

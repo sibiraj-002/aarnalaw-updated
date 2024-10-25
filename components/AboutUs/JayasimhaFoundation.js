@@ -6,7 +6,7 @@ export default function JayasimhaFoundation() {
     <div className="bg-[#151c4a]">
       <div className="mx-auto  grid w-11/12 py-12 lg:grid-cols-2">
         <div className="order-2 flex flex-col items-start justify-center lg:order-1 lg:p-12">
-          <h1 className="hidden text-2xl font-bold text-gray-200 md:block">
+          <h1 className="hidden pb-2 text-2xl font-bold text-gray-300 md:block">
             JAYASIMHA FOUNDATION
           </h1>
 

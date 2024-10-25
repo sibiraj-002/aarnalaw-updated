@@ -14,7 +14,16 @@ function FounderMessage() {
         />
       </div>
       <div className="flex flex-col items-start justify-center p-2 lg:pl-12">
-        <h1 className="hidden pb-4 text-2xl font-bold text-custom-red md:block">
+        <div>
+          <Image
+            src="/images/quote-png.png"
+            width={100}
+            height={100}
+            className="-mt-10 h-[30px] w-full"
+            alt="MESSAGE FROM OUR FOUNDERS"
+          />
+        </div>
+        <h1 className="hidden pb-4 text-2xl font-bold text-custom-blue md:block">
           MESSAGE FROM OUR FOUNDERS
         </h1>
 
@@ -29,10 +38,11 @@ function FounderMessage() {
         </p>
         <div className="flex w-full justify-between py-8">
           <div>
-            <p className="font-bold">Kamala Naganand</p> <p>MANAGING PARTNER</p>
+            <p className="font-bold text-custom-blue">Kamala Naganand</p>{" "}
+            <p>MANAGING PARTNER</p>
           </div>
           <div>
-            <p className="font-bold">Shreyas Jayasimha</p>{" "}
+            <p className="font-bold text-custom-blue">Shreyas Jayasimha</p>{" "}
             <p>FOUNDING PARTNER</p>
           </div>
         </div>

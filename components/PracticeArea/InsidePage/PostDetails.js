@@ -43,7 +43,7 @@ function PostDetails({ details, partnersData, slug, titleText }) {
   return (
     <div className="flex w-full">
       <div className="inner-content w-9/12 p-14">
-        <p dangerouslySetInnerHTML={{ __html: details }} />
+        <p dangerouslySetInnerHTML={{ __html: details }} className="px-20" />
       </div>
       <div className="w-3/12 bg-gray-50">
         {partnersData?.partnerNames?.map((name, index) => (
@@ -84,7 +84,7 @@ function PostDetails({ details, partnersData, slug, titleText }) {
         <div className="w-full p-2 pt-10">
           <h2 className="font-bold">Quick Links</h2>
           <hr className="my-4 border-t-2 border-red-500" />
-          <ul className="space-y-4 text-left text-gray-500 dark:text-gray-400">
+          <ul className="space-y-4 pr-10 text-left text-gray-500 dark:text-gray-400">
             {data.map((items, index) => (
               <Link
                 href={`/practice-area/${items.slug}`}

@@ -49,13 +49,13 @@ function PostDetails({ details, partnersData, slug, title }) {
   return (
     <div className="flex w-full">
       <div className="inner-content w-9/12 p-14">
-        <h1
+        {/* <h1
           dangerouslySetInnerHTML={{ __html: title }}
-          className="pb-12 text-3xl font-semibold"
-        />
-        <p dangerouslySetInnerHTML={{ __html: details }} />
+          className="px-20 pb-12 text-3xl font-semibold"
+        /> */}
+        <p dangerouslySetInnerHTML={{ __html: details }} className="px-20" />
 
-        <div className="flex w-full justify-start">
+        <div className="flex w-full justify-start px-20">
           <ContactModal
             btnName="CONTACT OUR EXPERTS"
             textColor="text-black"
@@ -107,7 +107,7 @@ function PostDetails({ details, partnersData, slug, title }) {
         <div className="w-full p-2 pt-10">
           <h2 className="font-bold">Quick Links</h2>
           <hr className="my-4 border-t-2 border-red-500" />
-          <ul className="space-y-4 text-left text-gray-500 dark:text-gray-400">
+          <ul className="space-y-4 pr-10 text-left text-gray-500 dark:text-gray-400">
             {data.map((items, index) => (
               <Link
                 href={`/industries/${items.slug}`}
