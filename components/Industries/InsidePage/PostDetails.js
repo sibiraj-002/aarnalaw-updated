@@ -47,15 +47,15 @@ function PostDetails({ details, partnersData, slug, title }) {
     partnersData?.partnerDesignations?.some((designation) => designation);
 
   return (
-    <div className="flex w-full">
-      <div className="inner-content w-9/12 p-14">
+    <div className="flex w-full flex-col lg:flex-row">
+      <div className="inner-content lg:w-9/12 lg:p-14 ">
         {/* <h1
           dangerouslySetInnerHTML={{ __html: title }}
           className="px-20 pb-12 text-3xl font-semibold"
         /> */}
-        <p dangerouslySetInnerHTML={{ __html: details }} className="px-20" />
+        <p dangerouslySetInnerHTML={{ __html: details }} className="lg:px-20 px-6 pt-8 lg:pt-0" />
 
-        <div className="flex w-full justify-start px-20">
+        <div className="flex w-full lg:justify-start lg:px-20 justify-center">
           <ContactModal
             btnName="CONTACT OUR EXPERTS"
             textColor="text-black"
@@ -64,7 +64,7 @@ function PostDetails({ details, partnersData, slug, title }) {
           />
         </div>
       </div>
-      <div className="w-3/12 bg-gray-50">
+      <div className="lg:w-3/12 bg-gray-50">
         {partnersData?.partnerNames?.map((name, index) => (
           <div
             key={index}

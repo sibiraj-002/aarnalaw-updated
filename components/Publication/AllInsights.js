@@ -67,7 +67,7 @@ function AllInsights({ searchTerm }) {
 
   const stripHTMLAndLimit = (htmlContent) => {
     const text = htmlContent.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
-    return text.length > 255 ? text.substring(0, 255) + "..." : text; // Limit to 255 characters
+    return text.length > 180 ? text.substring(0, 180) + "..." : text; // Limit to 255 characters
   };
 
   // Skeleton loader component
@@ -89,7 +89,7 @@ function AllInsights({ searchTerm }) {
   );
 
   return (
-    <div className="mx-auto grid w-11/12 grid-cols-2 gap-4 py-12">
+    <div className="mx-auto grid w-11/12 gap-4 py-12 lg:grid-cols-2">
       {loading
         ? // Display skeleton loaders while loading
           Array.from({ length: 8 }).map((_, index) => (
@@ -97,11 +97,12 @@ function AllInsights({ searchTerm }) {
           ))
         : filteredInsights.map((items, index) => (
             <div
-              className="flex border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
+              className="flex flex-col border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 sm:flex-row"
               key={index}
             >
               <div className="flex items-center justify-center bg-gray-300 p-5">
                 <div
+                  className="flex items-center gap-1 text-center sm:text-left lg:flex-col"
                   dangerouslySetInnerHTML={{
                     __html: formatDateString(items.date),
                   }}
@@ -110,7 +111,7 @@ function AllInsights({ searchTerm }) {
               <div className="p-5">
                 <Link href={`/publications/${items.slug}`}>
                   <h5
-                    className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                    className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-2xl"
                     dangerouslySetInnerHTML={{ __html: items.title.rendered }}
                   />
                 </Link>

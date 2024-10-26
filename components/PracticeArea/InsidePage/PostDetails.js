@@ -41,15 +41,15 @@ function PostDetails({ details, partnersData, slug, titleText }) {
   }, []);
 
   return (
-    <div className="flex w-full">
-      <div className="inner-content w-9/12 p-14">
-        <p dangerouslySetInnerHTML={{ __html: details }} className="px-20" />
+    <div className="flex flex-col w-full py-5 lg:flex-row">
+      <div className="inner-content md:w-9/12 w-full px-6 md:p-14 ">
+        <p dangerouslySetInnerHTML={{ __html: details }} className="md:px-20" />
       </div>
-      <div className="w-3/12 bg-gray-50">
+      <div className="md:w-3/12 w-full bg-gray-50">
         {partnersData?.partnerNames?.map((name, index) => (
           <div
             key={index}
-            className="flex flex-col items-center justify-start px-14 pt-14 text-center"
+            className="flex flex-col items-center justify-start md:px-14 md:pt-14 pt-10 text-center"
           >
             {partnersData.partnerImages?.[index] && (
               <Image
@@ -84,7 +84,7 @@ function PostDetails({ details, partnersData, slug, titleText }) {
         <div className="w-full p-2 pt-10">
           <h2 className="font-bold">Quick Links</h2>
           <hr className="my-4 border-t-2 border-red-500" />
-          <ul className="space-y-4 pr-10 text-left text-gray-500 dark:text-gray-400">
+          <ul className="space-y-4 md:pr-10 text-left text-gray-500 dark:text-gray-400">
             {data.map((items, index) => (
               <Link
                 href={`/practice-area/${items.slug}`}

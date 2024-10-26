@@ -95,7 +95,7 @@ const Podcasts = () => {
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
-      items: 2,
+      items: 1,
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
@@ -123,10 +123,10 @@ const Podcasts = () => {
         >
           {podcasts.slice(0, 4).map((item) => (
             <div
-              className={`${currentPlayingId === item.id ? "border-custom-red" : "border-gray-200"}  flex h-[236px] gap-4 border  bg-white`}
+              className={`${currentPlayingId === item.id ? "border-custom-red" : "border-gray-200"}  lg:flex lg:h-[236px] gap-4 border  bg-white`}
               key={item.id}
             >
-              <div className="flex gap-4">
+              <div className="flex gap-4 md:w-full">
                 <Image
                   src={item.imageUrl}
                   width={201}
@@ -134,9 +134,9 @@ const Podcasts = () => {
                   alt="Podcast Thumbnail"
                   className="h-[236px] w-[400px]"
                 />
-                <div className="w-full p-10">
+                <div className="w-full flex-col md:p-10">
                   <h1
-                    className="mb-4 line-clamp-3 h-[100px] text-start text-lg font-semibold text-custom-blue transition-colors duration-300 md:text-2xl md:group-hover:text-white"
+                    className="mb-4 mt-4 md:line-clamp-3 w-full md:h-[100px] md:text-start text-lg font-semibold text-custom-blue transition-colors duration-300 md:text-2xl md:group-hover:text-white"
                     dangerouslySetInnerHTML={{ __html: item.title.rendered }}
                   />
                   <div className="flex flex-row items-center justify-between">

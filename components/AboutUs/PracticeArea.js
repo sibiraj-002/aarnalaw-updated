@@ -49,11 +49,11 @@ export default function PracticeArea() {
           {data.map((item, index) => (
             <div
               key={index}
-              className=" bg-white p-1 text-black hover:text-custom-red"
+              className=" bg-white lg:p-1 p-4 text-black hover:text-custom-red"
             >
               <Link href={`/practice-area/${item.slug}`}>
                 <p
-                  dangerouslySetInnerHTML={{ __html: item.title.rendered }}
+                  dangerouslySetInnerHTML={{ __html: item.title.rendered }} className="font-semibold lg:font-normal"
                 ></p>
               </Link>
             </div>

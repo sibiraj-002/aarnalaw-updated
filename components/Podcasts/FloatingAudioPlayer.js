@@ -27,10 +27,10 @@ const FloatingAudioPlayer = ({
           style={{ width: `${progress[currentPodcastIndex] || 0}%` }}
         />
       </div>
-      <div className="mx-auto w-11/12 p-4">
+      <div className="mx-auto lg:w-11/12 p-4">
         <div className="flex items-center justify-between">
-          <div className="flex w-full justify-between ">
-            <div className="w-1/2">
+          <div className="flex flex-col lg:flex-row w-full justify-between ">
+            <div className="lg:w-1/2 w-full">
               <h5
                 className="text-sm font-bold text-white"
                 dangerouslySetInnerHTML={{

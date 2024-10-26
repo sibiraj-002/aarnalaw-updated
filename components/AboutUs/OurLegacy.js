@@ -6,7 +6,7 @@ export default function OurLegacy() {
     <>
       <div className="mx-auto  grid w-11/12 py-12 lg:grid-cols-2">
         <div className="order-2 flex flex-col items-start justify-center lg:order-1 lg:p-12">
-          <h1 className="hidden text-2xl font-bold uppercase text-custom-blue md:block">
+          <h1 className="text-2xl font-bold uppercase text-custom-blue mt-4 lg:mt-0">
             Our Legacy
           </h1>
           <h2 className="mt-4 py-4 text-2xl font-semibold text-custom-red md:mt-0 lg:text-4xl">
@@ -43,7 +43,7 @@ export default function OurLegacy() {
           />
         </div>
         <div className="flex flex-col items-start justify-center p-2 lg:pl-12">
-          <h1 className="hidden pb-4 text-2xl font-bold uppercase text-custom-red md:block">
+          <h1 className="pb-4 text-2xl font-bold uppercase text-custom-red mt-4 lg:mt-0">
             What We Do
           </h1>
 

@@ -6,6 +6,7 @@ import PostDetails from "@/components/Industries/InsidePage/PostDetails";
 const LandingPage = ({ slug }) => {
   const [data, setData] = useState(null);
   const [featureImage, setFeatureImage] = useState();
+  const [mobileBanner, setmobileBanner] = useState();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [partnersData, setPartnersData] = useState({});
@@ -20,6 +21,7 @@ const LandingPage = ({ slug }) => {
         const practiceArea = data[0];
 
         setFeatureImage(practiceArea.acf.banner_image.url);
+        setmobileBanner(practiceArea.acf.mobile_banner.url);
         setTitle(practiceArea.title.rendered);
         setDescription(practiceArea.acf.description);
 
@@ -64,7 +66,7 @@ const LandingPage = ({ slug }) => {
 
   return (
     <div>
-      <Banner backgroundImage={featureImage} titleText={title} />
+      <Banner backgroundImage={featureImage} titleText={title} mobileBackgroundImage={mobileBanner}/>
       <PostDetails
         details={description}
         partnersData={partnersData}

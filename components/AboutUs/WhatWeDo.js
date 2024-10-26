@@ -15,7 +15,7 @@ const WhatWeDo = () => {
           />
         </div>
         <div className="flex flex-col items-start justify-center p-2 lg:pl-12">
-          <h1 className="hidden pb-4 text-2xl font-bold uppercase text-custom-red md:block">
+          <h1 className="pb-4 text-2xl font-bold uppercase text-custom-red mt-4 lg:mt-0">
             What We Do
           </h1>
           <h2 className="mt-4 py-4 text-4xl font-semibold text-custom-blue md:mt-0">

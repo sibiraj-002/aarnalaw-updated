@@ -110,22 +110,23 @@ export default function HomeInsights() {
   };
 
   return (
-    <div className="h-[80vh]">
-      <div className="absolute right-0 z-40 flex h-[650px] w-11/12 flex-col bg-white lg:-mt-20 lg:flex-row ">
+    <div className="lg:h-[80vh]">
+      <div className="lg:absolute lg:right-0 z-40 flex h-[650px] lg:w-11/12 flex-col bg-white lg:-mt-20 lg:flex-row ">
         <div className="flex justify-between lg:w-2/12">
-          <div className="flex w-full items-center justify-evenly gap-7  lg:flex-col">
+          <div className="flex w-full items-center justify-evenly gap-7 lg:flex-col">
             <h2 className="m-0 py-5 text-2xl font-bold text-custom-red md:p-0 md:text-[80px] lg:-rotate-90">
               Insights
             </h2>
-            <div className="flex gap-4">
+            {/* Visible only on desktop */}
+            <div className="hidden gap-4 md:flex">
               <PrevArrow />
               <NextArrow />
             </div>
           </div>
         </div>
-        <div className="w-10/12 ">
+        <div className="w-10/12 mx-auto">
           {loading ? (
-            <div className="grid grid-cols-2 justify-between">
+            <div className="grid lg:grid-cols-2 justify-between">
               {[...Array(2)].map((_, index) => (
                 <div key={index} className="w-full p-2">
                   <div className="mb-4 h-[300px] animate-pulse bg-gray-200"></div>
@@ -138,9 +139,9 @@ export default function HomeInsights() {
           ) : (
             <InsightSlider ref={sliderRef} {...settings}>
               {insightsData.map((item, index) => (
-                <div key={index}>
-                  <div className="lg:p-4">
-                    <div className="group relative my-auto h-[450px] w-full flex-col border border-gray-200 bg-white shadow transition-colors duration-300 dark:border-gray-700 dark:bg-gray-800 md:hover:bg-custom-red md:hover:text-white lg:flex lg:h-[620px]">
+                <div key={index} className="w-full ">
+                  <div className="ms-5 lg:p-4">
+                    <div className="group relative my-auto h-[450px] w-full flex-col border border-gray-200 shadow transition-colors duration-300 dark:border-gray-700 dark:bg-gray-800 md:hover:bg-custom-red md:hover:text-white lg:flex lg:h-[620px] bg-white">
                       <Image
                         src={item.imageUrl}
                         className="h-[200px] w-full object-cover md:h-[280px]"
@@ -161,7 +162,7 @@ export default function HomeInsights() {
                         )}
                         <Link
                           href={`/insights/${item.slug}`}
-                          className="absolute bottom-0 left-32 m-5 mx-auto block border border-custom-red p-2 text-custom-red transition-colors duration-300 hover:bg-white hover:text-black md:left-5 md:mx-0 md:px-6 md:group-hover:bg-white md:group-hover:text-black"
+                          className="absolute bottom-0 left-[35%] m-5 mx-auto block border border-custom-red p-2 text-custom-red transition-colors duration-300 hover:bg-white hover:text-black md:left-5 md:mx-0 md:px-6 md:group-hover:bg-white md:group-hover:text-black"
                         >
                           View Article
                         </Link>
@@ -173,11 +174,17 @@ export default function HomeInsights() {
             </InsightSlider>
           )}
         </div>
+        {/* Mobile view navigation arrows and View All button */}
+        <div className="lg:hidden gap-4 flex justify-center items-center pt-8">
+              <PrevArrow />
+              <NextArrow />
+            </div>
       </div>
-      <div className="bottom-0 flex  h-[80vh] items-end justify-center">
+      {/* Desktop */}
+      <div className="bottom-0 lg:h-[80vh] items-end justify-center flex">
         <Link
           href="/insights"
-          className=" border border-custom-blue px-6 py-2 text-custom-blue md:hover:bg-custom-blue md:hover:text-white"
+          className="border border-custom-blue px-6 py-2 text-custom-blue md:hover:bg-custom-blue md:hover:text-white"
         >
           View all
         </Link>

@@ -16,10 +16,10 @@ const WhatWeDo = () => {
           />
         </div>
         <div className="flex flex-col items-start justify-center lg:px-8">
-          <h1 className="hidden pb-1 text-2xl font-bold text-custom-red md:block">
+          <h1 className="pb-1 text-2xl font-bold text-custom-red mt-4 lg:mt-0">
             What We Do
           </h1>
-          <h2 className="mt-4 py-8 text-2xl font-semibold text-custom-blue md:mt-0 lg:text-4xl">
+          <h2 className="lg:mt-4 py-8 text-2xl font-semibold text-custom-blue md:mt-0 lg:text-4xl">
             We are an award-winning advisory with an international perspective.
           </h2>
           <p className="mt-4 text-custom-gray md:mt-0 ">
@@ -44,10 +44,10 @@ const WhatWeDo = () => {
 
       <div className="mx-auto  grid w-11/12 lg:grid-cols-2">
         <div className="order-2 flex flex-col items-start justify-center lg:order-1 lg:p-12">
-          <h1 className="hidden text-2xl font-bold text-custom-blue md:block">
+          <h1 className="text-2xl font-bold text-custom-blue mt-4 lg:mt-0">
             Our Legacy
           </h1>
-          <h2 className="mt-4 py-12 text-2xl font-semibold text-custom-blue md:mt-0 lg:text-4xl">
+          <h2 className="lg:mt-4 py-12 text-2xl font-semibold text-custom-blue md:mt-0 lg:text-4xl">
             Founded on over nine decades of commitment and service
           </h2>
           <p className="mt-4 text-custom-gray md:mt-0 ">

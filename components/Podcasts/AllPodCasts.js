@@ -192,7 +192,7 @@ function AllPodCasts({ searchTerm }) {
 
   return (
     <div className="flex flex-col">
-      <div className="mx-auto grid w-full grid-cols-2 gap-4 p-12">
+      <div className="mx-auto grid w-full md:grid-cols-2 gap-4 md:p-12 p-4">
         {loading && filteredInsights.length === 0
           ? Array.from({ length: 4 }).map((_, index) => (
               <SkeletonLoader key={index} />
@@ -211,7 +211,7 @@ function AllPodCasts({ searchTerm }) {
                     <Image
                       src={item.featured_image_url}
                       alt={item.title?.rendered || "Podcast Image"}
-                      className="h-[300px] w-full rounded-t-lg"
+                      className="lg:h-[300px] w-full rounded-t-lg"
                       width={500}
                       height={500}
                     />
@@ -248,7 +248,7 @@ function AllPodCasts({ searchTerm }) {
                       className="rounded-full bg-custom-blue p-2 text-xl text-white hover:bg-custom-red"
                       onClick={() => handleVolumeToggle(index)}
                     >
-                      {mutedStatus[index] ? sound : mute}
+                      {mutedStatus[index] ? mute : sound}
                     </button>
                   </div>
                 )}

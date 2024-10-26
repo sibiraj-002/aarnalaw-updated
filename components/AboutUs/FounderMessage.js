@@ -19,11 +19,11 @@ function FounderMessage() {
             src="/images/quote-png.png"
             width={100}
             height={100}
-            className="-mt-10 h-[30px] w-full"
+            className="lg:-mt-10 h-[30px] w-full"
             alt="MESSAGE FROM OUR FOUNDERS"
           />
         </div>
-        <h1 className="hidden pb-4 text-2xl font-bold text-custom-blue md:block">
+        <h1 className="pb-4 lg:text-2xl font-bold text-custom-blue text-xl">
           MESSAGE FROM OUR FOUNDERS
         </h1>
 

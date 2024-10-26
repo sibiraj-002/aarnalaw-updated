@@ -4,21 +4,19 @@ import Link from "next/link";
 import Image from "next/image";
 
 function AllInsights({ searchTerm }) {
-  const [data, setData] = useState([]); // Initialize data state with an empty array
-  const [loading, setLoading] = useState(true); // Initialize loading state
-  const [page, setPage] = useState(1); // Initialize page state
-  const [hasMore, setHasMore] = useState(true); // Track if there are more posts to load
-  const [archives, setArchives] = useState([]); // Initialize archives state
-  const [selectedArchive, setSelectedArchive] = useState(null); // Track the selected archive
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [archives, setArchives] = useState([]);
+  const [selectedArchive, setSelectedArchive] = useState(null);
 
-  // Fetch posts based on the selected archive
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Start loading
+      setLoading(true);
       try {
         let url = `https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${page}&categories=13`;
 
-        // If an archive is selected, include it in the request
         if (selectedArchive) {
           url += `&archives=${selectedArchive.id}`;
         }
@@ -27,12 +25,10 @@ function AllInsights({ searchTerm }) {
         const result = await response.json();
 
         if (Array.isArray(result)) {
-          // Check if there are more posts to load
           if (result.length < 6) {
-            setHasMore(false); // No more posts to load
+            setHasMore(false);
           }
 
-          // Fetch the featured media (image URL) for each post
           const dataWithImages = await Promise.all(
             result.map(async (item) => {
               if (item.featured_media) {
@@ -56,7 +52,6 @@ function AllInsights({ searchTerm }) {
             }),
           );
 
-          // Append the new data to the existing data without duplicates
           setData((prevData) => {
             const newData = dataWithImages.filter(
               (newPost) =>
@@ -72,14 +67,13 @@ function AllInsights({ searchTerm }) {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [page, selectedArchive]);
 
-  // Fetch archives/categories
   useEffect(() => {
     const fetchArchives = async () => {
       try {
@@ -120,11 +114,10 @@ function AllInsights({ searchTerm }) {
   };
 
   const stripHTMLAndLimit = (htmlContent) => {
-    const text = htmlContent.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
+    const text = htmlContent.replace(/<\/?[^>]+(>|$)/g, "");
     return text.length > 255 ? text.substring(0, 255) + "..." : text;
   };
 
-  // Skeleton loader component
   const SkeletonLoader = () => (
     <div className="flex animate-pulse border border-gray-200 bg-white p-5 shadow dark:border-gray-700 dark:bg-gray-800">
       <div className="flex h-40 w-full items-center justify-center bg-gray-300"></div>
@@ -135,7 +128,6 @@ function AllInsights({ searchTerm }) {
     </div>
   );
 
-  // Handle loading more posts
   const loadMorePosts = () => {
     setPage((prevPage) => prevPage + 1);
   };
@@ -145,11 +137,10 @@ function AllInsights({ searchTerm }) {
   );
 
   return (
-    <div className="flex ">
-      <div className="mx-auto grid w-9/12 grid-cols-2 gap-4 p-12">
+    <div className="flex flex-col md:flex-row">
+      <div className="mx-auto grid w-full grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:w-9/12 lg:p-12">
         {loading && filteredInsights.length === 0
-          ? // Display skeleton loaders while loading
-            Array.from({ length: 4 }).map((_, index) => (
+          ? Array.from({ length: 4 }).map((_, index) => (
               <SkeletonLoader key={index} />
             ))
           : filteredInsights.map((items, index) => (
@@ -162,25 +153,24 @@ function AllInsights({ searchTerm }) {
                     <Image
                       src={items.featured_image_url}
                       alt={items.title.rendered}
-                      className="h-[300px] w-full rounded-t-lg"
+                      className="h-[200px] w-full rounded-t-lg object-cover md:h-[300px]"
                       width={500}
-                      height={500}
+                      height={300}
                     />
                   )}
                 </a>
                 <div className="p-5">
                   <h5
-                    className="mb-2 min-h-20 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+                    className="mb-2 min-h-20 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
                     dangerouslySetInnerHTML={{ __html: items.title.rendered }}
                   ></h5>
 
                   <p
-                    className="mb-3 h-40 font-normal text-gray-700 dark:text-gray-400"
-                    // dangerouslySetInnerHTML={{ __html: items.excerpt.rendered }}
+                    className="mb-3 h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40"
                   >
                     {stripHTMLAndLimit(items.excerpt.rendered)}
                   </p>
-                  <p className="pb-4 text-sm text-gray-500">
+                  <p className="pb-4 text-xs text-gray-500 md:text-sm">
                     {formatDateString(items.date)}
                   </p>
                   <Link
@@ -193,41 +183,38 @@ function AllInsights({ searchTerm }) {
               </div>
             ))}
 
-        {/* Load more button */}
         {!loading && hasMore && (
-          <div className="col-span-2 flex justify-center">
+          <div className="col-span-1 flex justify-center md:col-span-2">
             <button
               onClick={loadMorePosts}
-              className="mt-6  bg-custom-red px-4 py-2 text-white"
+              className="mt-6 bg-custom-red px-4 py-2 text-white"
             >
               Load More
             </button>
           </div>
         )}
 
-        {/* No more posts message */}
         {!hasMore && (
-          <div className="col-span-2 mt-4 text-center text-gray-500">
-            {/* No more posts to load. */}
+          <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
           </div>
         )}
       </div>
-      <div className="mt-12 w-3/12 bg-gray-50 p-4 pb-12">
+      <div className="mt-8 w-full bg-gray-50 p-4 pb-12 md:mt-0 md:w-3/12 md:p-4 lg:ml-8">
         <h2 className="font-bold">Archives</h2>
         <hr className="my-4 border-t-2 border-red-500" />
         <ul className="space-y-4 text-left text-gray-500 dark:text-gray-400">
           {archives.map((archive, index) => (
             <button
               onClick={() => {
-                setData([]); // Reset posts when archive is clicked
-                setSelectedArchive(archive); // Set the selected archive
-                setPage(1); // Reset the page to 1
+                setData([]);
+                setSelectedArchive(archive);
+                setPage(1);
               }}
               className={`flex w-full border-b border-custom-red p-1 ${
                 selectedArchive === archive
                   ? "font-bold text-custom-red"
                   : "hover:text-custom-red"
-              }`} // Apply custom class when selected
+              }`}
               key={index}
             >
               <p dangerouslySetInnerHTML={{ __html: archive.name }} />

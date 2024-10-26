@@ -12,9 +12,9 @@ export default function Navigation({ searchTerm, setSearchTerm }) {
   };
 
   return (
-    <div className="mx-auto mt-4 w-11/12 ">
-      <div className="flex">
-        <div className="flex w-9/12">
+    <div className="mx-auto mt-4 w-11/12 mb-4 lg:mb-0 overflow-hidden">
+      <div className="flex flex-col lg:flex-row">
+        <div className="flex lg:w-9/12 overflow-scroll  order-2 lg:order-1 ">
           {HeaderMenu.map((item, index) => (
             <React.Fragment key={index}>
               {item.subMenu
@@ -36,7 +36,7 @@ export default function Navigation({ searchTerm, setSearchTerm }) {
             </React.Fragment>
           ))}
         </div>
-        <div className="w-3/12">
+        <div className="lg:w-3/12 order-1 lg:order-2">
           <form className="mx-auto flex w-full  items-center">
             <label for="simple-search" className="sr-only">
               Search
