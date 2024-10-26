@@ -88,6 +88,9 @@ function AllInsights({ searchTerm }) {
     data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+
+
+  
   return (
     <div className="mx-auto grid w-11/12 gap-4 py-12 lg:grid-cols-2">
       {loading
