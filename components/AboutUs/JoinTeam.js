@@ -17,7 +17,7 @@ export default function JoinTeam() {
       <div className="md:mt-16 flex flex-col items-end justify-end pt-8 lg:w-3/12 lg:pt-0">
         <Link
           href="/careers"
-          className="md:ml-4 border-2 border-custom-red bg-white px-8 py-3 uppercase text-black transition-colors duration-300 hover:bg-custom-red hover:text-white md:ml-0"
+          className="border-2 border-custom-red bg-white px-8 py-3 uppercase text-black transition-colors duration-300 hover:bg-custom-red hover:text-white md:ml-0"
         >
           View Current Openings
         </Link>
