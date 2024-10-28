@@ -131,7 +131,7 @@ function AllInsights({ searchTerm }) {
                 ></h5>
 
                 <p
-                  className="mb-3 h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-20"
+                  className="mb-3 min-h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-20"
                   dangerouslySetInnerHTML={{
                     __html: stripHTMLAndLimit(items.excerpt.rendered),
                   }}

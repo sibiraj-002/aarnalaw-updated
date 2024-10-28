@@ -57,7 +57,7 @@ function AllInsights({ searchTerm }) {
     ];
 
     return (
-      <div className="text-center sm:text-left lg:flex-col">
+      <div className="flex flex-row items-center gap-2 lg:flex-col lg:gap-0">
         <p className="text-2xl font-bold text-custom-red">{date.getDate()}</p>
         <p className="font-bold">{monthAbbreviations[date.getMonth()]}</p>
         <p className="font-bold">{date.getFullYear()}</p>
@@ -110,9 +110,12 @@ function AllInsights({ searchTerm }) {
                   dangerouslySetInnerHTML={{ __html: item.title.rendered }}
                 />
               </Link>
-              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                {stripHTMLAndLimit(item.content.rendered)}
-              </p>
+              <p
+                className="mb-3 font-normal text-gray-700 dark:text-gray-400"
+                dangerouslySetInnerHTML={{
+                  __html: stripHTMLAndLimit(item.content.rendered),
+                }}
+              ></p>
             </div>
           </div>
         ))

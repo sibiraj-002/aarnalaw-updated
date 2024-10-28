@@ -160,7 +160,7 @@ function AllInsights({ searchTerm }) {
                   dangerouslySetInnerHTML={{ __html: items.title.rendered }}
                 ></h5>
 
-                <p className="mb-3 h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40">
+                <p className="mb-3 min-h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40">
                   {stripHTMLAndLimit(items.excerpt.rendered)}
                 </p>
                 <p className="pb-4 text-xs text-gray-500 md:text-sm">

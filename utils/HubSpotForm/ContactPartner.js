@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function HubSpotForm() {
+export default function HubSpotForm({ id }) {
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://js.hsforms.net/forms/v2.js";
@@ -11,11 +11,11 @@ export default function HubSpotForm() {
         window.hbspt.forms.create({
           portalId: "25868325",
           formId: "518865a6-2b7d-4689-8502-80081b2f1da7",
-          target: "#hubspotForm",
+          target: "#" + id,
         });
       }
     });
   }, []);
 
-  return <div id="hubspotForm"></div>;
+  return <div id={id}></div>;
 }
