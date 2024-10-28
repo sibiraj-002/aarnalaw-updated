@@ -258,7 +258,7 @@ function AllPodCasts({ searchTerm }) {
           </div>
         )}
       </div>
-      {hasMore && !loading && (
+      {!loading && hasMore && filteredInsights.length > 0 && (
         <div className="col-span-1 mt-6 flex justify-center md:col-span-2">
           <button
             onClick={loadMorePosts}

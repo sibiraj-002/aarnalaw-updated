@@ -205,23 +205,26 @@ function AllInsights({ searchTerm }) {
         <h2 className="font-bold">Archives</h2>
         <hr className="my-4 border-t-2 border-red-500" />
         <ul className="space-y-4 text-left text-gray-500 dark:text-gray-400">
-          {archives.map((archive) => (
-            <button
-              onClick={() => {
-                setData([]);
-                setSelectedArchive(archive);
-                setPage(1);
-              }}
-              className={`flex w-full border-b border-custom-red p-1 ${
-                selectedArchive === archive
-                  ? "font-bold text-custom-red"
-                  : "hover:text-custom-red"
-              }`}
-              key={archive.id}
-            >
-              <p dangerouslySetInnerHTML={{ __html: archive.name }} />
-            </button>
-          ))}
+          {archives
+            .slice()
+            .reverse()
+            .map((archive) => (
+              <button
+                onClick={() => {
+                  setData([]);
+                  setSelectedArchive(archive);
+                  setPage(1);
+                }}
+                className={`flex w-full border-b border-custom-red p-1 ${
+                  selectedArchive === archive
+                    ? "font-bold text-custom-red"
+                    : "hover:text-custom-red"
+                }`}
+                key={archive.id}
+              >
+                <p dangerouslySetInnerHTML={{ __html: archive.name }} />
+              </button>
+            ))}
         </ul>
       </div>
     </div>
