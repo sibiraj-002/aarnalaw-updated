@@ -1,15 +1,15 @@
 export const metadata = {
-  title: "PUBLICATIONS - Aarna law",
+  title: "Legal Publications and Research",
   description:
-    "News & Insights Resources INSIGHTS AARNA NEWS PUBLICATIONS PODCAST Insights",
+    "Access a comprehensive collection of legal publications and research papers authored by Aarna Law's experts. Stay up-to-date with cutting-edge legal scholarship.",
   metadataBase: new URL("https://www.aarnalaw.com"),
   alternates: {
     canonical: "/publications",
   },
   openGraph: {
-    title: "PUBLICATIONS - Aarna law",
+    title: "Legal Publications and Research",
     description:
-      "News & Insights Resources INSIGHTS AARNA NEWS PUBLICATIONS PODCAST Insights",
+      "Access a comprehensive collection of legal publications and research papers authored by Aarna Law's experts. Stay up-to-date with cutting-edge legal scholarship.",
     url: "/publications",
     images: "/aarna-law.png",
   },

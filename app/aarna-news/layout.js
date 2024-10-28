@@ -1,15 +1,15 @@
 export const metadata = {
-  title: "AARNA NEWS - Aarna law",
+  title: "News and Updates",
   description:
-    "News & Insights Resources INSIGHTS AARNA NEWS PUBLICATIONS PODCAST Insights",
+    "Keep up with the latest news and updates from Aarna Law. Discover firm announcements, key legal developments, and significant achievements in our practice.",
   metadataBase: new URL("https://www.aarnalaw.com"),
   alternates: {
     canonical: "/aarna-news",
   },
   openGraph: {
-    title: "AARNA NEWS - Aarna law",
+    title: "News and Updates",
     description:
-      "News & Insights Resources INSIGHTS AARNA NEWS PUBLICATIONS PODCAST Insights",
+      "Keep up with the latest news and updates from Aarna Law. Discover firm announcements, key legal developments, and significant achievements in our practice.",
     url: "/aarna-news",
     images: "/aarna-law.png",
   },

@@ -1,15 +1,15 @@
 export const metadata = {
-  title: "PODCASTS - Aarna law",
+  title: "Legal Conversations Podcast",
   description:
-    "News & Insights Resources INSIGHTS AARNA NEWS PUBLICATIONS PODCAST Insights",
+    "Tune into Aarna Law's podcast for insightful conversations with legal professionals. Explore in-depth discussions on current legal issues and emerging trends.",
   metadataBase: new URL("https://www.aarnalaw.com"),
   alternates: {
     canonical: "/podcasts",
   },
   openGraph: {
-    title: "PODCASTS - Aarna law",
+    title: "Legal Conversations Podcast",
     description:
-      "News & Insights Resources INSIGHTS AARNA NEWS PUBLICATIONS PODCAST Insights",
+      "Tune into Aarna Law's podcast for insightful conversations with legal professionals. Explore in-depth discussions on current legal issues and emerging trends.",
     url: "/podcasts",
     images: "/aarna-law.png",
   },
