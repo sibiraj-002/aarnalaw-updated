@@ -16,6 +16,7 @@ function AllPodCasts({ searchTerm }) {
   const [progress, setProgress] = useState({}); // Track progress for each podcast
   const [currentTime, setCurrentTime] = useState({}); // Track current time for each podcast
   const [duration, setDuration] = useState({}); // Track duration for each podcast
+  const [expandedExcerpt, setExpandedExcerpt] = useState({});
 
   const audioRefs = useRef({}); // Store audio instances for each podcast
 
@@ -190,9 +191,16 @@ function AllPodCasts({ searchTerm }) {
     data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+  const toggleExcerpt = (id) => {
+    setExpandedExcerpt((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   return (
     <div className="flex flex-col">
-      <div className="mx-auto grid w-full md:grid-cols-2 gap-4 md:p-12 p-4">
+      <div className="mx-auto grid w-full gap-4 p-4 md:grid-cols-2 md:p-12">
         {loading && filteredInsights.length === 0
           ? Array.from({ length: 4 }).map((_, index) => (
               <SkeletonLoader key={index} />
@@ -211,7 +219,7 @@ function AllPodCasts({ searchTerm }) {
                     <Image
                       src={item.featured_image_url}
                       alt={item.title?.rendered || "Podcast Image"}
-                      className="lg:h-[300px] w-full rounded-t-lg"
+                      className="w-full rounded-t-lg lg:h-[300px]"
                       width={500}
                       height={500}
                     />
@@ -222,6 +230,22 @@ function AllPodCasts({ searchTerm }) {
                     className="mb-2 min-h-10 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
                     dangerouslySetInnerHTML={{ __html: item.title?.rendered }}
                   ></h5>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {expandedExcerpt[item.id]
+                      ? item.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "")
+                      : item.excerpt.rendered
+                          .replace(/<\/?[^>]+(>|$)/g, "")
+                          .slice(0, 100)}
+                    {item.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "")
+                      .length > 100 && (
+                      <button
+                        onClick={() => toggleExcerpt(item.id)}
+                        className="ml-2 text-custom-red"
+                      >
+                        {expandedExcerpt[item.id] ? "Read Less" : "Read More"}
+                      </button>
+                    )}
+                  </p>
                 </div>
 
                 {item.player_link && (
@@ -232,7 +256,7 @@ function AllPodCasts({ searchTerm }) {
                     >
                       {currentPodcastIndex === index ? pause : play}
                     </button>
-                    <div className="mx-4 flex-1">
+                    <div className="mx-4 flex-1 rounded-lg border border-gray-200 p-2">
                       <span>
                         {formatTime(currentTime[index] || 0)} /{" "}
                         {formatTime(duration[index] || 0)}
@@ -264,7 +288,7 @@ function AllPodCasts({ searchTerm }) {
         <div className="flex justify-center pb-8">
           <button
             onClick={loadMorePosts}
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+            className="hover:border-1 border border-custom-red bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:border-custom-blue hover:bg-custom-blue hover:text-white"
           >
             Load More
           </button>

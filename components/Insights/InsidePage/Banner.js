@@ -18,6 +18,7 @@ export default function Banner({ title, backgroundImage }) {
         width={600}
         height={600}
         className="w-full"
+        alt={title}
       />
     </div>
   );

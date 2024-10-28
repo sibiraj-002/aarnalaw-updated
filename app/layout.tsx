@@ -6,8 +6,19 @@ import Footer from "../components/Footer/Footer";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "Legal Services - Aarna Law",
-  description: "Legal Services - Aarna Law",
+  title: "Expert Legal Representation | Aarna Law - Advocates & Consultants",
+  description:
+    "Discover award-winning legal services in Bangalore. Aarna Law offers full-service representation with expertise and dedication.",
+  alternates: {
+    canonical: "/about-us",
+  },
+  openGraph: {
+    title: "Expert Legal Representation | Aarna Law - Advocates & Consultants",
+    description:
+      "Discover award-winning legal services in Bangalore. Aarna Law offers full-service representation with expertise and dedication.",
+    url: "/about-us",
+    images: "/aarna-law.png",
+  },
 };
 
 export default function RootLayout({
@@ -18,8 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></Script>
-
+        <link rel="icon" href="/favicon.png" sizes="any" />
         <ThemeModeScript />
       </head>
 
@@ -28,6 +38,18 @@ export default function RootLayout({
         {children}
         <Footer />
       </body>
+      <Script src="/tracking.js" />
+      <Script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></Script>
+      <Script id="gtm-ns" strategy="afterInteractive">
+        {`
+          <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJW9WNHQ"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        `}
+      </Script>
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-YWL8EWE9MB"
+      ></Script>
     </html>
   );
 }

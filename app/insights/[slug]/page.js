@@ -18,9 +18,9 @@ export default function Page({ params }) {
         const response = await fetch(
           `https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&slug=${paramUrl}`,
         );
-        console.log("try started");
+        // console.log("try started");
         const data = await response.json();
-        console.log("insight post", data);
+        // console.log("Insight Post", data);
         if (data && data.length > 0) {
           const post = data[0];
 
@@ -47,7 +47,7 @@ export default function Page({ params }) {
           console.error("No post data found.");
           setError(true); // Set error state if no post found
         }
-        console.log("insights Page", data);
+        // console.log("insights Page", data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -105,7 +105,7 @@ export default function Page({ params }) {
       <div className="mx-auto w-11/12">
         <Link
           className="mt-6  bg-custom-red px-4 py-2 text-white"
-          href="/insight/"
+          href="/insights/"
         >
           Back to Insights
         </Link>

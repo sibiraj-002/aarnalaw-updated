@@ -51,19 +51,28 @@ export default function Partners() {
     },
   };
 
-  const CustomRightArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide, deviceType },
-    } = rest;
-    // onMove means if dragging or swiping in progress.
-    return <button onClick={() => onClick()} />;
-  };
+  const CustomRightArrow = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className="absolute right-2 top-1/2 -translate-y-1/2 transform rounded-full bg-gray-200 p-2 shadow hover:bg-gray-300"
+    >
+      ➔
+    </button>
+  );
+
+  const CustomLeftArrow = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className="absolute left-2 top-1/2 -translate-y-1/2 transform rounded-full bg-gray-200 p-2 shadow hover:bg-gray-300"
+    >
+      ←
+    </button>
+  );
 
   return (
     <div className="bg-bgDark3 py-12">
       <div className="text-center">
-        <p className=" mb-4 text-2xl font-bold tracking-wider text-custom-red">
+        <p className="mb-4 text-2xl font-bold tracking-wider text-custom-red">
           PARTNERS
         </p>
         <p className="mx-auto mb-4 px-4 leading-normal text-white md:w-[1200px] md:text-center md:text-3xl">
@@ -77,21 +86,20 @@ export default function Partners() {
             showDots={false}
             infinite={true}
             autoPlaySpeed={3000}
-            autoPlay={true} // Control autoplay with state
+            autoPlay={true}
             itemClass="p-1"
             keyBoardControl={true}
-            removeArrowOnDeviceType={["tablet", "mobile"]}
-            arrows={false}
+            // removeArrowOnDeviceType={["tablet", "mobile"]}
             customRightArrow={<CustomRightArrow />}
+            customLeftArrow={<CustomLeftArrow />}
           >
             {data.map((item, index) => {
-              // Get the featured media URL from the embedded media if available
               const imageUrl =
                 item._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-                "/default-image.jpg"; // Fallback image URL
+                "/default-image.jpg";
 
               return (
-                <div className=" bg-white p-6" key={index}>
+                <div className="bg-white p-6" key={index}>
                   <Image
                     src={imageUrl}
                     className="mx-auto size-48 rounded-full bg-[#0e1333]"

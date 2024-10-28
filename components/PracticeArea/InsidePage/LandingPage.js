@@ -19,11 +19,11 @@ const LandingPage = ({ slug }) => {
         );
         const data = await response.json();
         const practiceArea = data[0];
-        console.log("practice area banner" , practiceArea)
+        // console.log("practice area banner" , practiceArea)
 
         setFeatureImage(practiceArea.acf.banner_image.url);
         setmobileBanner(practiceArea.acf.mobile_banner.url);
-        
+
         setTitle(practiceArea.title.rendered);
         setDescription(practiceArea.acf.description);
 
@@ -68,8 +68,12 @@ const LandingPage = ({ slug }) => {
 
   return (
     <div>
-      <Banner backgroundImage={featureImage} titleText={title} mobileBackgroundImage={mobileBanner}/>
-      
+      <Banner
+        backgroundImage={featureImage}
+        titleText={title}
+        mobileBackgroundImage={mobileBanner}
+      />
+
       <PostDetails
         details={description}
         partnersData={partnersData}

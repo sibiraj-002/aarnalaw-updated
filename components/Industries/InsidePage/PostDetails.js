@@ -16,7 +16,7 @@ function PostDetails({ details, partnersData, slug, title }) {
         );
         const result = await response.json();
 
-        console.log("Practice area data", result);
+        // console.log("Indutries area data", result);
 
         // Ensure the response is an array before setting the data
         if (Array.isArray(result)) {
@@ -53,9 +53,12 @@ function PostDetails({ details, partnersData, slug, title }) {
           dangerouslySetInnerHTML={{ __html: title }}
           className="px-20 pb-12 text-3xl font-semibold"
         /> */}
-        <p dangerouslySetInnerHTML={{ __html: details }} className="lg:px-20 px-6 pt-8 lg:pt-0" />
+        <p
+          dangerouslySetInnerHTML={{ __html: details }}
+          className="px-6 pt-8 lg:px-20 lg:pt-0"
+        />
 
-        <div className="flex w-full lg:justify-start lg:px-20 justify-center">
+        <div className="flex w-full justify-center lg:justify-start lg:px-20">
           <ContactModal
             btnName="CONTACT OUR EXPERTS"
             textColor="text-black"
@@ -64,7 +67,7 @@ function PostDetails({ details, partnersData, slug, title }) {
           />
         </div>
       </div>
-      <div className="lg:w-3/12 bg-gray-50">
+      <div className="bg-gray-50 lg:w-3/12">
         {partnersData?.partnerNames?.map((name, index) => (
           <div
             key={index}

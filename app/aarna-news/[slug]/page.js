@@ -46,7 +46,7 @@ export default function Page({ params }) {
           console.error("No post data found.");
           setError(true);
         }
-        console.log("insights Page", data);
+        console.log("Aarna News", data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

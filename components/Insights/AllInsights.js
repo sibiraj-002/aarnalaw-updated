@@ -165,9 +165,7 @@ function AllInsights({ searchTerm }) {
                     dangerouslySetInnerHTML={{ __html: items.title.rendered }}
                   ></h5>
 
-                  <p
-                    className="mb-3 h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40"
-                  >
+                  <p className="mb-3 h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40">
                     {stripHTMLAndLimit(items.excerpt.rendered)}
                   </p>
                   <p className="pb-4 text-xs text-gray-500 md:text-sm">
@@ -195,8 +193,7 @@ function AllInsights({ searchTerm }) {
         )}
 
         {!hasMore && (
-          <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
-          </div>
+          <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2"></div>
         )}
       </div>
       <div className="mt-8 w-full bg-gray-50 p-4 pb-12 md:mt-0 md:w-3/12 md:p-4 lg:ml-8">

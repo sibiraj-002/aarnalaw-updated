@@ -60,8 +60,18 @@ function AllInsights({ searchTerm }) {
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
     const monthAbbreviations = [
-      "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-      "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+      "JAN",
+      "FEB",
+      "MAR",
+      "APR",
+      "MAY",
+      "JUN",
+      "JUL",
+      "AUG",
+      "SEP",
+      "OCT",
+      "NOV",
+      "DEC",
     ];
     const day = date.getDate();
     const month = monthAbbreviations[date.getMonth()];
@@ -75,8 +85,8 @@ function AllInsights({ searchTerm }) {
   };
 
   const SkeletonLoader = () => (
-    <div className="flex animate-pulse border border-gray-200 bg-white p-5 shadow dark:border-gray-700 dark:bg-gray-800 w-full">
-      <div className="flex h-[200px] md:h-[400px] w-full items-center justify-center bg-gray-300 rounded-lg"></div>
+    <div className="flex w-full animate-pulse border border-gray-200 bg-white p-5 shadow dark:border-gray-700 dark:bg-gray-800">
+      <div className="flex h-[200px] w-full items-center justify-center rounded-lg bg-gray-300 md:h-[400px]"></div>
       <div className="mt-4 space-y-2">
         <div className="h-6 w-3/4 rounded bg-gray-400" />
         <div className="h-4 w-full rounded bg-gray-400" />
@@ -92,7 +102,7 @@ function AllInsights({ searchTerm }) {
 
   return (
     <div className="p-4 md:p-8 lg:p-12">
-      <div className="mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-0">
+      <div className="mx-auto grid grid-cols-1 gap-4 p-4 lg:grid-cols-2 lg:p-0">
         {loading && filteredInsights.length === 0
           ? Array.from({ length: 4 }).map((_, index) => (
               <SkeletonLoader key={index} />
@@ -106,22 +116,20 @@ function AllInsights({ searchTerm }) {
                   <Image
                     src={items.featured_image_url}
                     alt={items.title.rendered}
-                    className="h-[200px] md:h-[300px] w-full rounded-t-lg object-cover"
+                    className="h-[200px] w-full rounded-t-lg object-cover md:h-[300px]"
                     width={500}
                     height={500}
                   />
                 )}
                 <div className="p-4 md:p-5">
                   <h5
-                    className="mb-2 text-lg md:text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+                    className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
                     dangerouslySetInnerHTML={{ __html: items.title.rendered }}
                   ></h5>
-                  <p
-                    className="mb-3 text-sm md:text-base text-gray-700 dark:text-gray-400"
-                  >
+                  <p className="mb-3 text-sm text-gray-700 dark:text-gray-400 md:text-base">
                     {stripHTMLAndLimit(items.excerpt.rendered)}
                   </p>
-                  <p className="pb-2 text-xs md:text-sm text-gray-500">
+                  <p className="pb-2 text-xs text-gray-500 md:text-sm">
                     {formatDateString(items.date)}
                   </p>
                   <Link

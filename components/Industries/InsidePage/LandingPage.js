@@ -20,6 +20,8 @@ const LandingPage = ({ slug }) => {
         const data = await response.json();
         const practiceArea = data[0];
 
+        console.log("seo title", data);
+
         setFeatureImage(practiceArea.acf.banner_image.url);
         setmobileBanner(practiceArea.acf.mobile_banner.url);
         setTitle(practiceArea.title.rendered);
@@ -52,11 +54,11 @@ const LandingPage = ({ slug }) => {
 
         setData(practiceArea);
 
-        console.log("Filtered partners data", {
-          partnerDesignations,
-          partnerImages,
-          partnerNames,
-        });
+        // console.log("Filtered partners data", {
+        //   partnerDesignations,
+        //   partnerImages,
+        //   partnerNames,
+        // });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -66,7 +68,11 @@ const LandingPage = ({ slug }) => {
 
   return (
     <div>
-      <Banner backgroundImage={featureImage} titleText={title} mobileBackgroundImage={mobileBanner}/>
+      <Banner
+        backgroundImage={featureImage}
+        titleText={title}
+        mobileBackgroundImage={mobileBanner}
+      />
       <PostDetails
         details={description}
         partnersData={partnersData}

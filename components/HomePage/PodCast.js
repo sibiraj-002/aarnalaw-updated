@@ -123,20 +123,20 @@ const Podcasts = () => {
         >
           {podcasts.slice(0, 4).map((item) => (
             <div
-              className={`${currentPlayingId === item.id ? "border-custom-red" : "border-gray-200"}  lg:flex lg:h-[236px] gap-4 border  bg-white`}
+              className={`${currentPlayingId === item.id ? "border-custom-red" : "border-gray-200"}  gap-4 border bg-white lg:flex  lg:h-[236px]`}
               key={item.id}
             >
-              <div className="flex gap-4 md:w-full">
+              <div className="flex flex-col gap-4 md:w-full lg:flex-row">
                 <Image
                   src={item.imageUrl}
                   width={201}
                   height={150}
                   alt="Podcast Thumbnail"
-                  className="h-[236px] w-[400px]"
+                  className="h-[236px] w-full lg:w-[400px]"
                 />
-                <div className="w-full flex-col md:p-10">
+                <div className="w-full flex-col p-8 lg:p-10">
                   <h1
-                    className="mb-4 mt-4 md:line-clamp-3 w-full md:h-[100px] md:text-start text-lg font-semibold text-custom-blue transition-colors duration-300 md:text-2xl md:group-hover:text-white"
+                    className="mb-4 mt-4 w-full text-lg font-semibold text-custom-blue transition-colors duration-300 md:line-clamp-3 md:h-[100px] md:text-start md:text-2xl md:group-hover:text-white"
                     dangerouslySetInnerHTML={{ __html: item.title.rendered }}
                   />
                   <div className="flex flex-row items-center justify-between">
