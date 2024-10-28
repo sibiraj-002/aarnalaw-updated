@@ -42,7 +42,7 @@ function SearchModal() {
   }, [searchQuery]); // Fetch results when searchQuery changes
 
   return (
-    <div className="text-black">
+    <div className=" text-black">
       <button
         className="block cursor-pointer text-center text-2xl text-black focus:outline-none focus:ring-0 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         onClick={() => setOpenModal(true)}
@@ -56,7 +56,7 @@ function SearchModal() {
         tabIndex="-1"
         aria-hidden={!openModal} // aria-hidden for accessibility
         className={`fixed inset-x-0 top-0 z-50 max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 ${
-          openModal ? "flex bg-black/80" : "hidden"
+          openModal ? "flex h-screen bg-black/80" : "hidden"
         }`}
       >
         <div className="relative max-h-full w-full max-w-2xl p-4">
