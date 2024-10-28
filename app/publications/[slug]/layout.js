@@ -1,5 +1,5 @@
 export async function generateMetadata({ params }) {
-  console.log("Fetching data for slug:", params.slug);
+  // console.log("Fetching data for slug:", params.slug);
 
   const response = await fetch(
     `https://docs.aarnalaw.com/wp-json/wp/v2/publications?embed&slug=${params.slug}`,
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }) {
   // Ensure postData has data
   const post = postData[0];
 
-  console.log("Fetched post data:", post);
+  // console.log("Fetched post data:", post);
 
   return {
     title: post

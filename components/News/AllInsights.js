@@ -81,7 +81,7 @@ function AllInsights({ searchTerm }) {
 
   const stripHTMLAndLimit = (htmlContent) => {
     const text = htmlContent.replace(/<\/?[^>]+(>|$)/g, "");
-    return text.length > 255 ? text.substring(0, 255) + "..." : text;
+    return text.length > 300 ? text.substring(0, 300) + "..." : text;
   };
 
   const SkeletonLoader = () => (
@@ -103,62 +103,76 @@ function AllInsights({ searchTerm }) {
   return (
     <div className="p-4 md:p-8 lg:p-12">
       <div className="mx-auto grid grid-cols-1 gap-4 p-4 lg:grid-cols-2 lg:p-0">
-        {loading && filteredInsights.length === 0
-          ? Array.from({ length: 4 }).map((_, index) => (
-              <SkeletonLoader key={index} />
-            ))
-          : filteredInsights.map((items, index) => (
-              <div
-                className="rounded-lg border border-gray-200 shadow dark:border-gray-700 dark:bg-gray-800"
-                key={index}
-              >
+        {loading && filteredInsights.length === 0 ? (
+          Array.from({ length: 4 }).map((_, index) => (
+            <SkeletonLoader key={index} />
+          ))
+        ) : filteredInsights.length > 0 ? (
+          filteredInsights.map((items) => (
+            <div
+              className="rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
+              key={items.id}
+            >
+              <a href="#">
                 {items.featured_image_url && (
                   <Image
                     src={items.featured_image_url}
                     alt={items.title.rendered}
                     className="h-[200px] w-full rounded-t-lg object-cover md:h-[300px]"
                     width={500}
-                    height={500}
+                    height={300}
                   />
                 )}
-                <div className="p-4 md:p-5">
-                  <h5
-                    className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
-                    dangerouslySetInnerHTML={{ __html: items.title.rendered }}
-                  ></h5>
-                  <p className="mb-3 text-sm text-gray-700 dark:text-gray-400 md:text-base">
-                    {stripHTMLAndLimit(items.excerpt.rendered)}
-                  </p>
-                  <p className="pb-2 text-xs text-gray-500 md:text-sm">
-                    {formatDateString(items.date)}
-                  </p>
-                  <Link
-                    href={`/aarna-news/${items.slug}`}
-                    className="font-semibold text-custom-red"
-                  >
-                    Read more
-                  </Link>
-                </div>
+              </a>
+              <div className="p-5">
+                <h5
+                  className="mb-2 min-h-20 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
+                  dangerouslySetInnerHTML={{ __html: items.title.rendered }}
+                ></h5>
+
+                <p
+                  className="mb-3 h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-20"
+                  dangerouslySetInnerHTML={{
+                    __html: stripHTMLAndLimit(items.excerpt.rendered),
+                  }}
+                ></p>
+                <p className="pb-4 text-xs text-gray-500 md:text-sm">
+                  {formatDateString(items.date)}
+                </p>
+                <Link
+                  href={`/insights/${items.slug}`}
+                  className="font-semibold text-custom-red"
+                >
+                  Read more
+                </Link>
               </div>
-            ))}
-      </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
+            No related post found
+          </div>
+        )}
 
-      {!loading && hasMore && (
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={loadMorePosts}
-            className="rounded-lg bg-custom-red px-4 py-2 text-white"
+        {!loading && hasMore && (
+          <div
+            className={`col-span-1 mt-6 justify-center md:col-span-2 ${filteredInsights.length === 0 ? "hidden" : "flex"}`}
           >
-            Load More
-          </button>
-        </div>
-      )}
+            <button
+              onClick={loadMorePosts}
+              className="bg-custom-red px-4 py-2 text-white"
+            >
+              Load More
+            </button>
+          </div>
+        )}
 
-      {!hasMore && (
-        <div className="mt-4 text-center text-gray-500">
-          No more posts to load.
-        </div>
-      )}
+        {!hasMore && (
+          <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
+            No more details available
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -16,7 +16,6 @@ function AllInsights({ searchTerm }) {
       setLoading(true);
       try {
         let url = `https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${page}&categories=13`;
-
         if (selectedArchive) {
           url += `&archives=${selectedArchive.id}`;
         }
@@ -25,9 +24,7 @@ function AllInsights({ searchTerm }) {
         const result = await response.json();
 
         if (Array.isArray(result)) {
-          if (result.length < 6) {
-            setHasMore(false);
-          }
+          if (result.length < 6) setHasMore(false);
 
           const dataWithImages = await Promise.all(
             result.map(async (item) => {
@@ -81,7 +78,6 @@ function AllInsights({ searchTerm }) {
           `https://docs.aarnalaw.com/wp-json/wp/v2/archives`,
         );
         const archivesData = await response.json();
-
         setArchives(archivesData);
       } catch (error) {
         console.error("Error fetching archives:", error);
@@ -128,64 +124,70 @@ function AllInsights({ searchTerm }) {
     </div>
   );
 
-  const loadMorePosts = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+  const loadMorePosts = () => setPage((prevPage) => prevPage + 1);
 
   const filteredInsights = data.filter((data) =>
     data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex w-full flex-col md:flex-row">
       <div className="mx-auto grid w-full grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:w-9/12 lg:p-12">
-        {loading && filteredInsights.length === 0
-          ? Array.from({ length: 4 }).map((_, index) => (
-              <SkeletonLoader key={index} />
-            ))
-          : filteredInsights.map((items, index) => (
-              <div
-                className="rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
-                key={index}
-              >
-                <a href="#">
-                  {items.featured_image_url && (
-                    <Image
-                      src={items.featured_image_url}
-                      alt={items.title.rendered}
-                      className="h-[200px] w-full rounded-t-lg object-cover md:h-[300px]"
-                      width={500}
-                      height={300}
-                    />
-                  )}
-                </a>
-                <div className="p-5">
-                  <h5
-                    className="mb-2 min-h-20 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
-                    dangerouslySetInnerHTML={{ __html: items.title.rendered }}
-                  ></h5>
+        {loading && filteredInsights.length === 0 ? (
+          Array.from({ length: 4 }).map((_, index) => (
+            <SkeletonLoader key={index} />
+          ))
+        ) : filteredInsights.length > 0 ? (
+          filteredInsights.map((items) => (
+            <div
+              className="rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
+              key={items.id}
+            >
+              <a href="#">
+                {items.featured_image_url && (
+                  <Image
+                    src={items.featured_image_url}
+                    alt={items.title.rendered}
+                    className="h-[200px] w-full rounded-t-lg object-cover md:h-[300px]"
+                    width={500}
+                    height={300}
+                  />
+                )}
+              </a>
+              <div className="p-5">
+                <h5
+                  className="mb-2 min-h-20 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
+                  dangerouslySetInnerHTML={{ __html: items.title.rendered }}
+                ></h5>
 
-                  <p className="mb-3 h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40">
-                    {stripHTMLAndLimit(items.excerpt.rendered)}
-                  </p>
-                  <p className="pb-4 text-xs text-gray-500 md:text-sm">
-                    {formatDateString(items.date)}
-                  </p>
-                  <Link
-                    href={`/insights/${items.slug}`}
-                    className="font-semibold text-custom-red"
-                  >
-                    Read more
-                  </Link>
-                </div>
+                <p className="mb-3 h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40">
+                  {stripHTMLAndLimit(items.excerpt.rendered)}
+                </p>
+                <p className="pb-4 text-xs text-gray-500 md:text-sm">
+                  {formatDateString(items.date)}
+                </p>
+                <Link
+                  href={`/insights/${items.slug}`}
+                  className="font-semibold text-custom-red"
+                >
+                  Read more
+                </Link>
               </div>
-            ))}
+            </div>
+          ))
+        ) : (
+          <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
+            No related post found
+          </div>
+        )}
 
         {!loading && hasMore && (
-          <div className="col-span-1 flex justify-center md:col-span-2">
+          <div
+            className={`col-span-1 mt-6 justify-center md:col-span-2 ${filteredInsights.length === 0 ? "hidden" : "flex"}`}
+          >
             <button
               onClick={loadMorePosts}
-              className="mt-6 bg-custom-red px-4 py-2 text-white"
+              className="bg-custom-red px-4 py-2 text-white"
             >
               Load More
             </button>
@@ -193,14 +195,17 @@ function AllInsights({ searchTerm }) {
         )}
 
         {!hasMore && (
-          <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2"></div>
+          <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
+            No more details available
+          </div>
         )}
       </div>
+
       <div className="mt-8 w-full bg-gray-50 p-4 pb-12 md:mt-0 md:w-3/12 md:p-4 lg:ml-8">
         <h2 className="font-bold">Archives</h2>
         <hr className="my-4 border-t-2 border-red-500" />
         <ul className="space-y-4 text-left text-gray-500 dark:text-gray-400">
-          {archives.map((archive, index) => (
+          {archives.map((archive) => (
             <button
               onClick={() => {
                 setData([]);
@@ -212,7 +217,7 @@ function AllInsights({ searchTerm }) {
                   ? "font-bold text-custom-red"
                   : "hover:text-custom-red"
               }`}
-              key={index}
+              key={archive.id}
             >
               <p dangerouslySetInnerHTML={{ __html: archive.name }} />
             </button>

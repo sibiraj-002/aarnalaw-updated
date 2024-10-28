@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "POSTCASTS - Aarna law",
+  title: "PODCASTS - Aarna law",
   description:
     "News & Insights Resources INSIGHTS AARNA NEWS PUBLICATIONS PODCAST Insights",
   metadataBase: new URL("https://www.aarnalaw.com"),
@@ -7,7 +7,7 @@ export const metadata = {
     canonical: "/podcasts",
   },
   openGraph: {
-    title: "POSTCASTS - Aarna law",
+    title: "PODCASTS - Aarna law",
     description:
       "News & Insights Resources INSIGHTS AARNA NEWS PUBLICATIONS PODCAST Insights",
     url: "/podcasts",
