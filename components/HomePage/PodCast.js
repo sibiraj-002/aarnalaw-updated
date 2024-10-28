@@ -132,7 +132,7 @@ const Podcasts = () => {
                   width={201}
                   height={150}
                   alt="Podcast Thumbnail"
-                  className="h-[236px] w-full lg:w-[400px]"
+                  className="h-auto w-full lg:h-[236px] lg:w-[400px]"
                 />
                 <div className="w-full flex-col p-8 lg:p-10">
                   <h1
