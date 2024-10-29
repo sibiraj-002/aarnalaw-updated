@@ -3,6 +3,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function page() {
+
+
+
+
+  
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="grid h-[80vh] w-full grid-cols-2">
