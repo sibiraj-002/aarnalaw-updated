@@ -44,7 +44,16 @@ function PostDetails({ details, partnersData, slug, titleText }) {
     <div className="flex w-full flex-col py-5 lg:flex-row">
       <div className="inner-content w-full px-6 md:w-9/12 md:p-14 ">
         <p dangerouslySetInnerHTML={{ __html: details }} className="md:px-20" />
+        {/* <div className="mt-8 w-9/12 md:px-20">
+          <Link
+            className="mt-6  bg-custom-red px-4 py-2 text-white"
+            href="/practice-area/"
+          >
+            Back to Practice Area
+          </Link>
+        </div> */}
       </div>
+
       <div className="w-full bg-gray-50 md:w-3/12">
         {partnersData?.partnerNames?.map((name, index) => (
           <div
@@ -78,6 +87,7 @@ function PostDetails({ details, partnersData, slug, titleText }) {
             textColor="text-black"
             modalTitle={titleText}
             btnType="contactPartner"
+            id="contactPartner"
           />
         </div>
 

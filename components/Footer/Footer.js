@@ -42,6 +42,7 @@ export default function Footer() {
               textColor="text-white"
               modalTitle="Subscribe to newsletter"
               btnType="subscribe"
+              id="subscribe"
             />
           </div>
         </div>

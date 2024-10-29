@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function InternShip() {
+export default function InternShip({ id }) {
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://js.hsforms.net/forms/v2.js";
@@ -11,11 +11,11 @@ export default function InternShip() {
         window.hbspt.forms.create({
           portalId: "25868325",
           formId: "f5144a2e-9917-4762-a60d-5377a973a04e",
-          target: "#hubspotForm",
+          target: "#" + id,
         });
       }
     });
   }, []);
 
-  return <div id="hubspotForm"></div>;
+  return <div id={id}></div>;
 }

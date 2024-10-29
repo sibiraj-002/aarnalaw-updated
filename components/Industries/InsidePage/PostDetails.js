@@ -64,6 +64,7 @@ function PostDetails({ details, partnersData, slug, title }) {
             textColor="text-black"
             modalTitle={title}
             btnType="contactPartner"
+            id="contactPartner"
           />
         </div>
       </div>
@@ -103,6 +104,7 @@ function PostDetails({ details, partnersData, slug, title }) {
               textColor="text-black"
               modalTitle={title}
               btnType="contactPartner"
+              id="contactPartner"
             />
           </div>
         )}

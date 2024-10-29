@@ -140,7 +140,7 @@ function AllInsights({ searchTerm }) {
                   {formatDateString(items.date)}
                 </p>
                 <Link
-                  href={`/insights/${items.slug}`}
+                  href={`/aarna-news/${items.slug}`}
                   className="font-semibold text-custom-red"
                 >
                   Read more

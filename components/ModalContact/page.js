@@ -6,7 +6,7 @@ import InternShip from "@/utils/HubSpotForm/Internships";
 import Subscribe from "@/utils/HubSpotForm/Subscribe";
 import ContactPartner from "@/utils/HubSpotForm/ContactPartner";
 
-function ModalContact({ btnName, textColor, modalTitle, btnType }) {
+function ModalContact({ btnName, textColor, modalTitle, btnType, id }) {
   const [openModal, setOpenModal] = useState(false);
 
   // Mapping btnType to the respective component
@@ -38,7 +38,7 @@ function ModalContact({ btnName, textColor, modalTitle, btnType }) {
         <Modal.Body>
           {/* <InternShip /> */}
           {SelectedComponent ? (
-            <SelectedComponent />
+            <SelectedComponent id={id} />
           ) : (
             <p>Component not found</p>
           )}
