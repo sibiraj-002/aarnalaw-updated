@@ -38,7 +38,7 @@ export default function RootLayout({
         {children}
         <Footer />
       </body>
-      <Script src="/tracking.js" />
+      {/* <Script src="/tracking.js" /> */}
       <Script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></Script>
       <Script id="gtm-ns" strategy="afterInteractive">
         {`
