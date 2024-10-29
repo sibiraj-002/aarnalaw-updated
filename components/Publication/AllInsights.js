@@ -104,18 +104,24 @@ function AllInsights({ searchTerm }) {
               {formatDateString(item.date)}
             </div>
             <div className="p-5">
-              <Link href={`/publications/${item.slug}`}>
+             
                 <h5
-                  className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-xl"
+                  className="mb-2 text-xl font-medium tracking-tight text-gray-900 dark:text-white sm:text-xl min-h-14"
                   dangerouslySetInnerHTML={{ __html: item.title.rendered }}
                 />
-              </Link>
+            
               <p
-                className="mb-3 font-normal text-gray-700 dark:text-gray-400"
+                className="mb-3 font-normal text-gray-700 dark:text-gray-400 min-h-20"
                 dangerouslySetInnerHTML={{
                   __html: stripHTMLAndLimit(item.content.rendered),
                 }}
               ></p>
+              <Link
+                  href={`/publications/${item.slug}`}
+                  className="font-semibold text-custom-red"
+                >
+                  Read more
+                </Link>
             </div>
           </div>
         ))
