@@ -133,6 +133,7 @@ function PracticeLists() {
                 textColor="text-custom-red"
                 modalTitle="Current Openings"
                 btnType="career"
+                id="career"
               />
             </div>
           </div>
@@ -179,6 +180,7 @@ function PracticeLists() {
             textColor="text-custom-red"
             modalTitle="Internships"
             btnType="internships"
+            id="internships"
           />
         </div>
       </div>

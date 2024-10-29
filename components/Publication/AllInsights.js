@@ -15,7 +15,7 @@ function AllInsights({ searchTerm }) {
           `https://docs.aarnalaw.com/wp-json/wp/v2/publications?_embed&per_page=100`,
         );
         const result = await response.json();
-        console.log("Practice area data", result);
+        // console.log("Practice area data", result);
 
         // Ensure the response is an array before setting the data
         if (Array.isArray(result)) {

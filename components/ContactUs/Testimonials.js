@@ -9,7 +9,7 @@ function Testimonials() {
   const handleOpenModal = (testimonial) => {
     setSelectedTestimonial(testimonial);
   };
-  console.log("selected testimonials", selectedTestimonial);
+  // console.log("selected testimonials", selectedTestimonial);
   return (
     <>
       <div className="mx-auto w-11/12 py-12">

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ContactModal from "@/components/ModalContact/page";
+import { initFlowbite } from "flowbite";
 
 function PostDetails({ details, partnersData, slug, title }) {
   const [data, setData] = useState([]); // Initialize data state with an empty array
@@ -38,6 +39,7 @@ function PostDetails({ details, partnersData, slug, title }) {
     };
 
     fetchData();
+    initFlowbite(); // Initialize Flowbite after the data is loaded
   }, []);
 
   // Check if there is any valid partner data

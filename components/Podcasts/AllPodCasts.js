@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { play, pause, sound, mute, nextIcon, prevIcon } from "@/utils/icons";
 import FloatingAudioPlayer from "./FloatingAudioPlayer";
+import { initFlowbite } from "flowbite";
 
 function AllPodCasts({ searchTerm }) {
   const [data, setData] = useState([]);
@@ -108,6 +109,7 @@ function AllPodCasts({ searchTerm }) {
       }
     };
     fetchData();
+    initFlowbite(); // Initialize Flowbite after the data is loaded
   }, [page]);
 
   useEffect(() => {

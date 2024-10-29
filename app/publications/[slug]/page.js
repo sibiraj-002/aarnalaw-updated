@@ -46,7 +46,7 @@ export default function Page({ params }) {
           console.error("No post data found.");
           setError(true); // Set error state if no post found
         }
-        console.log("insights Page", data);
+        // console.log("insights Page", data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

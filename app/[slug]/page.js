@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Banner from "@/components/Pages/Banner";
 import Link from "next/link";
 import ErrorPage from "@/components/404/page";
+import { initFlowbite } from "flowbite";
 
 export default function Page({ params }) {
   const paramUrl = params.slug;
@@ -32,6 +33,7 @@ export default function Page({ params }) {
         console.error("Error fetching data:", error);
       }
     };
+    initFlowbite(); // Initialize Flowbite after the data is loaded
 
     fetchData();
   }, [paramUrl]);

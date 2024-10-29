@@ -22,11 +22,11 @@ export default function Page({ params }) {
           `https://docs.aarnalaw.com/wp-json/wp/v2/team?_embed&slug=${paramUrl}`,
         );
         const data = await response.json();
-        console.log("team data", data);
+        // console.log("team data", data);
         if (data && data.length > 0) {
           const post = data[0];
           // Set post details in state
-          console.log("filter data", post);
+          // console.log("filter data", post);
           setTitle(post.title.rendered);
           setDesignation(post.acf.designation);
           setPracticeAreas(post.acf.practice_areas);

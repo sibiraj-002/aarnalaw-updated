@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { initFlowbite } from "flowbite";
 
 function AllInsights({ searchTerm }) {
   const [data, setData] = useState([]);
@@ -51,6 +52,7 @@ function AllInsights({ searchTerm }) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
+        initFlowbite(); // Initialize Flowbite after the data is loaded
       }
     };
 

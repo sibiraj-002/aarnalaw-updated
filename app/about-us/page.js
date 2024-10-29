@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import Banner from "../../components/AboutUs/Banner";
 import WhatWeDo from "@/components/AboutUs/WhatWeDo";
 import PracticeArea from "@/components/AboutUs/PracticeArea";
@@ -7,25 +8,13 @@ import Partners from "@/components/AboutUs/Partners";
 import FounderMessage from "@/components/AboutUs/FounderMessage";
 import JayasimhaFoundation from "@/components/AboutUs/JayasimhaFoundation";
 import JoinTeam from "@/components/AboutUs/JoinTeam";
+import { initFlowbite } from "flowbite";
 
-export const metadata = {
-  title: "Learn About Aarna Law: Leading Legal Services in Bangalore",
-  description:
-    "Aarna Law: Your Go-To for Tailored Legal Solutions. Trusted Advisors Offering International Legal Expertise from India",
-  metadataBase: new URL("https://www.aarnalaw.com"),
-  alternates: {
-    canonical: "/about-us",
-  },
-  openGraph: {
-    title: "Learn About Aarna Law: Leading Legal Services in Bangalore",
-    description:
-      "Aarna Law: Your Go-To for Tailored Legal Solutions. Trusted Advisors Offering International Legal Expertise from India",
-    url: "/about-us",
-    images: "/aarna-law.png",
-  },
-};
+export default function AboutUs() {
+  useEffect(() => {
+    initFlowbite(); // Initialize Flowbite after the data is loaded
+  }, []);
 
-export default function page() {
   return (
     <>
       <Banner />

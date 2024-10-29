@@ -15,7 +15,7 @@ function PracticeLists() {
         );
         const result = await response.json();
 
-        console.log("Practice area data", result);
+        // console.log("Practice area data", result);
 
         // Ensure the response is an array before setting the data
         if (Array.isArray(result)) {

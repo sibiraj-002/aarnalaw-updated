@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Banner from "@/components/PracticeArea/InsidePage/Banner";
 import PostDetails from "@/components/PracticeArea/InsidePage/PostDetails";
+import { initFlowbite } from "flowbite";
 
 const LandingPage = ({ slug }) => {
   const [data, setData] = useState(null);
@@ -64,6 +65,7 @@ const LandingPage = ({ slug }) => {
       }
     };
     fetchData();
+    initFlowbite(); // Initialize Flowbite after the data is loaded
   }, [slug]);
 
   return (

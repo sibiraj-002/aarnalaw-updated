@@ -6,6 +6,7 @@ import Navigation from "@/components/InsightsNavigation/Navigation";
 
 export default function AarnaNews() {
   const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <div>
       <Banner title="insight" />

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { initFlowbite } from "flowbite";
 
 function AllInsights({ searchTerm }) {
   const [data, setData] = useState([]);
@@ -69,6 +70,7 @@ function AllInsights({ searchTerm }) {
     };
 
     fetchData();
+    initFlowbite(); // Initialize Flowbite after the data is loaded
   }, [page, selectedArchive]);
 
   useEffect(() => {

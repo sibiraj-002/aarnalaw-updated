@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Banner from "@/components/Industries/InsidePage/Banner";
 import PostDetails from "@/components/Industries/InsidePage/PostDetails";
+import { initFlowbite } from "flowbite";
 
 const LandingPage = ({ slug }) => {
   const [data, setData] = useState(null);
@@ -20,7 +21,7 @@ const LandingPage = ({ slug }) => {
         const data = await response.json();
         const practiceArea = data[0];
 
-        console.log("seo title", data);
+        // console.log("seo title", data);
 
         setFeatureImage(practiceArea.acf.banner_image.url);
         setmobileBanner(practiceArea.acf.mobile_banner.url);
@@ -63,7 +64,9 @@ const LandingPage = ({ slug }) => {
         console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
+    initFlowbite(); // Initialize Flowbite after the data is loaded
   }, [slug]);
 
   return (
