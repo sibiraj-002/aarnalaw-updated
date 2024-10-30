@@ -48,7 +48,7 @@ export default function Banner({ backgroundImage, mobileBackgroundImage, titleTe
           >
           <div className="absolute bottom-0 flex h-[500px] lg:h-screen w-full items-center justify-center">
             <h1
-              className="lg:text-5xl font-bold text-white text-center lg:text-start text-4xl"
+              className="rounded bg-black/50 lg:p-5 p-3 lg:text-5xl font-bold text-white text-center lg:text-start text-4xl"
               dangerouslySetInnerHTML={{ __html: titleText }}
               />
               
