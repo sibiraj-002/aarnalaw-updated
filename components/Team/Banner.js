@@ -10,28 +10,30 @@ export default function Banner({ title, backgroundImage, designation }) {
   };
 
   return (
-    <div className="grid h-[80vh] grid-cols-2 bg-[#0e1333]">
-      <div className="relative flex items-end justify-end">
+    <div className="grid h-[80vh] grid-cols-1 bg-[#0e1333] md:grid-cols-2">
+      <div className="relative flex items-center justify-center md:items-end md:justify-end">
         {isLoading && (
-          <div className="absolute flex h-[40vh] animate-pulse justify-center bg-gray-50">
+          <div className="absolute flex h-[40vh] w-full animate-pulse bg-gray-50 md:h-[40vh]">
             {/* <p className="text-[50px] text-white">Profile Loading..</p> */}
           </div>
         )}
-        {backgroundImage && ( // Check if backgroundImage is not null or undefined
+        {backgroundImage && (
           <Image
             src={backgroundImage}
             width={400}
             height={400}
-            className="size-[500px]"
+            className="h-auto w-full md:size-[500px]"
             alt="background"
-            onLoadingComplete={handleImageLoad} // Trigger when the image is fully loaded
+            onLoadingComplete={handleImageLoad}
           />
         )}
       </div>
-      <div className="flex items-end justify-center">
-        <div className="h-[40vh] w-full">
-          <h1 className="flex text-4xl font-semibold text-white">{title}</h1>
-          <p className="text-xl text-white">{designation}</p>
+      <div className="flex items-center justify-center md:items-end">
+        <div className="h-auto w-full px-4 md:h-[40vh] md:px-0">
+          <h1 className="text-3xl font-semibold text-white md:text-4xl">
+            {title}
+          </h1>
+          <p className="text-lg text-white md:text-xl">{designation}</p>
         </div>
       </div>
     </div>
