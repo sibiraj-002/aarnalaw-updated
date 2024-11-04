@@ -36,8 +36,10 @@ export default function Banner({ title, backgroundImage, mobileBackgroundImage, 
       <div className="absolute inset-0 grid md:grid-cols-2 p-4 md:p-8">
       <div></div> {/* This empty div takes up the right half */}
         <div className="flex flex-col md:justify-center justify-end text-left space-y-2 md:space-y-4">
-          <h1 className="text-3xl font-semibold  text-gray-400 md:text-4xl">{title}</h1>
-          <p className="text-lg text-gray-400 md:text-xl">{designation}</p>
+        <div className="rounded bg-black/50 lg:p-10 p-3">
+          <h1 className="text-3xl font-semibold  text-white md:text-4xl">{title}</h1>
+          <p className="text-lg text-white md:text-xl">{designation}</p>
+          </div>
         </div>
         
       </div>

@@ -11,13 +11,15 @@ export default function Footer() {
       <div className="bg-custom-blue">
         <div className="mx-auto grid w-11/12 lg:grid-cols-2">
           <div className="pt-4">
-            <Image
-              src="/logo/logo-white.svg"
-              width={400}
-              height={200}
-              className="h-10 w-60"
-              alt="Logo"
-            />
+            <Link href="/">
+              <Image
+                src="/logo/logo-white.svg"
+                width={400}
+                height={200}
+                className="h-10 w-60"
+                alt="Logo"
+              />
+            </Link>
             <div className="flex gap-8 py-4">
               <Link
                 href="https://www.linkedin.com/company/aarna-law1/"

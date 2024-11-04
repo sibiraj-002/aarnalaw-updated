@@ -56,7 +56,7 @@ export default function Banner({
             <h1
               className="rounded bg-black/50 lg:p-5 p-3 text-center text-4xl font-bold text-white lg:text-start lg:text-5xl"
               dangerouslySetInnerHTML={{ __html: titleText }}
-            />
+            />  
           </div>
         </div>
       )}
