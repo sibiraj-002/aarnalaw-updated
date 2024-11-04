@@ -56,7 +56,7 @@ export default function Partners() {
       onClick={onClick}
       className="absolute right-2 top-1/2 -translate-y-1/2 transform rounded-full bg-gray-200 p-2 shadow hover:bg-gray-300"
     >
-      ➔
+      →
     </button>
   );
 
