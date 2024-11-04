@@ -9,6 +9,8 @@ export default function Page({ params }) {
   const [title, setTitle] = useState(null);
   const [date, setDate] = useState(null);
   const [featureImage, setFeatureImage] = useState(null);
+  const [bannerImage, setBannerImage] = useState(null);
+  const [mobileBannerImage, setMobileBannerImage] = useState(null);
   const [content, setContent] = useState(null);
   const [designation, setDesignation] = useState(null);
   const [description, setDescription] = useState(null);
@@ -26,8 +28,10 @@ export default function Page({ params }) {
         if (data && data.length > 0) {
           const post = data[0];
           // Set post details in state
-          // console.log("filter data", post);
+          console.log("filter data", post);
           setTitle(post.title.rendered);
+          setBannerImage(post.acf.banner_image.url);
+          setMobileBannerImage(post.acf.mobile_banner.url);
           setDesignation(post.acf.designation);
           setPracticeAreas(post.acf.practice_areas);
           setDescription(post.acf.description);
@@ -67,7 +71,8 @@ export default function Page({ params }) {
     <>
       <Banner
         title={title}
-        backgroundImage={featureImage}
+        backgroundImage={bannerImage}
+        mobileBackgroundImage={mobileBannerImage}
         designation={designation}
       />
       <div className="mx-auto md:flex md:w-11/12 py-12 p-2">

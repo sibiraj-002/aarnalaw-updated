@@ -1,40 +1,45 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
-export default function Banner({ title, backgroundImage, designation }) {
-  const [isLoading, setIsLoading] = useState(true); // State to track if the image is loading
+export default function Banner({ title, backgroundImage, mobileBackgroundImage, designation }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Handle the image load event to stop the skeleton loader
+  useEffect(() => {
+    // Function to check if the screen is in mobile view
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Adjust the width as per your breakpoint
+    };
+
+    // Initial check and event listener for resize
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleImageLoad = () => {
-    setIsLoading(false); // Set loading to false once the image has loaded
+    setIsLoading(false);
   };
 
   return (
-    <div className="grid h-[80vh] grid-cols-1 bg-[#0e1333] md:grid-cols-2">
-      <div className="relative flex items-center justify-center md:items-end md:justify-end">
-        {isLoading && (
-          <div className="absolute flex h-[40vh] w-full animate-pulse bg-gray-50 md:h-[40vh]">
-            {/* <p className="text-[50px] text-white">Profile Loading..</p> */}
-          </div>
-        )}
-        {backgroundImage && (
-          <Image
-            src={backgroundImage}
-            width={400}
-            height={400}
-            className="h-auto w-full md:size-[500px]"
-            alt="background"
-            onLoadingComplete={handleImageLoad}
-          />
-        )}
-      </div>
-      <div className="flex items-center justify-center md:items-end">
-        <div className="h-auto w-full px-4 md:h-[40vh] md:px-0">
-          <h1 className="text-3xl font-semibold text-white md:text-4xl">
-            {title}
-          </h1>
-          <p className="text-lg text-white md:text-xl">{designation}</p>
+    <div
+      className="relative h-[60vh] bg-cover bg-center flex items-center justify-center"
+      style={{ backgroundImage: `url(${isMobile ? mobileBackgroundImage : backgroundImage})` }}
+    >
+      {isLoading && (
+        <div className="absolute flex h-[60vh] w-full">
+          {/* Loading Skeleton */}
         </div>
+      )}
+      <div className="absolute inset-0 grid md:grid-cols-2 p-4 md:p-8">
+      <div></div> {/* This empty div takes up the right half */}
+        <div className="flex flex-col md:justify-center justify-end text-left space-y-2 md:space-y-4">
+          <h1 className="text-3xl font-semibold  text-gray-400 md:text-4xl">{title}</h1>
+          <p className="text-lg text-gray-400 md:text-xl">{designation}</p>
+        </div>
+        
       </div>
     </div>
   );
