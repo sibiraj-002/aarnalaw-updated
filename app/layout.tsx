@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "../components/Header/NavBar";
 import Footer from "../components/Footer/Footer";
 import Script from "next/script";
+import ScrollToTop from "../components/ScrollToTop/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "Expert Legal Representation | Aarna Law - Advocates & Consultants",
@@ -37,6 +38,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <ScrollToTop />
       </body>
       <Script src="/tracking.js" />
       <Script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></Script>

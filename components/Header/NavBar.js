@@ -1,13 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { HeaderMenu } from "../../utils/data";
 import SearchModal from "@/components/Header/SearchModal";
 
 export default function NavBar() {
-  const router = usePathname();
+  const router = useRouter();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu open/close
 
   const newsPaths = ["/aarna-news", "/insight", "/publication", "/podcast"];
@@ -21,6 +22,13 @@ export default function NavBar() {
   const handleMenuItemClick = () => {
     setIsMenuOpen(false); // Close the menu on item click
   };
+
+  // Redirect logic for /podcast to /podcasts
+  useEffect(() => {
+    if (pathname === "/podcast") {
+      router.replace("/podcasts"); // Redirect to /podcasts
+    }
+  }, [pathname, router]);
 
   return (
     <div className="relative z-50 mx-auto w-11/12">
@@ -79,7 +87,7 @@ export default function NavBar() {
                         data-dropdown-toggle={`dropdownNavbar${index}`}
                         className={`flex w-full items-center justify-between rounded px-3 py-2 hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:text-white md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red ${
                           item.menu === "News & Insights" &&
-                          newsPaths.includes(router)
+                          newsPaths.includes(pathname)
                             ? " text-custom-red dark:bg-gray-700"
                             : "text-gray-900"
                         }`}
@@ -102,7 +110,7 @@ export default function NavBar() {
                         </svg>
                       </button>
                       <div
-                        id={`dropdownNavbar${index}`}
+                        id={`dropdownNavbar${index}`}  
                         className="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white font-normal shadow dark:divide-gray-600 dark:bg-gray-700"
                       >
                         <ul className="py-2 text-sm text-gray-700 dark:text-gray-400">
@@ -112,7 +120,7 @@ export default function NavBar() {
                                 href={`/${subItem.name.toLowerCase().replace(/\s+/g, "-")}`}
                                 onClick={handleMenuItemClick} // Close menu on item click
                                 className={`block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${
-                                  router ===
+                                  pathname ===
                                   `/${subItem.name.toLowerCase().replace(/\s+/g, "-")}`
                                     ? "bg-gray-100 text-custom-red dark:bg-gray-700"
                                     : ""
@@ -127,12 +135,12 @@ export default function NavBar() {
                     </>
                   ) : (
                     <Link
-                      href={`${item.slug}`}
+                      href={item.slug === "/podcast" ? "/podcasts" : item.slug} // Redirect slug /podcast to /podcasts
                       onClick={handleMenuItemClick} // Close menu on item click
                       className={`block rounded px-3 py-2 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red ${
-                        router === item.slug ||
+                        pathname === item.slug ||
                         (item.menu === "News & Insights" &&
-                          newsPaths.includes(router))
+                          newsPaths.includes(pathname))
                           ? " text-custom-red dark:bg-gray-700"
                           : "text-gray-900"
                       }`}

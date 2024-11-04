@@ -1,6 +1,6 @@
 export const HeaderMenu = [
   { menu: "About Us", slug: "/about-us" },
-  { menu: "Practice Areas", slug: "/practice-area" },
+  { menu: "Practice Areas", slug: "/practice-areas" },
   { menu: "Industries", slug: "/industries" },
   {
     menu: "News & Insights",

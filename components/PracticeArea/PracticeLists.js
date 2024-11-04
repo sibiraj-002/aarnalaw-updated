@@ -71,7 +71,7 @@ function PracticeLists() {
                     />
                   </div>
                   <Link
-                    href={`/practice-area/${items.slug}`}
+                    href={`/practice-areas/${items.slug}`}
                     className="flex h-[65px] items-center justify-center bg-[#233876] p-1 text-center font-semibold text-white"
                   >
                     <p

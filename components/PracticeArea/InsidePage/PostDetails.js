@@ -99,7 +99,7 @@ function PostDetails({ details, partnersData, slug, titleText }) {
           <ul className="space-y-4 text-left text-gray-500 dark:text-gray-400 md:pr-10">
             {data.map((items, index) => (
               <Link
-                href={`/practice-area/${items.slug}`}
+                href={`/practice-areas/${items.slug}`}
                 className={`flex border-b border-custom-red p-1 hover:text-custom-red ${items.slug === slug ? "font-semibold text-custom-red" : " text-black"}`}
                 key={index}
               >
