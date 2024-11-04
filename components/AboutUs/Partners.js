@@ -107,10 +107,10 @@ export default function Partners() {
                     width={200}
                     height={200}
                   />
-                  <h2 className="mb-2 text-center text-lg font-semibold text-blue-900">
+                  <h2 className="mb-2 min-h-[55px] text-center text-lg font-semibold text-blue-900">
                     {item.title.rendered}
                   </h2>
-                  <p className="mb-4 min-h-[40px] text-center text-sm text-black">
+                  <p className="mb-4 min-h-[60px] text-center text-sm text-black">
                     {item.acf?.designation || "Designation not available"}
                   </p>
                   <p
