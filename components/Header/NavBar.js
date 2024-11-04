@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -8,9 +8,19 @@ import SearchModal from "@/components/Header/SearchModal";
 
 export default function NavBar() {
   const router = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu open/close
 
-  // Define the URLs that should highlight the "News & Insights" menu
   const newsPaths = ["/aarna-news", "/insight", "/publication", "/podcast"];
+
+  // Function to toggle menu visibility
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  // Function to handle menu item click
+  const handleMenuItemClick = () => {
+    setIsMenuOpen(false); // Close the menu on item click
+  };
 
   return (
     <div className="relative z-50 mx-auto w-11/12">
@@ -29,11 +39,11 @@ export default function NavBar() {
             <SearchModal />
           </div>
           <button
-            data-collapse-toggle="navbar-dropdown"
             type="button"
+            onClick={toggleMenu} // Toggle menu on button click
             className="inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
             aria-controls="navbar-dropdown"
-            aria-expanded="false"
+            aria-expanded={isMenuOpen} // Update aria-expanded based on state
           >
             <span className="sr-only">Open main menu</span>
             <svg
@@ -54,7 +64,9 @@ export default function NavBar() {
           </button>
 
           <div
-            className="hidden w-full md:block md:w-auto"
+            className={`${
+              isMenuOpen ? "block" : "hidden" // Show or hide menu based on state
+            } w-full md:block md:w-auto`}
             id="navbar-dropdown"
           >
             <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900 rtl:space-x-reverse">
@@ -65,7 +77,7 @@ export default function NavBar() {
                       <button
                         id={`dropdownNavbarLink${index}`}
                         data-dropdown-toggle={`dropdownNavbar${index}`}
-                        className={`flex w-full items-center justify-between rounded px-3 py-2  hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:text-white md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red ${
+                        className={`flex w-full items-center justify-between rounded px-3 py-2 hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:text-white md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red ${
                           item.menu === "News & Insights" &&
                           newsPaths.includes(router)
                             ? " text-custom-red dark:bg-gray-700"
@@ -98,6 +110,7 @@ export default function NavBar() {
                             <li key={subIndex}>
                               <Link
                                 href={`/${subItem.name.toLowerCase().replace(/\s+/g, "-")}`}
+                                onClick={handleMenuItemClick} // Close menu on item click
                                 className={`block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${
                                   router ===
                                   `/${subItem.name.toLowerCase().replace(/\s+/g, "-")}`
@@ -115,8 +128,8 @@ export default function NavBar() {
                   ) : (
                     <Link
                       href={`${item.slug}`}
-                      key={item.slug}
-                      className={`block rounded px-3 py-2  hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red ${
+                      onClick={handleMenuItemClick} // Close menu on item click
+                      className={`block rounded px-3 py-2 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-custom-red md:dark:hover:bg-transparent md:dark:hover:text-custom-red ${
                         router === item.slug ||
                         (item.menu === "News & Insights" &&
                           newsPaths.includes(router))
