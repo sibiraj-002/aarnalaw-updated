@@ -70,12 +70,12 @@ export default function Page({ params }) {
         backgroundImage={featureImage}
         designation={designation}
       />
-      <div className="mx-auto flex w-11/12 py-12">
-        <div className="w-3/12 rounded-lg bg-gray-300 p-8">
+      <div className="mx-auto md:flex md:w-11/12 py-12 p-2">
+        <div className="md:w-3/12 rounded-lg bg-gray-300 p-8">
           <h3 className="pb-4 font-semibold text-custom-red">PRACTICE AREAS</h3>
           <span dangerouslySetInnerHTML={{ __html: practiceAreas }}></span>
         </div>
-        <div className=" w-9/12 p-8">
+        <div className=" md:w-9/12 md:p-8 p-4">
           <span
             dangerouslySetInnerHTML={{ __html: description }}
             className="team-content"
