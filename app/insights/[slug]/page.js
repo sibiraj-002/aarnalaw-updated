@@ -94,11 +94,11 @@ export default function Page({ params }) {
         <Banner backgroundImage={featureImage} />
       </div>
 
-      <div className="py-12">
+      <div className="py-5">
         <div className=" mx-auto w-11/12">
           <p
             dangerouslySetInnerHTML={{ __html: content }}
-            className="insight-blog py-12"
+            className="insight-blog"
           />
         </div>
       </div>

@@ -156,7 +156,7 @@ export default function HomeInsights() {
                         />
                         {item.desc && (
                           <p
-                            className="mb-5 line-clamp-3 justify-center overflow-hidden text-center text-sm font-normal text-custom-gray transition-colors duration-300 md:text-base md:group-hover:text-white lg:mt-10"
+                            className="mb-5 line-clamp-3 justify-start overflow-hidden text-left text-sm font-normal text-custom-gray transition-colors duration-300 md:text-base md:group-hover:text-white lg:mt-10"
                             dangerouslySetInnerHTML={{ __html: item.desc }}
                           />
                         )}
