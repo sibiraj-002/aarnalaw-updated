@@ -1,0 +1,7 @@
+{
+    "SERVER_URL": "https://docs.aarnalaw.com/wp-json/wp/v2/",
+    "SERVER_FROM": "https://docs.aarnalaw.com/wp-json/",
+    "SERVER": "470",
+    "LIVE_SERVER": "469",
+    "STAG_SERVER": "470"
+  }
