@@ -280,10 +280,10 @@ export const contactAddress = [
   },
   {
     location: "NEW DELHI",
-    address: "Ground Floor Taj Ambassador, Sujan Singh Marg New Delhi 110003",
-    phone: "+91 11 4350 5878",
+    // address: "Ground Floor Taj Ambassador, Sujan Singh Marg New Delhi 110003",
+    // phone: "+91 11 4350 5878",
     direction:
-      "https://www.google.com/maps/place/Ambassador,+New+Delhi+-+IHCL+SeleQtions/@28.6015375,77.2288562,15.05z/data=!4m9!3m8!1s0x390ce2c2a963c603:0x6401b43d4b6cb40!5m2!4m1!1i2!8m2!3d28.6015414!4d77.228979!16s%2Fg%2F1tgxgfw7?entry=ttu&g_ep=EgoyMDI0MTAxNi4wIKXMDSoASAFQAw%3D%3D",
+      "",
   },
   {
     location: "MUMBAI",
