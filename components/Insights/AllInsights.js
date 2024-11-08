@@ -158,13 +158,16 @@ function AllInsights({ searchTerm }) {
               </a>
               <div className="p-5">
                 <h5
-                  className="mb-2 min-h-20 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
+                  className="mb-2 min-h-10 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl line-clamp-2"
                   dangerouslySetInnerHTML={{ __html: items.title.rendered }}
                 ></h5>
 
-                <p className="mb-3 min-h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40">
-                  {stripHTMLAndLimit(items.excerpt.rendered)}
-                </p>
+                <p
+                  className="my-5 min-h-28 text-sm font-normal text-gray-700 dark:text-gray-400 md:h-40"
+                  dangerouslySetInnerHTML={{
+                    __html: stripHTMLAndLimit(items.excerpt.rendered),
+                  }}
+                ></p>
                 <p className="pb-4 text-xs text-gray-500 md:text-sm">
                   {formatDateString(items.date)}
                 </p>

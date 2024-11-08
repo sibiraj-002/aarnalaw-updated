@@ -12,19 +12,14 @@ function AllInsights({ searchTerm }) {
       setLoading(true); // Start loading
       try {
         const response = await fetch(
-          `https://docs.aarnalaw.com/wp-json/wp/v2/publications?_embed&per_page=100`,
+          `https://docs.aarnalaw.com/wp-json/wp/v2/publications?_embed&per_page=100`
         );
         const result = await response.json();
-        // console.log("Practice area data", result);
 
         // Ensure the response is an array before setting the data
         if (Array.isArray(result)) {
-          // Sort the data alphabetically by title
-          const sortedData = result.sort((a, b) => {
-            const titleA = a.title.rendered.toLowerCase();
-            const titleB = b.title.rendered.toLowerCase();
-            return titleA.localeCompare(titleB);
-          });
+          // Sort the data by date in descending order (newest to oldest)
+          const sortedData = result.sort((a, b) => new Date(b.date) - new Date(a.date));
           setData(sortedData);
         } else {
           console.error("Expected an array but got:", result);
@@ -42,18 +37,8 @@ function AllInsights({ searchTerm }) {
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
     const monthAbbreviations = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUN",
-      "JUL",
-      "AUG",
-      "SEP",
-      "OCT",
-      "NOV",
-      "DEC",
+      "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+      "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
     ];
 
     return (
@@ -70,7 +55,6 @@ function AllInsights({ searchTerm }) {
     return text.length > 180 ? text.substring(0, 180) + "..." : text;
   };
 
-  // Skeleton loader component
   const SkeletonLoader = () => (
     <div className="flex animate-pulse border border-gray-200 bg-white p-5 shadow dark:border-gray-700 dark:bg-gray-800">
       <div className="flex h-[200px] w-full items-center justify-center bg-gray-300 p-5">
@@ -85,7 +69,7 @@ function AllInsights({ searchTerm }) {
   );
 
   const filteredInsights = data.filter((item) =>
-    item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
+    item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -104,12 +88,10 @@ function AllInsights({ searchTerm }) {
               {formatDateString(item.date)}
             </div>
             <div className="p-5">
-             
-                <h5
-                  className="mb-2 text-xl font-medium tracking-tight text-gray-900 dark:text-white sm:text-xl min-h-14"
-                  dangerouslySetInnerHTML={{ __html: item.title.rendered }}
-                />
-            
+              <h5
+                className="mb-2 text-xl font-medium tracking-tight text-gray-900 dark:text-white sm:text-xl min-h-14 line-clamp-2"
+                dangerouslySetInnerHTML={{ __html: item.title.rendered }}
+              />
               <p
                 className="mb-3 font-normal text-gray-700 dark:text-gray-400 min-h-20"
                 dangerouslySetInnerHTML={{
@@ -117,11 +99,11 @@ function AllInsights({ searchTerm }) {
                 }}
               ></p>
               <Link
-                  href={`/publications/${item.slug}`}
-                  className="font-semibold text-custom-red"
-                >
-                  Read more
-                </Link>
+                href={`/publications/${item.slug}`}
+                className="font-semibold text-custom-red"
+              >
+                Read more
+              </Link>
             </div>
           </div>
         ))

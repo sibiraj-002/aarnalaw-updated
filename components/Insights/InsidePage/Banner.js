@@ -13,7 +13,7 @@ export default function Banner({ title, backgroundImage }) {
     >
       <Image
         src={
-          backgroundImage ? backgroundImage : "/PracticeArea/PracticeAreas.png"
+          backgroundImage ? backgroundImage : "/PracticeArea/Aarna-Law-Banner-img.png"
         }
         width={600}
         height={600}
