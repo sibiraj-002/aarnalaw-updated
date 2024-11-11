@@ -90,7 +90,7 @@ export default function Page({ params }) {
           <p>Published:- {formatDateString(date)}</p>
           <p
             dangerouslySetInnerHTML={{ __html: content }}
-            className="insight-blog py-12"
+            className="insight-blog py-5 overflow-hidden"
           />
         </div>
       </div>
