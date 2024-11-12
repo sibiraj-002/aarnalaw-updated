@@ -4,7 +4,7 @@
     "SERVER": "470",
     "LIVE_PRODUCTION_SERVER_ID": "469",
     "STAG_PRODUCTION_SERVER_ID": "470",
-    "LIVE_SITE_URL_WWW" : "https://aarnalaw-live-updated.vercel.app/",
-    "LIVE_SITE_URL" : "https://aarnalaw-live-updated.vercel.app/",
+    "LIVE_SITE_URL_WWW" : "aarnalaw-live-updated.vercel.app",
+    "LIVE_SITE_URL" : "aarnalaw-live-updated.vercel.app",
     "STAGING_SITE_URL": "localhost"
   }
