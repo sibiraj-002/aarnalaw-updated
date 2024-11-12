@@ -13,6 +13,8 @@ function AllInsights() {
 
   const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
+
+  
   const fetchContent = useCallback(async () => {
     setLoading(true);
 
