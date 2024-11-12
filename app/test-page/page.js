@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import configData from "../../config.json";
-import debounce from "lodash.debounce";
 
 function AllInsights() {
   const [data, setData] = useState([]);
@@ -13,17 +12,14 @@ function AllInsights() {
 
   const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
-
-  
   const fetchContent = useCallback(async () => {
     setLoading(true);
 
     try {
       let server;
-      if (
-        domain === `${configData.LIVE_SITE_URL}` ||
-        domain === `${configData.LIVE_SITE_URL_WWW}`
-      ) {
+
+      // Check if the domain is localhost for local development
+      if (domain === `${configData.LIVE_SITE_URL}`) {
         server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
       } else if (domain === `${configData.STAGING_SITE_URL}`) {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
@@ -31,82 +27,46 @@ function AllInsights() {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
 
-      const [publicationsResponse, categoriesResponse] = await Promise.all([
-        fetch(
-          `${configData.SERVER_URL}live_staging?_embed&categories[]=469&production[]=${server}&status[]=publish&per_page=${page}`,
-        ),
-        fetch(`${configData.SERVER_URL}categories/469`),
-      ]);
+      console.log("Using server:", server);
+
+      const publicationsUrl = `${configData.SERVER_URL}live_staging?_embed&status[]=publish&production_mode[]=${server}&per_page=${page}`;
+
+      console.log("Fetching publications from:", publicationsUrl);
+
+      const publicationsResponse = await fetch(publicationsUrl);
+
+      if (!publicationsResponse.ok) {
+        console.error("Failed to fetch publications:", publicationsResponse.status);
+        return;
+      }
 
       const publicationsData = await publicationsResponse.json();
-      const categoriesData = await categoriesResponse.json();
+
+      console.log("Publications data:", publicationsData);
 
       if (publicationsData.length === 0) {
         setEnd(true);
       } else {
         const sortedData = publicationsData.sort(
-          (a, b) => new Date(b.date) - new Date(a.date),
+          (a, b) => new Date(b.date) - new Date(a.date)
         );
         setData(sortedData);
-        setHasMore(categoriesData.count > data.length);
+        setHasMore(publicationsData.length > data.length);
       }
-
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
     }
-  }, [page]);
+  }, [page, domain, data.length]);
 
-  const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
-    page,
-  ]);
   useEffect(() => {
     fetchContent();
-    debouncedFetchContent();
-  }, [page, debouncedFetchContent]);
-
-  const loadMore = () => {
-    if (data.length >= categoriesData.count) {
-      setEnd(true);
-      setHasMore(false);
-    } else {
-      setPage((oldPage) => oldPage + 5);
-    }
-  };
-
-  const formatDateString = (dateString) => {
-    const date = new Date(dateString);
-    const monthAbbreviations = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUN",
-      "JUL",
-      "AUG",
-      "SEP",
-      "OCT",
-      "NOV",
-      "DEC",
-    ];
-    return (
-      <div className="flex flex-row items-center gap-2 lg:flex-col lg:gap-0">
-        <p className="text-2xl font-bold text-custom-red">{date.getDate()}</p>
-        <p className="font-bold">{monthAbbreviations[date.getMonth()]}</p>
-        <p className="font-bold">{date.getFullYear()}</p>
-      </div>
-    );
-  };
-
-  //   const filteredInsights = data.filter((item) =>
-  //     item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
-  //   );
+  }, [fetchContent]);
 
   return (
     <div className="mx-auto grid w-11/12 gap-4 py-12 lg:grid-cols-2">
-      {data.map((item,index) => (
+      {data.map((item, index) => (
         <div
           className="flex flex-col border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 sm:flex-row"
           key={index}
@@ -120,7 +80,7 @@ function AllInsights() {
             <p
               className="mb-3 min-h-20 font-normal text-gray-700 dark:text-gray-400"
               dangerouslySetInnerHTML={{
-                __html: (item.content.rendered),
+                __html: item.content.rendered,
               }}
             ></p>
             <Link
