@@ -20,14 +20,18 @@ function AllInsights() {
 
     try {
       let server;
-      if (
-        domain === `${configData.LIVE_SITE_URL}`
-      ) {
+      if (domain === `${configData.LIVE_SITE_URL}`) {
         server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+        console.log("live server is working");
+        console.log("Show the Production id", `${configData.LIVE_PRODUCTION_SERVER_ID}`)
       } else if (domain === `${configData.STAGING_SITE_URL}`) {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+        console.log("staging server localhost is working");
+        console.log("Show the Production id", `${configData.STAG_PRODUCTION_SERVER_ID}`)
       } else {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+        console.log("staging server is working");
+        console.log("show")
       }
 
       const [publicationsResponse, categoriesResponse] = await Promise.all([
