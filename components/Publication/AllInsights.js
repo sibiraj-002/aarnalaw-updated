@@ -1,46 +1,91 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import configData from "../../config.json";
+import debounce from "lodash.debounce";
 
 function AllInsights({ searchTerm }) {
-  const [data, setData] = useState([]); // Initialize data state with an empty array
-  const [loading, setLoading] = useState(true); // Initialize loading state
-  const [hasMore, setHasMore] = useState(true); // Initialize hasMore state
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(10);
+  const [end, setEnd] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true); // Start loading
-      try {
-        const response = await fetch(
-          `https://docs.aarnalaw.com/wp-json/wp/v2/publications?_embed&per_page=100`
-        );
-        const result = await response.json();
+  const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
-        // Ensure the response is an array before setting the data
-        if (Array.isArray(result)) {
-          // Sort the data by date in descending order (newest to oldest)
-          const sortedData = result.sort((a, b) => new Date(b.date) - new Date(a.date));
-          setData(sortedData);
-        } else {
-          console.error("Expected an array but got:", result);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Stop loading
+  const fetchContent = useCallback(async () => {
+    setLoading(true);
+
+    try {
+      let server;
+      if (domain === `${configData.LIVE_SITE_URL}` || domain === `${configData.LIVE_SITE_URL_WWW}`) {
+        server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+      } else if (domain === `${configData.STAGING_SITE_URL}`) {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      } else {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-    };
 
-    fetchData();
-  }, []);
+      const [publicationsResponse, categoriesResponse] = await Promise.all([
+        fetch(
+          `${configData.SERVER_URL}publications?_embed&categories[]=469&production[]=${server}&status[]=publish&per_page=${page}` 
+        ),
+        fetch(`${configData.SERVER_URL}categories/469`),
+      ]);
+
+      const publicationsData = await publicationsResponse.json();
+      const categoriesData = await categoriesResponse.json();
+
+      if (publicationsData.length === 0) {
+        setEnd(true);
+      } else {
+        const sortedData = publicationsData.sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        );
+        setData(sortedData);
+        setHasMore(categoriesData.count > data.length);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  }, [page]);
+
+  const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
+    page,
+  ]);
+  useEffect(() => {
+    fetchContent();
+    debouncedFetchContent();
+  }, [page, debouncedFetchContent]);
+
+  const loadMore = () => {
+    if (data.length >= categoriesData.count) {
+      setEnd(true);
+      setHasMore(false);
+    } else {
+      setPage((oldPage) => oldPage + 5);
+    }
+  };
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
     const monthAbbreviations = [
-      "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-      "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
+      "JAN",
+      "FEB",
+      "MAR",
+      "APR",
+      "MAY",
+      "JUN",
+      "JUL",
+      "AUG",
+      "SEP",
+      "OCT",
+      "NOV",
+      "DEC",
     ];
-
     return (
       <div className="flex flex-row items-center gap-2 lg:flex-col lg:gap-0">
         <p className="text-2xl font-bold text-custom-red">{date.getDate()}</p>
@@ -69,7 +114,7 @@ function AllInsights({ searchTerm }) {
   );
 
   const filteredInsights = data.filter((item) =>
-    item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())
+    item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -89,11 +134,11 @@ function AllInsights({ searchTerm }) {
             </div>
             <div className="p-5">
               <h5
-                className="mb-2 text-xl font-medium tracking-tight text-gray-900 dark:text-white sm:text-xl min-h-14 line-clamp-2"
+                className="mb-2 line-clamp-2 min-h-14 text-xl font-medium tracking-tight text-gray-900 dark:text-white sm:text-xl"
                 dangerouslySetInnerHTML={{ __html: item.title.rendered }}
               />
               <p
-                className="mb-3 font-normal text-gray-700 dark:text-gray-400 min-h-20"
+                className="mb-3 min-h-20 font-normal text-gray-700 dark:text-gray-400"
                 dangerouslySetInnerHTML={{
                   __html: stripHTMLAndLimit(item.content.rendered),
                 }}
@@ -116,7 +161,7 @@ function AllInsights({ searchTerm }) {
       {!loading && hasMore && filteredInsights.length > 0 && (
         <div className="col-span-1 mt-6 flex justify-center md:col-span-2">
           <button
-            onClick={() => setHasMore(false)} // Adjust to implement a real load more function
+            onClick={loadMore}
             className="bg-custom-red px-4 py-2 text-white"
           >
             Load More
