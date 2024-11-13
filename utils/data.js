@@ -34,13 +34,13 @@ export const homeBanner = [
     bannerText: "Unlocking Abundance",
     bannerPara: "",
   },
-  {
-    bannerUrl: "/banner/desktop_home_banner_2.jpg",
-    mobileBannerUrl: "/banner/mobile_home_banner_02.jpg",
-    bannerText: "Client-Centric Problem Solving",
-    bannerPara:
-      "We are a counsel-led Indian legal advisory firm, representing India and people across the world in diverse areas of expertise.",
-  },
+  // {
+  //   bannerUrl: "/banner/desktop_home_banner_2.jpg",
+  //   mobileBannerUrl: "/banner/mobile_home_banner_02.jpg",
+  //   bannerText: "Client-Centric Problem Solving",
+  //   bannerPara:
+  //     "We are a counsel-led Indian legal advisory firm, representing India and people across the world in diverse areas of expertise.",
+  // },
 ];
 // Home/Images/
 export const testimonials = [
