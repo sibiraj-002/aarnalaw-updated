@@ -7,7 +7,9 @@ import configData from "../../config.json";
 import debounce from "lodash.debounce";
 
 
-const domain = window.location.hostname;
+// const domain = window.location.hostname;
+const domain = typeof window !== 'undefined' ? window.location.hostname : '';
+
 
 function AllInsights({ searchTerm }) {
   const [data, setData] = useState([]);
@@ -62,6 +64,13 @@ function AllInsights({ searchTerm }) {
   const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
     page,
   ]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      initFlowbite();
+    }
+  }, []);
+  
   useEffect(() => {
     fetchContent();
     debouncedFetchContent();
