@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,10 +5,7 @@ import { initFlowbite } from "flowbite";
 import configData from "../../config.json";
 import debounce from "lodash.debounce";
 
-
-// const domain = window.location.hostname;
-const domain = typeof window !== 'undefined' ? window.location.hostname : '';
-
+const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
 function AllInsights({ searchTerm }) {
   const [data, setData] = useState([]);
@@ -18,8 +14,6 @@ function AllInsights({ searchTerm }) {
   const [hasMore, setHasMore] = useState(true);
   const [archives, setArchives] = useState([]);
   const [selectedArchive, setSelectedArchive] = useState(null);
-  const [selectedYear, setSelectedYear] = useState(null); // State for selected year
-
 
   const fetchContent = useCallback(async () => {
     setLoading(true);
@@ -32,21 +26,21 @@ function AllInsights({ searchTerm }) {
       } else {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-
-      const archiveQuery = selectedArchive ? `&archive=${selectedArchive.id}` : "";
-
+  
+      const archiveQuery = selectedArchive ? `&archives=${selectedArchive}` : "";
+  
       const [publicationsResponse, categoriesResponse] = await Promise.all([
         fetch(
-          `${configData.SERVER_URL}posts?_embed&categories[]=13&status[]=publish&production_mode[]=${server}&per_page=${page}`,
+          `${configData.SERVER_URL}posts?_embed&categories[]=13&status[]=publish&production_mode[]=${server}&per_page=${page}${archiveQuery}`,
         ),
         fetch(`${configData.SERVER_URL}categories/13`),
       ]);
-
+  
       const publicationsData = await publicationsResponse.json();
       const categoriesData = await categoriesResponse.json();
-
+  
       if (publicationsData.length === 0) {
-        setEnd(true);
+        setHasMore(false);
       } else {
         const sortedData = publicationsData.sort(
           (a, b) => new Date(b.date) - new Date(a.date),
@@ -60,21 +54,23 @@ function AllInsights({ searchTerm }) {
       setLoading(false);
     }
   }, [page, selectedArchive]);
+  
 
   const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
     page,
+    selectedArchive,
   ]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       initFlowbite();
     }
   }, []);
-  
+
   useEffect(() => {
     fetchContent();
     debouncedFetchContent();
-  }, [page, debouncedFetchContent]);
+  }, [page, selectedArchive, debouncedFetchContent]);
 
   useEffect(() => {
     const fetchArchives = async () => {
@@ -83,7 +79,6 @@ function AllInsights({ searchTerm }) {
           `https://docs.aarnalaw.com/wp-json/wp/v2/archives`,
         );
         const archivesData = await response.json();
-        console.log("second");
         setArchives(archivesData);
       } catch (error) {
         console.error("Error fetching archives:", error);
@@ -93,23 +88,22 @@ function AllInsights({ searchTerm }) {
     fetchArchives();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchArchives = async () => {
-  //     try {
-  //       const response = await fetch(`${configData.SERVER_URL}archives`);
-  //       const archivesData = await response.json();
-  //       setArchives(archivesData);
-  //       console.log("Archives",response);
-  //     } catch (error) {
-  //       console.error("Error fetching archives:", error);
-  //     }
-  //   };
-  //   fetchArchives();
-  // }, []);
-
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
-    const monthAbbreviations = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC",];
+    const monthAbbreviations = [
+      "JAN",
+      "FEB",
+      "MAR",
+      "APR",
+      "MAY",
+      "JUN",
+      "JUL",
+      "AUG",
+      "SEP",
+      "OCT",
+      "NOV",
+      "DEC",
+    ];
     const day = date.getDate();
     const month = monthAbbreviations[date.getMonth()];
     const year = date.getFullYear();
@@ -131,7 +125,7 @@ function AllInsights({ searchTerm }) {
     </div>
   );
 
-  const loadMorePosts = () => setPage((prevPage) => prevPage + 1);
+  const loadMorePosts = () => setPage((prevPage) => prevPage + 6);
 
   const filteredInsights = data.filter((data) =>
     data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -151,15 +145,6 @@ function AllInsights({ searchTerm }) {
               key={items.id}
             >
               <a href="#">
-                {/* {items.featured_image_url && (
-                  <Image
-                    src={items.featured_image_url}
-                    alt={items.title.rendered}
-                    className="h-[200px] w-full rounded-t-lg object-cover md:h-[300px]"
-                    width={500}
-                    height={300}
-                  />
-                )} */}
                 {items._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
                   <Image
                     src={items._embedded["wp:featuredmedia"][0].source_url}
@@ -228,15 +213,16 @@ function AllInsights({ searchTerm }) {
             .slice()
             .reverse()
             .map((archive) => (
+              // Update the onClick handler in your Archive buttons
               <button
                 onClick={() => {
-                  setData([]);
-                  setSelectedArchive(archive);
-                  setPage(1);
+                  setData([]); // Clear previous data
+                  setSelectedArchive(archive.id); // Set the selected archive by ID
+                  setPage(6); // Reset page for fresh fetch
                 }}
                 className={`flex w-full border-b border-custom-red p-1 ${
-                  selectedArchive === archive
-                    ? "font-bold text-custom-red border-b-2"
+                  selectedArchive === archive.id
+                    ? "border-b-2 font-bold text-custom-red"
                     : "hover:border-b-2 hover:text-custom-red"
                 }`}
                 key={archive.id}
