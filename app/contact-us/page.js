@@ -10,14 +10,14 @@ export const metadata = {
     "Contact us, the premier Bangalore-based law firm, for expert legal assistance and guidance.",
   metadataBase: new URL("https://www.aarnalaw.com"),
   alternates: {
-    canonical: "/careers",
+    canonical: "/contact-us",
   },
   openGraph: {
     title:
       "Get in Touch with Aarna Law | Trusted Bangalore-based Legal Experts",
     description:
       "Contact us, the premier Bangalore-based law firm, for expert legal assistance and guidance.",
-    url: "/careers",
+    url: "/contact-us",
     images: "/aarna-law.png",
   },
 };
@@ -26,7 +26,7 @@ function page() {
   return (
     <>
       <Banner />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Address />
       <ContactUs />
     </>

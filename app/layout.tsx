@@ -11,13 +11,13 @@ export const metadata: Metadata = {
   description:
     "Discover award-winning legal services in Bangalore. Aarna Law offers full-service representation with expertise and dedication.",
   alternates: {
-    canonical: "/about-us",
+    canonical: "https://aarnalaw.com/",
   },
   openGraph: {
     title: "Expert Legal Representation | Aarna Law - Advocates & Consultants",
     description:
       "Discover award-winning legal services in Bangalore. Aarna Law offers full-service representation with expertise and dedication.",
-    url: "/about-us",
+    url: "https://aarnalaw.com/",
     images: "/aarna-law.png",
   },
 };
@@ -40,6 +40,26 @@ export default function RootLayout({
         {children}
         <Footer />
         <ScrollToTop />
+        
+        {/* Schema */}
+        <Script
+          id="website-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Aarna Law - Advocates & Consultants",
+              url: "https://aarnalaw.com/",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://aarnalaw.com/search?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+          strategy="afterInteractive"
+        />
 
         {/* GTM Noscript */}
         <noscript>

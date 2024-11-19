@@ -123,7 +123,7 @@ const Testimonials = () => {
                       {item.desc}
                     </p>
                   </div>
-                  <Link href="/contact-us" className="text-custom-blue">
+                  <Link href="/testimonials" className="text-custom-blue">
                     Read more
                   </Link>
                 </div>
