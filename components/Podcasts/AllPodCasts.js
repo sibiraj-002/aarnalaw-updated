@@ -57,25 +57,17 @@ function AllPodCasts({ searchTerm }) {
   };
 
   const handleSeek = (index, newTime, newProgress) => {
-    // Update the current time for the specific podcast
-    const updatedCurrentTime = [currentTime];
-    updatedCurrentTime[index] = newTime;
-    setCurrentTime((prev) => ({
-      ...prev,
-      [index]: newTime,
-    }));
-
-    // Update the progress for the specific podcast
-    const updatedProgress = [progress];
-    updatedProgress[index] = newProgress;
-    setProgress(updatedProgress);
-
-    // Assuming you have a reference to the audio elements
-    const audioElement = document.getElementById(`audio-${index}`);
+    // Update the current time and progress for the specific podcast
+    setCurrentTime(prev => ({ ...prev, [index]: newTime }));
+    setProgress(prev => ({ ...prev, [index]: newProgress }));
+  
+    // Seek audio element
+    const audioElement = audioRefs.current[index];
     if (audioElement) {
       audioElement.currentTime = newTime;
     }
   };
+  
 
   useEffect(() => {
     const fetchData = async () => {

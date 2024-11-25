@@ -34,7 +34,7 @@ const FloatingAudioPlayer = ({
   return (
     <div className="fixed bottom-0 z-50 mx-auto w-full bg-black/60 shadow-lg">
       <div
-        className="h-2.5 w-full bg-gray-200 cursor-pointer"
+        className="h-2.5 w-full cursor-pointer bg-gray-200"
         onClick={handleProgressClick} // Add the click event handler
       >
         <div
@@ -42,10 +42,10 @@ const FloatingAudioPlayer = ({
           style={{ width: `${progress[currentPodcastIndex] || 0}%` }}
         />
       </div>
-      <div className="mx-auto lg:w-11/12 p-4">
+      <div className="mx-auto p-4 lg:w-11/12">
         <div className="flex items-center justify-between">
-          <div className="flex flex-col lg:flex-row w-full justify-between ">
-            <div className="lg:w-1/2 w-full">
+          <div className="flex w-full flex-col justify-between lg:flex-row ">
+            <div className="w-full lg:w-1/2">
               <h5
                 className="text-sm font-bold text-white"
                 dangerouslySetInnerHTML={{
