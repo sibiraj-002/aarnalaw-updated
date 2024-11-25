@@ -26,7 +26,7 @@ function page() {
   return (
     <>
       <Banner />
-      {/* <Testimonials /> */}
+      <Testimonials />
       <Address />
       <ContactUs />
     </>
