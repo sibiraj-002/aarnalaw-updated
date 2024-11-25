@@ -4,6 +4,7 @@ import Link from "next/link";
 import { spotify, linkedIn } from "../../utils/icons";
 import { legalLinks } from "../../utils/data";
 import ContactModal from "@/components/ModalContact/page";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 
 export default function Footer() {
   return (
@@ -67,6 +68,7 @@ export default function Footer() {
           © 2024 Aarna Law. All Rights Reserved
         </p>
       </div>
+      <ScrollToTop />
     </div>
   );
 }

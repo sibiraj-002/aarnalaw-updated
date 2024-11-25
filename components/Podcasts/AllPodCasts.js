@@ -58,16 +58,15 @@ function AllPodCasts({ searchTerm }) {
 
   const handleSeek = (index, newTime, newProgress) => {
     // Update the current time and progress for the specific podcast
-    setCurrentTime(prev => ({ ...prev, [index]: newTime }));
-    setProgress(prev => ({ ...prev, [index]: newProgress }));
-  
+    setCurrentTime((prev) => ({ ...prev, [index]: newTime }));
+    setProgress((prev) => ({ ...prev, [index]: newProgress }));
+
     // Seek audio element
     const audioElement = audioRefs.current[index];
     if (audioElement) {
       audioElement.currentTime = newTime;
     }
   };
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -216,7 +215,7 @@ function AllPodCasts({ searchTerm }) {
               </div>
               <div className="p-5">
                 <h5
-                  className="mb-2 min-h-10 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+                  className="mb-2 min-h-16 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
                   dangerouslySetInnerHTML={{ __html: item.title?.rendered }}
                 ></h5>
                 <p
