@@ -14,16 +14,31 @@ const FloatingAudioPlayer = ({
   handleNext,
   handlePrevious,
   formatTime,
+  handleSeek, // add handleSeek function
 }) => {
   if (currentPodcastIndex === null) return null; // Don't render if no podcast is playing
 
   const currentPodcast = podcasts[currentPodcastIndex];
 
+  // Function to handle skipping (seek) within the audio
+  const handleProgressClick = (e) => {
+    const progressBar = e.target;
+    const clickPosition = e.nativeEvent.offsetX; // Get click position within the progress bar
+    const newProgress = (clickPosition / progressBar.offsetWidth) * 100;
+    const newTime = (newProgress / 100) * duration[currentPodcastIndex];
+
+    // Call the handleSeek function to update the audio time and progress
+    handleSeek(currentPodcastIndex, newTime, newProgress);
+  };
+
   return (
     <div className="fixed bottom-0 z-50 mx-auto w-full bg-black/60 shadow-lg">
-      <div className="h-2.5 w-full  bg-gray-200">
+      <div
+        className="h-2.5 w-full bg-gray-200 cursor-pointer"
+        onClick={handleProgressClick} // Add the click event handler
+      >
         <div
-          className="h-2.5  bg-red-500"
+          className="h-2.5 bg-red-500"
           style={{ width: `${progress[currentPodcastIndex] || 0}%` }}
         />
       </div>
@@ -66,7 +81,6 @@ const FloatingAudioPlayer = ({
                   </button>
                 </div>
                 <div>
-                  {" "}
                   <button
                     onClick={handleNext}
                     className="flex size-10 items-center justify-center rounded-full bg-white text-2xl"

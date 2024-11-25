@@ -56,6 +56,27 @@ function AllPodCasts({ searchTerm }) {
     handlePlayPause(prevIndex, data[prevIndex].player_link);
   };
 
+  const handleSeek = (index, newTime, newProgress) => {
+    // Update the current time for the specific podcast
+    const updatedCurrentTime = [currentTime];
+    updatedCurrentTime[index] = newTime;
+    setCurrentTime((prev) => ({
+      ...prev,
+      [index]: newTime,
+    }));
+
+    // Update the progress for the specific podcast
+    const updatedProgress = [progress];
+    updatedProgress[index] = newProgress;
+    setProgress(updatedProgress);
+
+    // Assuming you have a reference to the audio elements
+    const audioElement = document.getElementById(`audio-${index}`);
+    if (audioElement) {
+      audioElement.currentTime = newTime;
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -206,22 +227,23 @@ function AllPodCasts({ searchTerm }) {
                   className="mb-2 min-h-10 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
                   dangerouslySetInnerHTML={{ __html: item.title?.rendered }}
                 ></h5>
-                <p className="text-gray-700 dark:text-gray-300">
-                  {expandedExcerpt[item.id]
-                    ? item.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "")
-                    : item.excerpt.rendered
-                        .replace(/<\/?[^>]+(>|$)/g, "")
-                        .slice(0, 100)}
-                  {item.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "").length >
-                    100 && (
-                    <button
-                      onClick={() => toggleExcerpt(item.id)}
-                      className="ml-2 text-custom-red"
-                    >
-                      {expandedExcerpt[item.id] ? "Read Less" : "Read More"}
-                    </button>
-                  )}
-                </p>
+                <p
+                  className="text-gray-700 dark:text-gray-300"
+                  dangerouslySetInnerHTML={{
+                    __html: expandedExcerpt[item.id]
+                      ? item.excerpt.rendered
+                      : item.excerpt.rendered.slice(0, 100),
+                  }}
+                ></p>
+                {item.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "").length >
+                  100 && (
+                  <button
+                    onClick={() => toggleExcerpt(item.id)}
+                    className="ml-2 text-custom-red"
+                  >
+                    {expandedExcerpt[item.id] ? "Read Less" : "Read More"}
+                  </button>
+                )}
               </div>
 
               {item.player_link && (
@@ -237,7 +259,18 @@ function AllPodCasts({ searchTerm }) {
                       {formatTime(currentTime[index] || 0)} /{" "}
                       {formatTime(duration[index] || 0)}
                     </span>
-                    <div className="mb-1 h-2.5 w-full rounded-full bg-gray-200">
+                    <div
+                      className="relative mb-1 h-2.5 w-full cursor-pointer rounded-full bg-gray-200"
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const clickPosition = e.clientX - rect.left; // Click position relative to the progress bar
+                        const newTime =
+                          (clickPosition / e.currentTarget.offsetWidth) *
+                          (duration[index] || 0); // Calculate the new time
+                        const audio = audioRefs.current[index];
+                        audio.currentTime = newTime; // Seek audio
+                      }}
+                    >
                       <div
                         className="h-2.5 rounded-full bg-red-500"
                         style={{ width: `${progress[index] || 0}%` }}
@@ -276,6 +309,7 @@ function AllPodCasts({ searchTerm }) {
         podcasts={data}
         handlePlayPause={handlePlayPause}
         handleVolumeToggle={handleVolumeToggle}
+        handleSeek={handleSeek}
         progress={progress}
         currentTime={currentTime}
         duration={duration}
