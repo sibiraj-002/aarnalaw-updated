@@ -1,63 +1,76 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { initFlowbite } from "flowbite";
+import debounce from "lodash.debounce";
+import configData from "../../config.json";
 
+
+const domain = typeof window !== "undefined" ? window.location.hostname : "";
 function AllInsights({ searchTerm }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        let url = `https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${page}&categories=9`;
-        const response = await fetch(url);
-        const result = await response.json();
-
-        if (Array.isArray(result)) {
-          if (result.length < 6) setHasMore(false);
-          const dataWithImages = await Promise.all(
-            result.map(async (item) => {
-              if (item.featured_media) {
-                try {
-                  const mediaResponse = await fetch(
-                    `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`,
-                  );
-                  const mediaResult = await mediaResponse.json();
-                  item.featured_image_url = mediaResult.source_url || null;
-                } catch (error) {
-                  item.featured_image_url = null;
-                }
-              } else {
-                item.featured_image_url = null;
-              }
-              return item;
-            }),
-          );
-          setData((prevData) => {
-            const newData = dataWithImages.filter(
-              (newPost) =>
-                !prevData.some(
-                  (existingPost) => existingPost.id === newPost.id,
-                ),
-            );
-            return [...prevData, ...newData];
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-        initFlowbite(); // Initialize Flowbite after the data is loaded
+  const fetchContent = useCallback(async () => {
+    setLoading(true);
+    try {
+      let server;
+      if (domain === `${configData.LIVE_SITE_URL}`) {
+        server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+        console.log("working")
+      } else if (domain === `${configData.STAGING_SITE_URL}`) {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      } else {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-    };
-
-    fetchData();
+  
+    
+  
+      const [publicationsResponse, categoriesResponse] = await Promise.all([
+        fetch(
+          `${configData.SERVER_URL}posts?_embed&categories[]=9&status[]=publish&production_mode[]=${server}&per_page=${page}${archiveQuery}`,
+        ),
+        fetch(`${configData.SERVER_URL}categories/9`),
+      ]);
+  
+      const publicationsData = await publicationsResponse.json();
+      const categoriesData = await categoriesResponse.json();
+  
+      if (publicationsData.length === 0) {
+        setHasMore(false);
+      } else {
+        const sortedData = publicationsData.sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        );
+        setData(sortedData);
+        setHasMore(categoriesData.count > data.length);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
   }, [page]);
+
+  const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
+    page,
+    
+  ]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      initFlowbite();
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchContent();
+    debouncedFetchContent();
+  }, [page, debouncedFetchContent]);
+
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
