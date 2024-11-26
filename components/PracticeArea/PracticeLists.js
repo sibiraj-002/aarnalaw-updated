@@ -22,34 +22,33 @@ function PracticeLists() {
       } else {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-  
+
       const practiceAreaResponse = await fetch(
-        `${configData.SERVER_URL}practice-areas?_embed&status[]=publish&production_mode[]=${server}&per_page=${page}`
+        `${configData.SERVER_URL}practice-areas?_embed&status[]=publish&production_mode[]=${server}&per_page=${page}`,
       );
-  
+
       const practiceAreaData = await practiceAreaResponse.json();
-  
+
       if (practiceAreaData.length === 0) {
         setHasMore(false);
       } else {
         const sortedData = practiceAreaData.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
+          (a, b) => new Date(b.date) - new Date(a.date),
         );
         setData(sortedData);
         setHasMore(practiceAreaData.length === page); // Check if more pages are available
       }
-  
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
     }
   }, [page, domain]);
-  
+
   useEffect(() => {
     fetchContent();
   }, [page, fetchContent]);
-  
 
   return (
     <div>
