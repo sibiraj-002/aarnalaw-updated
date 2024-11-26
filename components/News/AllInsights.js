@@ -197,7 +197,6 @@ function AllNews({ searchTerm }) {
           </div>
         )}
 
-
         {/* Load More Button */}
         {!loading && data.length >= 6 && hasMore && (
           <div
