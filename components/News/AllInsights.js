@@ -198,9 +198,6 @@ function AllNews({ searchTerm }) {
         )}
 
 
-
-        
-
         {/* Load More Button */}
         {!loading && data.length >= 6 && hasMore && (
           <div
