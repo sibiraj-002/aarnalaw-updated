@@ -85,7 +85,7 @@ const Podcasts = () => {
         // Map the data to include the cover image
         const transformedData = sortedData.map((item) => ({
           ...item,
-          imageUrl: item.meta?.cover_image || "", // Use meta.cover_image as imageUrl
+          imageUrl: item.episode_player_image || "", // Use meta.cover_image as imageUrl
         }));
 
         setPodcasts(transformedData);

@@ -104,31 +104,15 @@ function AllPodCasts({ searchTerm }) {
         return;
       }
   
-      const dataWithImages = await Promise.all(
-        result.map(async (item) => {
-          if (item.featured_media) {
-            try {
-              const mediaResponse = await fetch(
-                `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`
-              );
-              const mediaResult = await mediaResponse.json();
-              item.featured_image_url = mediaResult.source_url || null;
-            } catch (error) {
-              console.error(`Error fetching media for post ${item.id}:`, error);
-              item.featured_image_url = null;
-            }
-          } else {
-            item.featured_image_url = null;
-          }
-          return item;
-        })
-      );
+      const transformedData = result.map((item) => ({
+        ...item,
+        featured_image_url: item.episode_featured_image || "", // Use episode_featured_image for the featured image
+      }));
   
       setData((prevData) => [
         ...prevData,
-        ...dataWithImages.filter(
-          (newPost) =>
-            !prevData.some((prevPost) => prevPost.id === newPost.id)
+        ...transformedData.filter(
+          (newPost) => !prevData.some((prevPost) => prevPost.id === newPost.id)
         ),
       ]);
       setHasMore(result.length === page);
@@ -139,6 +123,7 @@ function AllPodCasts({ searchTerm }) {
       setError("Something went wrong. Please try again later.");
     }
   }, [page, domain]);
+  
   
 
 
@@ -257,7 +242,7 @@ useEffect(() => {
                   100 && (
                   <button
                     onClick={() => toggleExcerpt(item.id)}
-                    className="ml-2 text-custom-red"
+                    className="text-custom-red"
                   >
                     {expandedExcerpt[item.id] ? "Read Less" : "Read More"}
                   </button>
