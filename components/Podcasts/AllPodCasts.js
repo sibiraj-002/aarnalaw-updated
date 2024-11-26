@@ -1,15 +1,16 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef ,useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { play, pause, sound, mute, nextIcon, prevIcon } from "@/utils/icons";
 import FloatingAudioPlayer from "./FloatingAudioPlayer";
 import { initFlowbite } from "flowbite";
+import configData from "../../config.json";
 
 function AllPodCasts({ searchTerm }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(6);
   const [hasMore, setHasMore] = useState(true);
   const [currentPodcastIndex, setCurrentPodcastIndex] = useState(null);
   const [volume, setVolume] = useState(1.0);
@@ -18,8 +19,11 @@ function AllPodCasts({ searchTerm }) {
   const [currentTime, setCurrentTime] = useState({});
   const [duration, setDuration] = useState({});
   const [expandedExcerpt, setExpandedExcerpt] = useState({});
+  const [error, setError] = useState(null); 
 
   const audioRefs = useRef({});
+
+  const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
   const handlePlayPause = (index, playerLink) => {
     const audio = audioRefs.current[index];
@@ -68,61 +72,84 @@ function AllPodCasts({ searchTerm }) {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `https://docs.aarnalaw.com/wp-json/wp/v2/podcast?_embed&per_page=6&page=${page}`,
-        );
-        if (!response.ok) throw new Error("Failed to fetch data");
-        const result = await response.json();
 
-        if (Array.isArray(result)) {
-          if (result.length < 6) setHasMore(false);
-          const dataWithImages = await Promise.all(
-            result.map(async (item) => {
-              if (item.featured_media) {
-                try {
-                  const mediaResponse = await fetch(
-                    `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`,
-                  );
-                  const mediaResult = await mediaResponse.json();
-                  item.featured_image_url = mediaResult.source_url || null;
-                } catch (error) {
-                  console.error(
-                    `Error fetching media for post ${item.id}:`,
-                    error,
-                  );
-                  item.featured_image_url = null;
-                }
-              } else {
-                item.featured_image_url = null;
-              }
-              return item;
-            }),
-          );
-          setData((prevData) => [
-            ...prevData,
-            ...dataWithImages.filter(
-              (newPost) =>
-                !prevData.some(
-                  (existingPost) => existingPost.id === newPost.id,
-                ),
-            ),
-          ]);
-        } else {
-          console.error("Expected an array but got:", result);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+
+  const fetchContent = useCallback(async () => {
+    setLoading(true);
+    setError(null); // Reset the error state before each fetch
+  
+    try {
+      let server;
+      if (domain === `${configData.LIVE_SITE_URL}` || domain === `${configData.LIVE_SITE_URL_WWW}`) {
+        server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+      } else if (domain === `${configData.STAGING_SITE_URL}`) {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      } else {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-    };
-    fetchData();
-    initFlowbite(); // Initialize Flowbite after the data is loaded
-  }, [page]);
+  
+      const publicationsResponse = await fetch(
+        `${configData.SERVER_URL}podcast?_embed&status[]=publish&production_mode[]=${server}&per_page=${page}`
+      );
+  
+      if (!publicationsResponse.ok) {
+        throw new Error("Failed to fetch data");
+      }
+  
+      const result = await publicationsResponse.json();
+  
+      if (result.length === 0) {
+        setHasMore(false);
+        setLoading(false);
+        return;
+      }
+  
+      const dataWithImages = await Promise.all(
+        result.map(async (item) => {
+          if (item.featured_media) {
+            try {
+              const mediaResponse = await fetch(
+                `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`
+              );
+              const mediaResult = await mediaResponse.json();
+              item.featured_image_url = mediaResult.source_url || null;
+            } catch (error) {
+              console.error(`Error fetching media for post ${item.id}:`, error);
+              item.featured_image_url = null;
+            }
+          } else {
+            item.featured_image_url = null;
+          }
+          return item;
+        })
+      );
+  
+      setData((prevData) => [
+        ...prevData,
+        ...dataWithImages.filter(
+          (newPost) =>
+            !prevData.some((prevPost) => prevPost.id === newPost.id)
+        ),
+      ]);
+      setHasMore(result.length === page);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+      setError("Something went wrong. Please try again later.");
+    }
+  }, [page, domain]);
+  
+
+
+  
+
+// Run fetchContent on page change
+useEffect(() => {
+  fetchContent();
+}, [page, fetchContent]);
+
+
 
   useEffect(() => {
     const currentAudioRefs = audioRefs.current;
