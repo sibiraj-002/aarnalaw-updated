@@ -28,7 +28,7 @@ function AllNews({ searchTerm }) {
 
       const [newsResponse, categoriesResponse] = await Promise.all([
         fetch(
-          `${configData.SERVER_URL}posts?_embed&categories[]=9&status[]=publish&production_mode[]=${server}&per_page=${page}`,
+          `${configData.SERVER_URL}posts?_embed&categories[]=9&status[]=publish&production_mode[]=${server}&per_page=${page}`
         ),
         fetch(`${configData.SERVER_URL}categories/9`),
       ]);
@@ -40,7 +40,7 @@ function AllNews({ searchTerm }) {
         setHasMore(false);
       } else {
         const sortedData = newsData.sort(
-          (a, b) => new Date(b.date) - new Date(a.date),
+          (a, b) => new Date(b.date) - new Date(a.date)
         );
         setData(sortedData);
         setHasMore(categoriesData.count > data.length);
@@ -52,7 +52,7 @@ function AllNews({ searchTerm }) {
           if (item.featured_media) {
             try {
               const mediaResponse = await fetch(
-                `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`,
+                `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`
               );
               const mediaResult = await mediaResponse.json();
               item.featured_image_url = mediaResult.source_url || null;
@@ -63,7 +63,7 @@ function AllNews({ searchTerm }) {
             item.featured_image_url = null;
           }
           return item;
-        }),
+        })
       );
 
       setData(dataWithImages);
@@ -129,7 +129,7 @@ function AllNews({ searchTerm }) {
   const loadMorePosts = () => setPage((prevPage) => prevPage + 1);
 
   const filteredInsights = data.filter((data) =>
-    data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
+    data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -197,9 +197,12 @@ function AllNews({ searchTerm }) {
           </div>
         )}
 
-        {!loading && hasMore && (
+        {/* Load More Button */}
+        {!loading && data.length >= 6 && hasMore && (
           <div
-            className={`col-span-1 mt-6 justify-center md:col-span-2 ${filteredInsights.length === 0 ? "hidden" : "flex"}`}
+            className={`col-span-1 mt-6 justify-center md:col-span-2 ${
+              filteredInsights.length === 0 ? "hidden" : "flex"
+            }`}
           >
             <button
               onClick={loadMorePosts}
@@ -210,7 +213,8 @@ function AllNews({ searchTerm }) {
           </div>
         )}
 
-        {!hasMore && (
+        {/* No More Details Message */}
+        {!loading && (!hasMore || data.length < 6) && (
           <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
             No more details available
           </div>
