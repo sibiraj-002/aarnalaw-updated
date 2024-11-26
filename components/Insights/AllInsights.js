@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { initFlowbite } from "flowbite";
-import configData from "../../config.json";
+import configData from "../../config.json"; 
 import debounce from "lodash.debounce";
 
 const domain = typeof window !== "undefined" ? window.location.hostname : "";

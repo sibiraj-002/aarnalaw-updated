@@ -6,9 +6,9 @@ import { initFlowbite } from "flowbite";
 import debounce from "lodash.debounce";
 import configData from "../../config.json";
 
-
 const domain = typeof window !== "undefined" ? window.location.hostname : "";
-function AllInsights({ searchTerm }) {
+
+function AllNews({ searchTerm }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -20,34 +20,53 @@ function AllInsights({ searchTerm }) {
       let server;
       if (domain === `${configData.LIVE_SITE_URL}`) {
         server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
-        console.log("working")
       } else if (domain === `${configData.STAGING_SITE_URL}`) {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       } else {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-  
-    
-  
-      const [publicationsResponse, categoriesResponse] = await Promise.all([
+
+      const [newsResponse, categoriesResponse] = await Promise.all([
         fetch(
-          `${configData.SERVER_URL}posts?_embed&categories[]=9&status[]=publish&production_mode[]=${server}&per_page=${page}${archiveQuery}`,
+          `${configData.SERVER_URL}posts?_embed&categories[]=9&status[]=publish&production_mode[]=${server}&per_page=${page}`,
         ),
         fetch(`${configData.SERVER_URL}categories/9`),
       ]);
-  
-      const publicationsData = await publicationsResponse.json();
+
+      const newsData = await newsResponse.json();
       const categoriesData = await categoriesResponse.json();
-  
-      if (publicationsData.length === 0) {
+
+      if (newsData.length === 0) {
         setHasMore(false);
       } else {
-        const sortedData = publicationsData.sort(
+        const sortedData = newsData.sort(
           (a, b) => new Date(b.date) - new Date(a.date),
         );
         setData(sortedData);
         setHasMore(categoriesData.count > data.length);
       }
+
+      // Fetch images for each post
+      const dataWithImages = await Promise.all(
+        newsData.map(async (item) => {
+          if (item.featured_media) {
+            try {
+              const mediaResponse = await fetch(
+                `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`,
+              );
+              const mediaResult = await mediaResponse.json();
+              item.featured_image_url = mediaResult.source_url || null;
+            } catch (error) {
+              item.featured_image_url = null;
+            }
+          } else {
+            item.featured_image_url = null;
+          }
+          return item;
+        }),
+      );
+
+      setData(dataWithImages);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -57,7 +76,6 @@ function AllInsights({ searchTerm }) {
 
   const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
     page,
-    
   ]);
 
   useEffect(() => {
@@ -70,7 +88,6 @@ function AllInsights({ searchTerm }) {
     fetchContent();
     debouncedFetchContent();
   }, [page, debouncedFetchContent]);
-
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -129,7 +146,7 @@ function AllInsights({ searchTerm }) {
               key={items.id}
             >
               <a href="#">
-                {items.featured_image_url && (
+                {items.featured_image_url ? (
                   <Image
                     src={items.featured_image_url}
                     alt={items.title.rendered}
@@ -137,8 +154,19 @@ function AllInsights({ searchTerm }) {
                     width={500}
                     height={300}
                   />
+                ) : (
+                  <div className="h-[200px] w-full rounded-t-lg bg-gray-200">
+                    <Image
+                      src="/PracticeArea/Aarna-Law-Banner-img.png" // Path to your default image
+                      alt="Default Image"
+                      className="h-full w-full object-cover"
+                      width={500}
+                      height={300}
+                    />
+                  </div>
                 )}
               </a>
+
               <div className="p-5">
                 <h5
                   className="mb-2 min-h-20 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
@@ -192,4 +220,4 @@ function AllInsights({ searchTerm }) {
   );
 }
 
-export default AllInsights;
+export default AllNews;
