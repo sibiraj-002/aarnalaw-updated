@@ -1,60 +1,84 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { leftArrow, rightArrow } from "../../utils/icons";
 import InsightSlider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
 import Image from "next/image";
+import configData from "../../config.json";
 
 export default function HomeInsights() {
   const [insightsData, setInsightsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
+  const [page, setPage] = useState(6);
+  const [hasMore, setHasMore] = useState(true); // Initialize hasMore
+  const domain = typeof window !== "undefined" ? window.location.hostname : ""; // Define domain
+
+  // Fetch Media
+  const fetchMedia = async (mediaId) => {
+    const mediaResponse = await fetch(
+      `https://docs.aarnalaw.com/wp-json/wp/v2/media/${mediaId}`
+    );
+    const mediaData = await mediaResponse.json();
+    return mediaData.source_url;
+  };
+
+  // Fetch Content
+  const fetchContent = useCallback(async () => {
+    setLoading(true);
+    try {
+      let server;
+      if (domain === `${configData.LIVE_SITE_URL}`) {
+        server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+      } else {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      }
+
+      const archiveQuery = ""; // Modify or add logic for selectedArchive if required
+      const [insightsResponse, categoriesResponse] = await Promise.all([
+        fetch(
+          `${configData.SERVER_URL}posts?_embed&categories[]=13&status[]=publish&production_mode[]=${server}&per_page=${page}${archiveQuery}`
+        ),
+        fetch(`${configData.SERVER_URL}categories/13`),
+      ]);
+
+      const insightsData = await insightsResponse.json();
+      const categoriesData = await categoriesResponse.json();
+
+      // Fetch media for each post and prepare the final insights data
+      const latestInsights = await Promise.all(
+        insightsData
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, 8)
+          .map(async (item) => {
+            const imageUrl = await fetchMedia(item.featured_media);
+            return {
+              ...item,
+              imageUrl: imageUrl,
+              title: item.title.rendered,
+              desc: item.excerpt.rendered,
+            };
+          })
+      );
+
+      if (latestInsights.length === 0) {
+        setHasMore(false);
+      } else {
+        setInsightsData(latestInsights); // Update insightsData state
+        setHasMore(categoriesData.count > latestInsights.length);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, domain]);
 
   useEffect(() => {
-    const fetchInsights = async () => {
-      try {
-        const response = await fetch(
-          "https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&categories=13",
-        );
-        const posts = await response.json();
-
-        console.log("data insights", posts);
-
-        const fetchMedia = async (mediaId) => {
-          const mediaResponse = await fetch(
-            `https://docs.aarnalaw.com/wp-json/wp/v2/media/${mediaId}`,
-          );
-          const mediaData = await mediaResponse.json();
-          return mediaData.source_url;
-        };
-
-        const latestInsights = await Promise.all(
-          posts
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .slice(0, 8)
-            .map(async (item) => {
-              const imageUrl = await fetchMedia(item.featured_media);
-              return {
-                ...item,
-                imageUrl: imageUrl,
-                title: item.title.rendered,
-                desc: item.excerpt.rendered,
-              };
-            }),
-        );
-
-        setInsightsData(latestInsights);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchInsights();
-  }, []);
+    fetchContent();
+  }, [fetchContent]);
 
   const NextArrow = () => (
     <div
@@ -84,22 +108,6 @@ export default function HomeInsights() {
     responsive: [
       {
         breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: true,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: true,
-        },
-      },
-      {
-        breakpoint: 600,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
