@@ -10,11 +10,13 @@ function AllInsights({ searchTerm }) {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(10);
   const [end, setEnd] = useState(false);
+  const [error, setError] = useState(null); // New state for error handling
 
   const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
   const fetchContent = useCallback(async () => {
     setLoading(true);
+    setError(null); // Reset the error state before each fetch
 
     try {
       let server;
@@ -26,43 +28,43 @@ function AllInsights({ searchTerm }) {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
 
-      const [publicationsResponse, categoriesResponse] = await Promise.all([
-        fetch(
-          `${configData.SERVER_URL}publications?_embed&categories[]=469&production[]=${server}&status[]=publish&per_page=${page}` 
-        ),
-        fetch(`${configData.SERVER_URL}categories/469`),
-      ]);
+      // Fetch data without category filtering
+      const publicationsResponse = await fetch(
+        `${configData.SERVER_URL}publications?_embed&status[]=publish&production_mode[]=${server}&per_page=${page}`
+      );
+
+      if (!publicationsResponse.ok) {
+        throw new Error("Failed to fetch data");
+      }
 
       const publicationsData = await publicationsResponse.json();
-      const categoriesData = await categoriesResponse.json();
 
       if (publicationsData.length === 0) {
         setEnd(true);
       } else {
         const sortedData = publicationsData.sort(
-          (a, b) => new Date(b.date) - new Date(a.date),
+          (a, b) => new Date(b.date) - new Date(a.date)
         );
         setData(sortedData);
-        setHasMore(categoriesData.count > data.length);
+        setHasMore(publicationsData.length === page);
       }
 
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
+      setError("Something went wrong. Please try again later.");
     }
-  }, [page]);
+  }, [page, domain]);
 
-  const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
-    page,
-  ]);
+  const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [page]);
+
   useEffect(() => {
-    fetchContent();
-    debouncedFetchContent();
+    debouncedFetchContent(); // Only call debounced fetch
   }, [page, debouncedFetchContent]);
 
   const loadMore = () => {
-    if (data.length >= categoriesData.count) {
+    if (data.length >= page) {
       setEnd(true);
       setHasMore(false);
     } else {
@@ -73,18 +75,7 @@ function AllInsights({ searchTerm }) {
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
     const monthAbbreviations = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUN",
-      "JUL",
-      "AUG",
-      "SEP",
-      "OCT",
-      "NOV",
-      "DEC",
+      "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
     ];
     return (
       <div className="flex flex-row items-center gap-2 lg:flex-col lg:gap-0">
@@ -114,7 +105,7 @@ function AllInsights({ searchTerm }) {
   );
 
   const filteredInsights = data.filter((item) =>
-    item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
+    item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -123,6 +114,10 @@ function AllInsights({ searchTerm }) {
         Array.from({ length: 8 }).map((_, index) => (
           <SkeletonLoader key={index} />
         ))
+      ) : error ? (
+        <div className="col-span-1 mt-4 text-center text-red-500 md:col-span-2">
+          {error}
+        </div>
       ) : filteredInsights.length > 0 ? (
         filteredInsights.map((item, index) => (
           <div
