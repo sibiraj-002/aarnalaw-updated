@@ -1,77 +1,76 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { initFlowbite } from "flowbite";
+import configData from "../../config.json"; 
+import debounce from "lodash.debounce";
+
+const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
 function AllInsights({ searchTerm }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(6);
   const [hasMore, setHasMore] = useState(true);
   const [archives, setArchives] = useState([]);
   const [selectedArchive, setSelectedArchive] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        let url = `https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${page}&categories=13`;
-        if (selectedArchive) {
-          url += `&archives=${selectedArchive.id}`;
-        }
-
-        const response = await fetch(url);
-        const result = await response.json();
-
-        if (Array.isArray(result)) {
-          if (result.length < 6) setHasMore(false);
-
-          const dataWithImages = await Promise.all(
-            result.map(async (item) => {
-              if (item.featured_media) {
-                try {
-                  const mediaResponse = await fetch(
-                    `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`,
-                  );
-                  const mediaResult = await mediaResponse.json();
-                  item.featured_image_url = mediaResult.source_url || null;
-                } catch (error) {
-                  console.error(
-                    `Error fetching media for post ${item.id}:`,
-                    error,
-                  );
-                  item.featured_image_url = null;
-                }
-              } else {
-                item.featured_image_url = null;
-              }
-              return item;
-            }),
-          );
-
-          setData((prevData) => {
-            const newData = dataWithImages.filter(
-              (newPost) =>
-                !prevData.some(
-                  (existingPost) => existingPost.id === newPost.id,
-                ),
-            );
-            return [...prevData, ...newData];
-          });
-        } else {
-          console.error("Expected an array but got:", result);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+  const fetchContent = useCallback(async () => {
+    setLoading(true);
+    try {
+      let server;
+      if (domain === `${configData.LIVE_SITE_URL}`) {
+        server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+      } else if (domain === `${configData.STAGING_SITE_URL}`) {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      } else {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-    };
-
-    fetchData();
-    initFlowbite(); // Initialize Flowbite after the data is loaded
+  
+      const archiveQuery = selectedArchive ? `&archives=${selectedArchive}` : "";
+  
+      const [publicationsResponse, categoriesResponse] = await Promise.all([
+        fetch(
+          `${configData.SERVER_URL}posts?_embed&categories[]=13&status[]=publish&production_mode[]=${server}&per_page=${page}${archiveQuery}`,
+        ),
+        fetch(`${configData.SERVER_URL}categories/13`),
+      ]);
+  
+      const publicationsData = await publicationsResponse.json();
+      const categoriesData = await categoriesResponse.json();
+  
+      if (publicationsData.length === 0) {
+        setHasMore(false);
+      } else {
+        const sortedData = publicationsData.sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        );
+        setData(sortedData);
+        setHasMore(categoriesData.count > data.length);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
   }, [page, selectedArchive]);
+  
+
+  const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
+    page,
+    selectedArchive,
+  ]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      initFlowbite();
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchContent();
+    debouncedFetchContent();
+  }, [page, selectedArchive, debouncedFetchContent]);
 
   useEffect(() => {
     const fetchArchives = async () => {
@@ -126,7 +125,7 @@ function AllInsights({ searchTerm }) {
     </div>
   );
 
-  const loadMorePosts = () => setPage((prevPage) => prevPage + 1);
+  const loadMorePosts = () => setPage((prevPage) => prevPage + 6);
 
   const filteredInsights = data.filter((data) =>
     data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -146,19 +145,19 @@ function AllInsights({ searchTerm }) {
               key={items.id}
             >
               <a href="#">
-                {items.featured_image_url && (
+                {items._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
                   <Image
-                    src={items.featured_image_url}
+                    src={items._embedded["wp:featuredmedia"][0].source_url}
                     alt={items.title.rendered}
-                    className="h-[200px] w-full rounded-t-lg object-cover md:h-[300px]"
+                    className="h-[200px] w-full rounded-t-lg object-cover"
                     width={500}
                     height={300}
                   />
-                )}
+                ) : null}
               </a>
               <div className="p-5">
                 <h5
-                  className="mb-2 min-h-10 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl line-clamp-2"
+                  className="mb-2 line-clamp-2 min-h-10 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
                   dangerouslySetInnerHTML={{ __html: items.title.rendered }}
                 ></h5>
 
@@ -214,16 +213,17 @@ function AllInsights({ searchTerm }) {
             .slice()
             .reverse()
             .map((archive) => (
+              // Update the onClick handler in your Archive buttons
               <button
                 onClick={() => {
-                  setData([]);
-                  setSelectedArchive(archive);
-                  setPage(1);
+                  setData([]); // Clear previous data
+                  setSelectedArchive(archive.id); // Set the selected archive by ID
+                  setPage(6); // Reset page for fresh fetch
                 }}
                 className={`flex w-full border-b border-custom-red p-1 ${
-                  selectedArchive === archive
-                    ? "font-bold text-custom-red"
-                    : "hover:text-custom-red"
+                  selectedArchive === archive.id
+                    ? "border-b-2 font-bold text-custom-red"
+                    : "hover:border-b-2 hover:text-custom-red"
                 }`}
                 key={archive.id}
               >

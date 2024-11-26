@@ -1,63 +1,93 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { initFlowbite } from "flowbite";
+import debounce from "lodash.debounce";
+import configData from "../../config.json";
 
-function AllInsights({ searchTerm }) {
+const domain = typeof window !== "undefined" ? window.location.hostname : "";
+
+function AllNews({ searchTerm }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(6);
   const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        let url = `https://docs.aarnalaw.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${page}&categories=9`;
-        const response = await fetch(url);
-        const result = await response.json();
-
-        if (Array.isArray(result)) {
-          if (result.length < 6) setHasMore(false);
-          const dataWithImages = await Promise.all(
-            result.map(async (item) => {
-              if (item.featured_media) {
-                try {
-                  const mediaResponse = await fetch(
-                    `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`,
-                  );
-                  const mediaResult = await mediaResponse.json();
-                  item.featured_image_url = mediaResult.source_url || null;
-                } catch (error) {
-                  item.featured_image_url = null;
-                }
-              } else {
-                item.featured_image_url = null;
-              }
-              return item;
-            }),
-          );
-          setData((prevData) => {
-            const newData = dataWithImages.filter(
-              (newPost) =>
-                !prevData.some(
-                  (existingPost) => existingPost.id === newPost.id,
-                ),
-            );
-            return [...prevData, ...newData];
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-        initFlowbite(); // Initialize Flowbite after the data is loaded
+  const fetchContent = useCallback(async () => {
+    setLoading(true);
+    try {
+      let server;
+      if (domain === `${configData.LIVE_SITE_URL}`) {
+        server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+      } else if (domain === `${configData.STAGING_SITE_URL}`) {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      } else {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-    };
 
-    fetchData();
+      const [newsResponse, categoriesResponse] = await Promise.all([
+        fetch(
+          `${configData.SERVER_URL}posts?_embed&categories[]=9&status[]=publish&production_mode[]=${server}&per_page=${page}`
+        ),
+        fetch(`${configData.SERVER_URL}categories/9`),
+      ]);
+
+      const newsData = await newsResponse.json();
+      const categoriesData = await categoriesResponse.json();
+
+      if (newsData.length === 0) {
+        setHasMore(false);
+      } else {
+        const sortedData = newsData.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+        setData(sortedData);
+        setHasMore(categoriesData.count > data.length);
+      }
+
+      // Fetch images for each post
+      const dataWithImages = await Promise.all(
+        newsData.map(async (item) => {
+          if (item.featured_media) {
+            try {
+              const mediaResponse = await fetch(
+                `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`
+              );
+              const mediaResult = await mediaResponse.json();
+              item.featured_image_url = mediaResult.source_url || null;
+            } catch (error) {
+              item.featured_image_url = null;
+            }
+          } else {
+            item.featured_image_url = null;
+          }
+          return item;
+        })
+      );
+
+      setData(dataWithImages);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
   }, [page]);
+
+  const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
+    page,
+  ]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      initFlowbite();
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchContent();
+    debouncedFetchContent();
+  }, [page, debouncedFetchContent]);
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -99,7 +129,7 @@ function AllInsights({ searchTerm }) {
   const loadMorePosts = () => setPage((prevPage) => prevPage + 1);
 
   const filteredInsights = data.filter((data) =>
-    data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase()),
+    data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -116,7 +146,7 @@ function AllInsights({ searchTerm }) {
               key={items.id}
             >
               <a href="#">
-                {items.featured_image_url && (
+                {items.featured_image_url ? (
                   <Image
                     src={items.featured_image_url}
                     alt={items.title.rendered}
@@ -124,8 +154,19 @@ function AllInsights({ searchTerm }) {
                     width={500}
                     height={300}
                   />
+                ) : (
+                  <div className="h-[300px] w-full rounded-t-lg bg-gray-200">
+                    <Image
+                      src="/PracticeArea/Aarna-Law-Banner-img.png" // Path to your default image
+                      alt="Default Image"
+                      className="h-full w-full object-cover"
+                      width={500}
+                      height={300}
+                    />
+                  </div>
                 )}
               </a>
+
               <div className="p-5">
                 <h5
                   className="mb-2 min-h-20 text-lg font-bold tracking-tight text-gray-900 dark:text-white md:text-xl"
@@ -156,9 +197,12 @@ function AllInsights({ searchTerm }) {
           </div>
         )}
 
-        {!loading && hasMore && (
+        {/* Load More Button */}
+        {!loading && data.length >= 6 && hasMore && (
           <div
-            className={`col-span-1 mt-6 justify-center md:col-span-2 ${filteredInsights.length === 0 ? "hidden" : "flex"}`}
+            className={`col-span-1 mt-6 justify-center md:col-span-2 ${
+              filteredInsights.length === 0 ? "hidden" : "flex"
+            }`}
           >
             <button
               onClick={loadMorePosts}
@@ -169,7 +213,8 @@ function AllInsights({ searchTerm }) {
           </div>
         )}
 
-        {!hasMore && (
+        {/* No More Details Message */}
+        {!loading && (!hasMore || data.length < 6) && (
           <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
             No more details available
           </div>
@@ -179,4 +224,4 @@ function AllInsights({ searchTerm }) {
   );
 }
 
-export default AllInsights;
+export default AllNews;

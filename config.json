@@ -1,7 +1,9 @@
 {
-    "SERVER_URL": "https://docs.aarnalaw.com/wp-json/wp/v2/",
-    "SERVER_FROM": "https://docs.aarnalaw.com/wp-json/",
-    "SERVER": "470",
-    "LIVE_SERVER": "469",
-    "STAG_SERVER": "470"
-  }
+  "SERVER_URL": "https://docs.aarnalaw.com/wp-json/wp/v2/",
+  "SERVER_FROM": "https://docs.aarnalaw.com/wp-json/",
+  "LIVE_PRODUCTION_SERVER_ID": "469",
+  "STAG_PRODUCTION_SERVER_ID": "470",
+  "LIVE_SITE_URL_WWW" : "aarnalaw-live-updated.vercel.app",
+  "LIVE_SITE_URL" : "aarnalaw-live-updated.vercel.app",
+  "STAGING_SITE_URL": "localhost"
+}
