@@ -1,66 +1,118 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import InsightSlider from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { leftArrow, rightArrow, pause, play } from "../../utils/icons";
 import Image from "next/image";
+import configData from "../../config.json";
 
 const Podcasts = () => {
   const sliderRef = useRef(null);
   const [podcasts, setPodcasts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPlayingId, setCurrentPlayingId] = useState(null); // State to track which podcast is playing
-  const [autoPlay, setAutoPlay] = useState(true); // State to control autoplay of carousel
-  const audioRefs = useRef({}); // Store refs for all audio elements
+  const [currentPlayingId, setCurrentPlayingId] = useState(null);
+  const [autoPlay, setAutoPlay] = useState(true);
+  const audioRefs = useRef({});
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(10);
+  const [end, setEnd] = useState(false);
+  const [error, setError] = useState(null);
+
+  const domain = typeof window !== "undefined" ? window.location.hostname : "";
+
+  const setAudioRef = (id) => (element) => {
+    if (element) audioRefs.current[id] = element;
+  };
 
   const handlePlayPause = (id) => {
     if (currentPlayingId === id) {
-      // If the same podcast is playing, pause it
       audioRefs.current[id].pause();
-      setAutoPlay(true); // Resume carousel autoplay when audio is paused
-      setCurrentPlayingId(null); // Reset playing state
+      setAutoPlay(true);
+      setCurrentPlayingId(null);
     } else {
-      // Pause any currently playing podcast
       if (currentPlayingId !== null && audioRefs.current[currentPlayingId]) {
         audioRefs.current[currentPlayingId].pause();
       }
-      // Play the selected podcast
       audioRefs.current[id].play();
-      setAutoPlay(false); // Stop carousel autoplay when audio is playing
-      setCurrentPlayingId(id); // Set the new playing podcast
+      setAutoPlay(false);
+      setCurrentPlayingId(id);
     }
   };
 
-  useEffect(() => {
-    const fetchPodcasts = async () => {
-      try {
-        const response = await fetch(
-          "https://docs.aarnalaw.com/wp-json/wp/v2/podcast",
-        );
-        const data = await response.json();
+  const handleAudioEnd = (id) => {
+    if (currentPlayingId === id) {
+      setCurrentPlayingId(null);
+      setAutoPlay(true);
+    }
+  };
 
-        setPodcasts(
-          data.map((podcast) => ({
-            ...podcast,
-            formattedDate: formatDate(podcast.date),
-            imageUrl: podcast.episode_player_image,
-          })),
-        );
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
+  const fetchContent = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      let server;
+      if (
+        domain === `${configData.LIVE_SITE_URL}` ||
+        domain === `${configData.LIVE_SITE_URL_WWW}`
+      ) {
+        server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+      } else if (domain === `${configData.STAGING_SITE_URL}`) {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      } else {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-    };
 
-    fetchPodcasts();
-  }, []);
+      const podcastResponse = await fetch(
+        `${configData.SERVER_URL}podcast?_embed&status[]=publish&production_mode[]=${server}`
+      );
+
+      if (!podcastResponse.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const podcastData = await podcastResponse.json();
+      console.log("Podcast Data", podcastData);
+
+      if (podcastData.length === 0) {
+        setEnd(true);
+      } else {
+        const sortedData = podcastData.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+
+        // Map the data to include the cover image
+        const transformedData = sortedData.map((item) => ({
+          ...item,
+          imageUrl: item.meta?.cover_image || "", // Use meta.cover_image as imageUrl
+        }));
+
+        setPodcasts(transformedData);
+        setHasMore(podcastData.length === page);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+      setError("Something went wrong. Please try again later.");
+    }
+  }, [page, domain]);
+
+  useEffect(() => {
+    if (!end && hasMore) {
+      const debounceFetch = setTimeout(() => {
+        fetchContent();
+      }, 300); // Debounce API calls
+      return () => clearTimeout(debounceFetch);
+    }
+  }, [page, fetchContent, end, hasMore]);
 
   const NextArrow = () => (
     <div
       className="cursor-pointer rounded-full bg-custom-blue p-3 text-xl text-white hover:bg-custom-red"
-      onClick={() => sliderRef.current.slickNext()}
+      onClick={() => sliderRef?.current?.slickNext()}
     >
       {rightArrow}
     </div>
@@ -69,7 +121,7 @@ const Podcasts = () => {
   const PrevArrow = () => (
     <div
       className="cursor-pointer rounded-full bg-custom-blue p-3 text-xl text-white hover:bg-custom-red"
-      onClick={() => sliderRef.current.slickPrev()}
+      onClick={() => sliderRef?.current?.slickPrev()}
     >
       {leftArrow}
     </div>
@@ -128,7 +180,7 @@ const Podcasts = () => {
             >
               <div className="flex flex-col gap-4 md:w-full lg:flex-row">
                 <Image
-                  src={item.imageUrl}
+                  src={item.imageUrl || "/default-fallback-image.jpg"} // Use cover_image or a fallback
                   width={201}
                   height={150}
                   alt="Podcast Thumbnail"
@@ -140,11 +192,6 @@ const Podcasts = () => {
                     dangerouslySetInnerHTML={{ __html: item.title.rendered }}
                   />
                   <div className="flex flex-row items-center justify-between">
-                    {/* <p className=" text-custom-gray transition-colors duration-300 md:w-60 md:group-hover:text-white">
-                      Posted On
-                      <br className="block md:hidden" />
-                      {item.formattedDate}
-                    </p> */}
                     <button
                       className="flex size-10 items-center justify-center rounded-full bg-custom-blue text-white transition-colors duration-300 md:group-hover:bg-custom-red"
                       onClick={() => handlePlayPause(item.id)}
@@ -154,7 +201,7 @@ const Podcasts = () => {
                   </div>
                   <audio
                     ref={(el) => (audioRefs.current[item.id] = el)} // Store ref for each podcast's audio element
-                    src={item.player_link}
+                    src={item.meta?.audio_file}
                     className="hidden md:block"
                   />
                 </div>
