@@ -11,7 +11,7 @@ const domain = typeof window !== "undefined" ? window.location.hostname : "";
 function AllNews({ searchTerm }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(6);
   const [hasMore, setHasMore] = useState(true);
 
   const fetchContent = useCallback(async () => {
