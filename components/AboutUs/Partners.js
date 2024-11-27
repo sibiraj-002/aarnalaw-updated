@@ -5,7 +5,7 @@ import Credentials from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Link from "next/link";
 import Image from "next/image";
-import configData from "../../config.json"; 
+import configData from "../../config.json";
 
 export default function Partners() {
   const sliderRef = useRef(null);
@@ -54,9 +54,6 @@ export default function Partners() {
     fetchContent();
   }, [page, fetchContent]);
 
-  
-  
-  
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
