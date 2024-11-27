@@ -25,54 +25,36 @@ function AllNews({ searchTerm }) {
       } else {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
-
-      const [newsResponse, categoriesResponse] = await Promise.all([
-        fetch(
-          `${configData.SERVER_URL}posts?_embed&categories[]=9&status[]=publish&production_mode[]=${server}&per_page=${page}`
-        ),
-        fetch(`${configData.SERVER_URL}categories/9`),
-      ]);
-
-      const newsData = await newsResponse.json();
-      const categoriesData = await categoriesResponse.json();
-
+  
+      const response = await fetch(
+        `${configData.SERVER_URL}posts?_embed&categories[]=9&status[]=publish&production_mode[]=${server}&per_page=${page}`
+      );
+      const newsData = await response.json();
+  
       if (newsData.length === 0) {
         setHasMore(false);
       } else {
-        const sortedData = newsData.sort(
+        const enrichedData = newsData.map((item) => {
+          const featuredImage =
+            item._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+          return {
+            ...item,
+            featured_image_url: featuredImage || null,
+          };
+        });
+        const sortedData = enrichedData.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
         setData(sortedData);
-        setHasMore(categoriesData.count > data.length);
+        setHasMore(sortedData.length === page);
       }
-
-      // Fetch images for each post
-      const dataWithImages = await Promise.all(
-        newsData.map(async (item) => {
-          if (item.featured_media) {
-            try {
-              const mediaResponse = await fetch(
-                `https://docs.aarnalaw.com/wp-json/wp/v2/media/${item.featured_media}`
-              );
-              const mediaResult = await mediaResponse.json();
-              item.featured_image_url = mediaResult.source_url || null;
-            } catch (error) {
-              item.featured_image_url = null;
-            }
-          } else {
-            item.featured_image_url = null;
-          }
-          return item;
-        })
-      );
-
-      setData(dataWithImages);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
     }
   }, [page]);
+  
 
   const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [
     page,
@@ -126,7 +108,7 @@ function AllNews({ searchTerm }) {
     </div>
   );
 
-  const loadMorePosts = () => setPage((prevPage) => prevPage + 1);
+  const loadMorePosts = () => setPage((prevPage) => prevPage + 6);
 
   const filteredInsights = data.filter((data) =>
     data.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())

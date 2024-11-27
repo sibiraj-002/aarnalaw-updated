@@ -7,9 +7,7 @@ import debounce from "lodash.debounce";
 function AllInsights({ searchTerm }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(10);
-  const [end, setEnd] = useState(false);
+  const [page, setPage] = useState(6); // Start with 6 items
   const [error, setError] = useState(null); // New state for error handling
 
   const domain = typeof window !== "undefined" ? window.location.hostname : "";
@@ -28,9 +26,8 @@ function AllInsights({ searchTerm }) {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
 
-      // Fetch data without category filtering
       const publicationsResponse = await fetch(
-        `${configData.SERVER_URL}publications?_embed&status[]=publish&production_mode[]=${server}&per_page=${page}`
+        `${configData.SERVER_URL}publications?_embed&status[]=publish&production_mode[]=${server}`
       );
 
       if (!publicationsResponse.ok) {
@@ -38,37 +35,25 @@ function AllInsights({ searchTerm }) {
       }
 
       const publicationsData = await publicationsResponse.json();
-
-      if (publicationsData.length === 0) {
-        setEnd(true);
-      } else {
-        const sortedData = publicationsData.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-        setData(sortedData);
-        setHasMore(publicationsData.length === page);
-      }
-
+      const sortedData = publicationsData.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setData(sortedData);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
       setError("Something went wrong. Please try again later.");
     }
-  }, [page, domain]);
-
-  const debouncedFetchContent = useCallback(debounce(fetchContent, 500), [page]);
+  }, [domain]);
 
   useEffect(() => {
-    debouncedFetchContent(); // Only call debounced fetch
-  }, [page, debouncedFetchContent]);
+    fetchContent();
+  }, [fetchContent]);
 
   const loadMore = () => {
-    if (data.length >= page) {
-      setEnd(true);
-      setHasMore(false);
-    } else {
-      setPage((oldPage) => oldPage + 5);
+    if (data.length > page) {
+      setPage((prevPage) => prevPage + 6);
     }
   };
 
@@ -104,14 +89,16 @@ function AllInsights({ searchTerm }) {
     </div>
   );
 
-  const filteredInsights = data.filter((item) =>
-    item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredInsights = data
+    .filter((item) =>
+      item.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .slice(0, page); // Show only up to the current page count
 
   return (
     <div className="mx-auto grid w-11/12 gap-4 py-12 lg:grid-cols-2">
       {loading && filteredInsights.length === 0 ? (
-        Array.from({ length: 8 }).map((_, index) => (
+        Array.from({ length: 6 }).map((_, index) => (
           <SkeletonLoader key={index} />
         ))
       ) : error ? (
@@ -153,7 +140,7 @@ function AllInsights({ searchTerm }) {
         </div>
       )}
 
-      {!loading && hasMore && filteredInsights.length > 0 && (
+      {!loading && data.length > page && (
         <div className="col-span-1 mt-6 flex justify-center md:col-span-2">
           <button
             onClick={loadMore}
@@ -164,7 +151,7 @@ function AllInsights({ searchTerm }) {
         </div>
       )}
 
-      {!hasMore && (
+      {!loading && data.length <= page && (
         <div className="col-span-1 mt-4 text-center text-gray-500 md:col-span-2">
           No more details available
         </div>
