@@ -1,35 +1,62 @@
 // Import statements remain unchanged
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import Credentials from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Link from "next/link";
 import Image from "next/image";
+import configData from "../../config.json"; 
 
 export default function Partners() {
   const sliderRef = useRef(null);
   const [data, setData] = useState([]); // Initialize data state with an empty array
   const [loading, setLoading] = useState(true); // Loading state for skeleton
+  const [page, setPage] = useState(100);
+
+  const domain = typeof window !== "undefined" ? window.location.hostname : "";
+
+  const fetchContent = useCallback(async () => {
+    setLoading(true);
+    try {
+      let server;
+      if (domain === `${configData.LIVE_SITE_URL}`) {
+        server = `${configData.LIVE_PRODUCTION_SERVER_ID}`;
+      } else if (domain === `${configData.STAGING_SITE_URL}`) {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      } else {
+        server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
+      }
+
+      const practiceAreaResponse = await fetch(
+        `${configData.SERVER_URL}team?_embed&status[]=publish&production_mode[]=${server}&per_page=${page}`,
+      );
+
+      const practiceAreaData = await practiceAreaResponse.json();
+
+      if (practiceAreaData.length === 0) {
+        setHasMore(false);
+      } else {
+        const sortedData = practiceAreaData.sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        );
+        setData(sortedData);
+        setHasMore(practiceAreaData.length === page); // Check if more pages are available
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  }, [page, domain]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://docs.aarnalaw.com/wp-json/wp/v2/team?_embed&per_page=100`,
-        );
-        const result = await response.json();
-        setData(result);
-        console.log("Practice area data", result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Set loading to false once data is fetched
-      }
-    };
+    fetchContent();
+  }, [page, fetchContent]);
 
-    fetchData();
-  }, []);
-
+  
+  
+  
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
