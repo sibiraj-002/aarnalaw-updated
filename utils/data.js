@@ -282,8 +282,7 @@ export const contactAddress = [
     location: "NEW DELHI",
     // address: "Ground Floor Taj Ambassador, Sujan Singh Marg New Delhi 110003",
     // phone: "+91 11 4350 5878",
-    direction:
-      "",
+    direction: "",
   },
   {
     location: "MUMBAI",

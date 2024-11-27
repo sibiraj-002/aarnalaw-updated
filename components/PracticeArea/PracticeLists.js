@@ -32,8 +32,8 @@ function PracticeLists() {
       if (practiceAreaData.length === 0) {
         setHasMore(false);
       } else {
-        const sortedData = practiceAreaData.sort(
-          (a, b) => new Date(b.date) - new Date(a.date),
+        const sortedData = practiceAreaData.sort((a, b) =>
+          a.title.rendered.localeCompare(b.title.rendered)
         );
         setData(sortedData);
         setHasMore(practiceAreaData.length === page); // Check if more pages are available
