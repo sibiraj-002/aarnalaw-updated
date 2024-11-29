@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import Carousel from "react-multi-carousel";
-// import "react-multi-carousel/lib/styles.css";
 import { homeBanner } from "../../utils/data";
 
 export default function Banner() {
@@ -36,25 +35,49 @@ export default function Banner() {
         containerClass="carousel-container"
       >
         {homeBanner.map((banner, index) => (
-          <div key={index} className="relative w-full h-[70vh] lg:h-screen">
+          <div key={index} className="relative h-[70vh] w-full lg:h-screen">
             {/* Mobile Banner */}
-            <Image
-              src={banner.mobileBannerUrl}
-              alt={banner.bannerText}
-              className="lg:hidden object-cover w-full h-full"
-              layout="fill"
-              loading="lazy"
-            />
+            {index === 0 ? (
+              <Image
+                src={banner.mobileBannerUrl}
+                alt={banner.bannerText}
+                className="h-full w-full object-cover lg:hidden"
+                priority // High priority for the first image
+                width={768}
+                height={512} // Provide explicit dimensions
+              />
+            ) : (
+              <Image
+                src={banner.mobileBannerUrl}
+                alt={banner.bannerText}
+                className="h-full w-full object-cover lg:hidden"
+                loading="lazy"
+                width={768}
+                height={512}
+              />
+            )}
             {/* Desktop Banner */}
-            <Image
-              src={banner.bannerUrl}
-              alt={banner.bannerText}
-              className="hidden lg:block object-cover w-full h-full"
-              layout="fill"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center text-white bg-black bg-opacity-40">
-              <h2 className="text-4xl font-bold lg:text-5xl pt-36 md:pt-0">
+            {index === 0 ? (
+              <Image
+                src={banner.bannerUrl}
+                alt={banner.bannerText}
+                className="hidden h-full w-full object-cover lg:block"
+                priority // High priority for the first image
+                width={1920}
+                height={1080} // Provide explicit dimensions
+              />
+            ) : (
+              <Image
+                src={banner.bannerUrl}
+                alt={banner.bannerText}
+                className="hidden h-full w-full object-cover lg:block"
+                loading="lazy"
+                width={1920}
+                height={1080}
+              />
+            )}
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 p-4 text-center text-white">
+              <h2 className="pt-36 text-4xl font-bold md:pt-0 lg:text-5xl">
                 {banner.bannerText}
               </h2>
               <p className="py-8 text-xl lg:w-7/12">{banner.bannerPara}</p>

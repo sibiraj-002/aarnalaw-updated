@@ -13,10 +13,9 @@ export default function HomeInsights() {
   const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
   const [page, setPage] = useState(6);
-  const [hasMore, setHasMore] = useState(true); // Initialize hasMore
-  const domain = typeof window !== "undefined" ? window.location.hostname : ""; // Define domain
+  const [hasMore, setHasMore] = useState(true);
+  const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
-  // Fetch Media
   const fetchMedia = async (mediaId) => {
     const mediaResponse = await fetch(
       `https://docs.aarnalaw.com/wp-json/wp/v2/media/${mediaId}`
@@ -25,7 +24,6 @@ export default function HomeInsights() {
     return mediaData.source_url;
   };
 
-  // Fetch Content
   const fetchContent = useCallback(async () => {
     setLoading(true);
     try {
@@ -36,22 +34,17 @@ export default function HomeInsights() {
         server = `${configData.STAG_PRODUCTION_SERVER_ID}`;
       }
 
-      const archiveQuery = ""; // Modify or add logic for selectedArchive if required
-      const [insightsResponse, categoriesResponse] = await Promise.all([
+      const [insightsResponse] = await Promise.all([
         fetch(
-          `${configData.SERVER_URL}posts?_embed&categories[]=13&status[]=publish&production_mode[]=${server}&per_page=${page}${archiveQuery}`
+          `${configData.SERVER_URL}posts?_embed&categories[]=13&status[]=publish&production_mode[]=${server}&per_page=${page}`
         ),
-        fetch(`${configData.SERVER_URL}categories/13`),
       ]);
 
       const insightsData = await insightsResponse.json();
-      const categoriesData = await categoriesResponse.json();
 
-      // Fetch media for each post and prepare the final insights data
       const latestInsights = await Promise.all(
         insightsData
           .sort((a, b) => new Date(b.date) - new Date(a.date))
-          .slice(0, 8)
           .map(async (item) => {
             const imageUrl = await fetchMedia(item.featured_media);
             return {
@@ -66,8 +59,8 @@ export default function HomeInsights() {
       if (latestInsights.length === 0) {
         setHasMore(false);
       } else {
-        setInsightsData(latestInsights); // Update insightsData state
-        setHasMore(categoriesData.count > latestInsights.length);
+        setInsightsData(latestInsights);
+        setHasMore(latestInsights.length > 0);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -125,7 +118,6 @@ export default function HomeInsights() {
             <h2 className="m-0 py-5 text-2xl font-bold text-custom-red md:p-0 md:text-[80px] lg:-rotate-90">
               Insights
             </h2>
-            {/* Visible only on desktop */}
             <div className="hidden gap-4 md:flex">
               <PrevArrow />
               <NextArrow />
@@ -152,6 +144,8 @@ export default function HomeInsights() {
                     <div className="group relative my-auto h-[450px] w-full flex-col border border-gray-200 bg-white shadow transition-colors duration-300 dark:border-gray-700 dark:bg-gray-800 md:hover:bg-custom-red md:hover:text-white lg:flex lg:h-[620px]">
                       <Image
                         src={item.imageUrl}
+                        priority={index === 0} // Set high priority for the first slide
+                        loading={index === 0 ? "eager" : "lazy"} // Eager load LCP image
                         className="h-[200px] w-full object-cover md:h-[280px]"
                         alt={item.title}
                         width={600}
@@ -182,13 +176,11 @@ export default function HomeInsights() {
             </InsightSlider>
           )}
         </div>
-        {/* Mobile view navigation arrows and View All button */}
         <div className="flex items-center justify-center gap-4 pt-8 lg:hidden">
           <PrevArrow />
           <NextArrow />
         </div>
       </div>
-      {/* Desktop */}
       <div className="bottom-0 flex items-end justify-center lg:h-[80vh]">
         <Link
           href="/insights"
