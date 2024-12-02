@@ -38,6 +38,7 @@ function AllInsights({ searchTerm }) {
   
       const publicationsData = await publicationsResponse.json();
       const categoriesData = await categoriesResponse.json();
+      console.log("insights data ",publicationsData)
   
       if (publicationsData.length === 0) {
         setHasMore(false);
