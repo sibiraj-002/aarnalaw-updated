@@ -153,7 +153,7 @@ useEffect(() => {
             100,
         }));
       });
-      currentAudioRefs[index].addEventListener("loadedmetadata", () => {
+      currentAudioRefs[index].addEventListener("loadedmetadata", () => { 
         setDuration((prev) => ({
           ...prev,
           [index]: currentAudioRefs[index].duration,
